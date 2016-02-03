@@ -18,6 +18,10 @@
 		4D0E00461C58925D00744A86 /* SmartGoalsModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E003C1C58925D00744A86 /* SmartGoalsModel.framework */; };
 		4D0E004B1C58925D00744A86 /* SmartGoalsModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0E004A1C58925D00744A86 /* SmartGoalsModelTests.swift */; };
 		4D0E00541C58928C00744A86 /* Roles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0E00531C58928C00744A86 /* Roles.swift */; };
+		4D63BE811C619E9400FF19E4 /* SmartGoalsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63BE801C619E9400FF19E4 /* SmartGoalsModel.swift */; };
+		4D63BE831C619EB800FF19E4 /* Goals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63BE821C619EB800FF19E4 /* Goals.swift */; };
+		4D63BE851C619FCF00FF19E4 /* TimeScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63BE841C619FCF00FF19E4 /* TimeScale.swift */; };
+		4D63BE861C61A48800FF19E4 /* SmartGoalsModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0E003C1C58925D00744A86 /* SmartGoalsModel.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +60,9 @@
 		4D0E004A1C58925D00744A86 /* SmartGoalsModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartGoalsModelTests.swift; sourceTree = "<group>"; };
 		4D0E004C1C58925D00744A86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4D0E00531C58928C00744A86 /* Roles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Roles.swift; sourceTree = "<group>"; };
+		4D63BE801C619E9400FF19E4 /* SmartGoalsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmartGoalsModel.swift; sourceTree = "<group>"; };
+		4D63BE821C619EB800FF19E4 /* Goals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goals.swift; sourceTree = "<group>"; };
+		4D63BE841C619FCF00FF19E4 /* TimeScale.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeScale.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D63BE861C61A48800FF19E4 /* SmartGoalsModel.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,9 +147,12 @@
 		4D0E003D1C58925D00744A86 /* SmartGoalsModel */ = {
 			isa = PBXGroup;
 			children = (
-				4D0E003E1C58925D00744A86 /* SmartGoalsModel.h */,
 				4D0E00401C58925D00744A86 /* Info.plist */,
+				4D63BE821C619EB800FF19E4 /* Goals.swift */,
 				4D0E00531C58928C00744A86 /* Roles.swift */,
+				4D0E003E1C58925D00744A86 /* SmartGoalsModel.h */,
+				4D63BE801C619E9400FF19E4 /* SmartGoalsModel.swift */,
+				4D63BE841C619FCF00FF19E4 /* TimeScale.swift */,
 			);
 			path = SmartGoalsModel;
 			sourceTree = "<group>";
@@ -343,7 +354,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D63BE811C619E9400FF19E4 /* SmartGoalsModel.swift in Sources */,
+				4D63BE851C619FCF00FF19E4 /* TimeScale.swift in Sources */,
 				4D0E00541C58928C00744A86 /* Roles.swift in Sources */,
+				4D63BE831C619EB800FF19E4 /* Goals.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -617,6 +631,7 @@
 				4D0E00331C58921700744A86 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4D0E00341C58921700744A86 /* Build configuration list for PBXNativeTarget "SmartGoalsTests" */ = {
 			isa = XCConfigurationList;
@@ -625,6 +640,7 @@
 				4D0E00361C58921700744A86 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4D0E004D1C58925D00744A86 /* Build configuration list for PBXNativeTarget "SmartGoalsModel" */ = {
 			isa = XCConfigurationList;
@@ -633,6 +649,7 @@
 				4D0E004F1C58925D00744A86 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4D0E00501C58925D00744A86 /* Build configuration list for PBXNativeTarget "SmartGoalsModelTests" */ = {
 			isa = XCConfigurationList;
@@ -641,6 +658,7 @@
 				4D0E00521C58925D00744A86 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

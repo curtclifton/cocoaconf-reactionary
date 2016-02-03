@@ -8,10 +8,8 @@
 
 import Foundation
 
-typealias Identifier: String // CCC, 1/26/2016. Need to make this a separate, smart type
-
 public struct Role {
-    let identifier: Identifier
+    let identifier: Identifier<Role>
     var explanation: String
     var shortName: String
     
@@ -19,4 +17,6 @@ public struct Role {
     ///
     /// This is used to determine whether edits should to the other properties should cause the user to be prompted to create a new role or edit an existing role. If the role is not referenced, then edits can just edit the existing one without concern for unintended side effects.
     var isReferenced: Bool
+    
+    var isActive: Bool
 }
