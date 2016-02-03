@@ -8,9 +8,9 @@
 
 import Foundation
 
-struct TimeScale {
+public struct TimeScale {
     let identifier: Identifier<TimeScale>
-    let description: String
     
-    let goalSets: [GoalSet]
+    public let description: String
+    public let goalSets: [GoalSet]
 }

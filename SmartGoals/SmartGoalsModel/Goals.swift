@@ -8,31 +8,29 @@
 
 import Foundation
 
-protocol Reviewable {
-    let reviews: [Review]
-}
-
-struct GoalSet {
+public struct GoalSet {
     let identifier: Identifier<GoalSet>
     
-    let goals: [Goals]
-    let roles: [Roles]
+    public let goals: [Goal]
+    public let roles: [Role]
     
     /// like "January 2016" or "Due June 2017"
-    let name: String
+    public let name: String
 
-    let startDate: NSDate
-    let targetDate: NSDate
+    public let startDate: NSDate
+    public let targetDate: NSDate
     
-    let reviews: [Review]
+    public let reviews: [Review]
 }
 
-struct Goal {
-    let identifier: Identifer<Goal>
+public struct Goal {
+    let identifier: Identifier<Goal>
     
-    let title: String
-    let outcomeDescription: String
-    let evaluationMetricDescription: String
+    public let title: String
+    public let outcomeDescription: String
+    public let evaluationMetricDescription: String
     
-    let relatedGoals: [Goal]
+    public let relatedGoals: [Goal]
 }
+
+
