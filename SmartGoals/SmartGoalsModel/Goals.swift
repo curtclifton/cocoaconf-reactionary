@@ -14,10 +14,6 @@ public struct GoalSet {
     public let goals: [Goal]
     public let roles: [Role]
     
-    /// like "January 2016" or "Due June 2017"
-    public let name: String
-
-    public let startDate: NSDate
     public let targetDate: NSDate
     
     public let reviews: [Review]
@@ -30,7 +26,9 @@ public struct Goal {
     public let outcomeDescription: String
     public let evaluationMetricDescription: String
     
-    public let relatedGoals: [Goal]
+    public let goalsSupported: [Goal]
+    
+    public let reviews: [Review]
 }
 
 
