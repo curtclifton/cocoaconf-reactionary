@@ -8,6 +8,7 @@
 
 import Foundation
 
+// CCC, 2/7/2016. All the model objects should probably be classes, not structs.
 public struct GoalSet {
     let identifier: Identifier<GoalSet>
     
