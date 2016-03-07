@@ -14,7 +14,8 @@ public enum Result<Value> {
     case error(ErrorType)
 }
 
-// CCC, 3/2/2016. I'm not thrilled with this architecture. Maybe better to have a single map function and add overloaded transform factories to Result?
+// CCC, 3/2/2016. I'm not thrilled with this architecture. Better to have a single map function and add overloaded transform factories to Result. 
+// CCC, 3/6/2016. Signal doesn't reference Result at all, it just has a Payload, which could be a result type, but doesn't have to be.
 public class Signal<Value> {
     private(set) var currentResult: Result<Value>?
     var currentValue: Value? {
