@@ -25,6 +25,14 @@ public enum Result<Value> {
     }
     
     // CCC, 3/6/2016. implement and test other transforms
-    // CCC, 3/6/2016. can probably factor out the core of this
+    public static func transform(forValuePassthroughHandler handler: Value -> ())  -> (Result<Value> -> Result<Value>) {
+        let valueHandler = { (value: Value) -> Value in
+            handler(value)
+            return value
+        }
+        return transform(forValueHandler: valueHandler)
+    }
+    
+    // CCC, 3/6/2016. can probably factor out the core of these
 }
 

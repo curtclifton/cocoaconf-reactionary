@@ -55,4 +55,28 @@ class ResultTests: XCTestCase {
         
         XCTAssert(output.hasError(testError))
     }
+
+    func testValuePassthroughHandlerWithValue() {
+        let input = Result.value(1)
+        var accum: [Int] = []
+        
+        let transform = Result.transform(forValuePassthroughHandler: { (x: Int) in accum.append(x) })
+        let output = transform(input)
+        
+        XCTAssertEqual(accum, [1])
+        XCTAssert(haveEqualValues(lhs: output, rhs: Result.value(1)))
+    }
+    
+    func testValuePassthroughHandlerWithError() {
+        let input = Result<Int>.error(testError)
+        var accum: [Int] = []
+        
+        let transform = Result.transform(forValuePassthroughHandler: { (x: Int) in accum.append(x) })
+        let output = transform(input)
+        
+        XCTAssertEqual(accum, [])
+        XCTAssert(output.hasError(testError))
+    }
+    
+
 }
