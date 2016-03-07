@@ -78,5 +78,26 @@ class ResultTests: XCTestCase {
         XCTAssert(output.hasError(testError))
     }
     
-
+    func testPassthroughErrorHandlerWithValue() {
+        let input = Result.value(1)
+        var wasHit = false
+        
+        let transform = Result<Int>.transform(forPassthroughErrorHandler: { (error: ErrorType) in wasHit = true })
+        let output = transform(input)
+        
+        XCTAssertFalse(wasHit)
+        XCTAssert(haveEqualValues(lhs: output, rhs: Result.value(1)))
+    }
+    
+    func testPassthroughErrorHandlerWithError() {
+        let input = Result<Int>.error(testError)
+        var wasHit = false
+        
+        let transform = Result<Int>.transform(forPassthroughErrorHandler: { (error: ErrorType) in wasHit = true })
+        let output = transform(input)
+        
+        XCTAssert(wasHit)
+        XCTAssert(output.hasError(testError))
+    }
+    
 }

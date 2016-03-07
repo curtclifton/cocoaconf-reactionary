@@ -12,6 +12,7 @@ public enum Result<Value> {
     case value(Value)
     case error(ErrorType)
     
+    /// Creates a transform that applies `handler` to any non-error Results, passing through errors unchanged.
     public static func transform<OutValue>(forValueHandler handler: Value -> OutValue) -> (Result<Value> -> Result<OutValue>) {
         let resultTransform = { (inputResult: Result<Value>) -> Result<OutValue> in
             switch inputResult {
@@ -24,15 +25,34 @@ public enum Result<Value> {
         return resultTransform
     }
     
-    // CCC, 3/6/2016. implement and test other transforms
-    public static func transform(forValuePassthroughHandler handler: Value -> ())  -> (Result<Value> -> Result<Value>) {
-        let valueHandler = { (value: Value) -> Value in
-            handler(value)
-            return value
+    /// Creates a transform that applies `handler` to any non-error Results, passing through all Results unchanged.
+    public static func transform(forValuePassthroughHandler handler: Value -> ())  -> (Result<Value> -> Result<Value>) { // CCC, 3/6/2016. rename: forPassthroughValueHandler
+        let resultTransform = { (inputResult: Result<Value>) -> Result<Value> in
+            switch inputResult {
+            case .value(let value):
+                handler(value)
+            default:
+                break
+            }
+            return inputResult
         }
-        return transform(forValueHandler: valueHandler)
+        return resultTransform
     }
     
-    // CCC, 3/6/2016. can probably factor out the core of these
+    /// Creates a transform that applies `handler` to any error Results, passing through all Results unchanged.
+    public static func transform(forPassthroughErrorHandler handler: ErrorType -> ()) -> (Result<Value> -> Result<Value>) {
+        let resultTransform = { (inputResult: Result<Value>) -> Result<Value> in
+            switch inputResult {
+            case .error(let error):
+                handler(error)
+            default:
+                break
+            }
+            return inputResult
+        }
+        return resultTransform
+    }
+
+    // CCC, 3/6/2016. do we need an error transformer (e.g., handler: ErrorType -> ErrorType)?
 }
 
