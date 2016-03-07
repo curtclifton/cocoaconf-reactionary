@@ -26,7 +26,7 @@ public enum Result<Value> {
     }
     
     /// Creates a transform that applies `handler` to any non-error Results, passing through all Results unchanged.
-    public static func transform(forValuePassthroughHandler handler: Value -> ())  -> (Result<Value> -> Result<Value>) { // CCC, 3/6/2016. rename: forPassthroughValueHandler
+    public static func transform(forPassthroughValueHandler handler: Value -> ())  -> (Result<Value> -> Result<Value>) {
         let resultTransform = { (inputResult: Result<Value>) -> Result<Value> in
             switch inputResult {
             case .value(let value):
