@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15D21" minimumToolsVersion="Xcode 7.0">
+    <entity name="SGMIdentifiedObject" representedClassName=".SGMIdentifiedObject" isAbstract="YES" syncable="YES">
+        <attribute name="sgmIdentifier" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="SGMRole" representedClassName=".SGMRole" parentEntity="SGMIdentifiedObject" syncable="YES">
+        <attribute name="explanation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isActive" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="shortName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="SGMRole" positionX="-63" positionY="-18" width="128" height="88"/>
+        <element name="SGMIdentifiedObject" positionX="-54" positionY="18" width="128" height="60"/>
+    </elements>
+</model>

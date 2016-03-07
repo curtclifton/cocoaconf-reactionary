@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import SmartGoalsModelTouch
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
     var window: UIWindow?
 
+    // CCC, 3/1/2016. Test signal:
+    let valuesSignal: Signal<[Role]> = sharedModel.valuesSignalForType(Role.self)
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -20,6 +23,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
         splitViewController.delegate = self
+        
+        // CCC, 2/13/2016. Just test MOC loading in main configuration        
+        valuesSignal.valuePassthroughHandler { (roles: [Role]) in
+            print("got roles: \(roles)")
+        }
+        sharedModel.instantiateObjectOfType(Role.self)
+        
+        
         return true
     }
 
