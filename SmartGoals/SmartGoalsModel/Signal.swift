@@ -9,8 +9,7 @@
 import Foundation
 import CoreData
 
-#error HERE is where you're working. 
-// CCC, 3/2/2016. I'm not thrilled with this architecture. Better to have a single map function and add overloaded transform factories to Result. 
+// CCC, 3/2/2016. I'm not thrilled with this architecture. Better to have a single map function and add overloaded transform factories to Result.
 // CCC, 3/6/2016. Signal doesn't reference Result at all, it just has a Payload, which could be a result type, but doesn't have to be.
 public class Signal<Value> {
     private(set) var currentResult: Result<Value>?
@@ -42,7 +41,7 @@ public class Signal<Value> {
     // capture pattern: self -> observer block -> outSignal and transform
     // Anything captured by the transform exists until self is deallocated!
 
-    /// Calls the transform for all events.
+    /// Calls `transform` for all events, pushing the result on the returned signal.
     public func map<OutValue>(transform: Result<Value> -> Result<OutValue>) -> Signal<OutValue> {
         let outSignal: Signal<OutValue> = createOutSignal()
         
@@ -60,43 +59,23 @@ public class Signal<Value> {
         return outSignal
     }
     
-    /// Calls the transform for non-error events.
-    ///
-    /// The returned signal will only pass non-error events for which `transform` returns a non-nil value.
-    public func valueOnlyMap<OutValue>(transform: Value -> OutValue?) -> Signal<OutValue> {
+    /// Calls `transform` for all events, pushing the non-nil results on the returned signal.
+    public func flatmap<OutValue>(transform: Result<Value> -> Result<OutValue>?) -> Signal<OutValue> {
         let outSignal: Signal<OutValue> = createOutSignal()
-
+        
         let observer: Result<Value> -> () = { newResult in
-            switch newResult {
-            case .value(let value):
-                guard let outValue = transform(value) else { break }
-                outSignal.updateToValue(outValue)
-            case .error:
-                // drop the event
-                break
-            }
-        }
-
-        addObserver(observer)
-        return outSignal
-    }
-
-    /// Calls the handler for non-error events.
-    ///
-    /// For chaining, the returned signal is self.
-    public func valuePassthroughHandler(handler: Value -> ()) -> Self {
-        let observer: Result<Value> -> () = { newResult in
-            switch newResult {
-            case .value(let value):
-                handler(value)
-            case .error:
-                // drop the event
-                break
+            if let outValue = transform(newResult) {
+                switch outValue {
+                case .value(let value):
+                    outSignal.updateToValue(value)
+                case .error(let error):
+                    outSignal.updateToError(error)
+                }
             }
         }
         
         addObserver(observer)
-        return self
+        return outSignal
     }
     
     /// Calls the transform for non-error events.
@@ -150,6 +129,8 @@ public class Signal<Value> {
         }
     }
 }
+
+// CCC, 3/7/2016. Maybe fetch signals shouldn't use Result? Do we always expect a value?
 
 /// Instantiates a signal that executes `fetchRequest` in `context`, passing the fetched objects through `transform` and propagating the non-nil results on the signal. 
 ///

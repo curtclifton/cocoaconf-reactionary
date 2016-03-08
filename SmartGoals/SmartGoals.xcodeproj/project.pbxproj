@@ -20,6 +20,7 @@
 		4D0E00541C58928C00744A86 /* Roles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0E00531C58928C00744A86 /* Roles.swift */; };
 		4D2A26281C8D31DF0033E1EB /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2A26271C8D31DF0033E1EB /* Result.swift */; };
 		4D2A262A1C8D320E0033E1EB /* ResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2A26291C8D320E0033E1EB /* ResultTests.swift */; };
+		4D2A262B1C8E6C770033E1EB /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2A26271C8D31DF0033E1EB /* Result.swift */; };
 		4D63BE811C619E9400FF19E4 /* SmartGoalsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63BE801C619E9400FF19E4 /* SmartGoalsModel.swift */; };
 		4D63BE831C619EB800FF19E4 /* Goals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63BE821C619EB800FF19E4 /* Goals.swift */; };
 		4D63BE851C619FCF00FF19E4 /* TimeScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63BE841C619FCF00FF19E4 /* TimeScale.swift */; };
@@ -521,6 +522,7 @@
 				4D6F33751C70345D00B1B2B2 /* SGMRole+CoreDataProperties.swift in Sources */,
 				4D6F33771C70345D00B1B2B2 /* SGMRole.swift in Sources */,
 				4D6F337E1C7045BD00B1B2B2 /* SGMIdentifiedObject.swift in Sources */,
+				4D2A262B1C8E6C770033E1EB /* Result.swift in Sources */,
 				4D74E6E41C61AC7100E11F3E /* Goals.swift in Sources */,
 				4D74E6EA1C61AEE600E11F3E /* Reviews.swift in Sources */,
 				4D6F33871C710EE900B1B2B2 /* Signal.swift in Sources */,
