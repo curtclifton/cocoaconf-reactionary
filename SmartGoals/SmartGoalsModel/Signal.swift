@@ -9,8 +9,6 @@
 import Foundation
 import CoreData
 
-// CCC, 3/2/2016. I'm not thrilled with this architecture. Better to have a single map function and add overloaded transform factories to Result.
-// CCC, 3/6/2016. Signal doesn't reference Result at all, it just has a Payload, which could be a result type, but doesn't have to be.
 
 // CCC, 2/14/2016. Document capture pattern. Someone has to capture the root Signal or the whole chain will be deallocated. May want a different mapping function for the case where the observer and output signal should be held weakly.
 // Currently, clients must retain self directly or indirectly, or the signal chain will be deallocated.
@@ -18,6 +16,8 @@ import CoreData
 // Anything captured by the transform exists until self is deallocated!
 
 public class Signal<Value> {
+    #error HERE is where you're working.
+    // CCC, 3/6/2016. Signal doesn't reference Result at all, it just has a Payload, which could be a result type, but doesn't have to be.
     private(set) var currentResult: Result<Value>?
     var currentValue: Value? {
         if case let .value(currentValue)? = currentResult {
