@@ -12,8 +12,8 @@ public struct Identifier<Identified> {
     let uuid: Int64
     
     var predicate: NSPredicate {
-        NSStringFromSelector("sgmIdentifier")
-        return NSPredicate(format: "%K == %@", argumentArray: [NSStringFromSelector("sgmIdentifier"), NSNumber(longLong: uuid)])
+        // TODO: once we can use #selector() on properties, make this use NSStringFromSelector(#selector(sgmIdentifier)): 
+        return NSPredicate(format: "%K == %@", argumentArray: ["sgmIdentifier", NSNumber(longLong: uuid)])
     }
     
     init() {

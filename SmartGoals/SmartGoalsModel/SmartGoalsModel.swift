@@ -22,7 +22,7 @@ public final class SmartGoalsModel {
         let result = SmartGoalsManagedObjectContext(name: name, parentMOC: parent)
         result.retainsRegisteredObjects = true
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "parentMOCDidSave:", name: NSManagedObjectContextDidSaveNotification, object: parent)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SmartGoalsModel.parentMOCDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: parent)
 
         return result
     }()
@@ -63,6 +63,8 @@ public final class SmartGoalsModel {
 
         return newSignal
     }
+    
+    // CCC, 3/29/2016. Need a countSignalForType to get the number of matches without polling for them all?
     
     /// Returns a signal vending all values for items of `type`.
     ///

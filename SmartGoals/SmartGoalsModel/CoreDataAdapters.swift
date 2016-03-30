@@ -77,7 +77,7 @@ final class SmartGoalsManagedObjectContext: NSManagedObjectContext {
 
 protocol ManagedObject: class {
     /// The type of the value type cover struct vended for instances of this class
-    typealias Value
+    associatedtype Value
     
     static var entityName: String { get }
     

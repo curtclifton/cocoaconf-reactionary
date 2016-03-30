@@ -132,7 +132,7 @@ final class FetchSignal<Value>: Signal<Value> {
         self.context = context
         self.transform = transform
         super.init()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "mocChanged:", name: NSManagedObjectContextObjectsDidChangeNotification, object: context)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FetchSignal.mocChanged(_:)), name: NSManagedObjectContextObjectsDidChangeNotification, object: context)
         fetchUpdates()
     }
     
