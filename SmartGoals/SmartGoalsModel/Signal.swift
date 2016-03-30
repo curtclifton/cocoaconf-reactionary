@@ -68,13 +68,11 @@ public class Signal<Value> {
     }
 }
 
-// CCC, 3/7/2016. Maybe fetch signals shouldn't use Result? Do we always expect a value?
-
-/// Instantiates a signal that executes `fetchRequest` in `context`, passing the fetched objects through `transform` and propagating the non-nil results on the signal. 
+/// Instantiates a signal that executes `fetchRequest` in `context`, passing the fetched objects through `transform` and propagating the non-nil results on the signal.
 ///
 /// Expects 0 or 1 non-nil results for each fetch.
 func itemFetchSignal<Value>(fetchRequest fetchRequest: NSFetchRequest, context: NSManagedObjectContext, transform: AnyObject -> Value?) -> FetchSignal<Value> {
-    let result = FetchSignal<Value>(fetchRequest: fetchRequest, context: context) { (results: [AnyObject]) -> Value? in
+    let signal = FetchSignal<Value>(fetchRequest: fetchRequest, context: context) { (results: [AnyObject]) -> Value? in
         let typedMatches = results.flatMap { transform($0) }
         assert(typedMatches.count <= 1)
         if let match = typedMatches.first {
@@ -82,21 +80,21 @@ func itemFetchSignal<Value>(fetchRequest fetchRequest: NSFetchRequest, context: 
         }
         return nil
     }
-    return result
+    return signal
 }
 
 /// Instantiates a signal that executes `fetchRequest` in `context`, passing the fetched objects through `transform` and propagating the non-nil results on the signal. 
 /// 
 /// If there are no non-nil results, will propagate an empty array if the context returns no matching results.
 func arrayFetchSignal<Value>(fetchRequest fetchRequest: NSFetchRequest, context: NSManagedObjectContext, transform: AnyObject -> Value?) -> FetchSignal<[Value]> {
-    let result = FetchSignal<[Value]>(fetchRequest: fetchRequest, context: context) { (results: [AnyObject]) -> [Value]? in
+    let signal = FetchSignal<[Value]>(fetchRequest: fetchRequest, context: context) { (results: [AnyObject]) -> [Value]? in
         let typedMatches = results.flatMap { transform($0) }
         return typedMatches
     }
-    return result
+    return signal
 }
 
-final class FetchSignal<Value>: Signal<Result<Value>> {
+final class FetchSignal<Value>: Signal<Value> {
     let fetchRequest: NSFetchRequest
     let context: NSManagedObjectContext
     let transform: [AnyObject] -> Value?
@@ -151,13 +149,13 @@ final class FetchSignal<Value>: Signal<Result<Value>> {
         context.performBlock { [weak self] _ in
             guard let strongSelf = self else { return }
             do {
-                let results = try strongSelf.context.executeFetchRequest(strongSelf.fetchRequest)
-                let transformedResults = strongSelf.transform(results)
-                if let transformedResults = transformedResults {
-                    strongSelf.update(toValue: .value(transformedResults))
+                let fetchResults = try strongSelf.context.executeFetchRequest(strongSelf.fetchRequest)
+                let transformedResult = strongSelf.transform(fetchResults)
+                if let transformedResult = transformedResult {
+                    strongSelf.update(toValue: transformedResult)
                 }
             } catch {
-                strongSelf.update(toValue:.error(error))
+                fatalError("Error running fetch request: \(error)")
             }
         }
     }

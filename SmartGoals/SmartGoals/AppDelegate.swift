@@ -25,9 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         splitViewController.delegate = self
         
         // CCC, 2/13/2016. Just test MOC loading in main configuration
-        valuesSignal.map(Result<[Role]>.transform(forPassthroughValueHandler: { (roles: [Role]) in
+        valuesSignal.map { (roles: [Role]) in
             print("got roles: \(roles)")
-        }))
+        }
         sharedModel.instantiateObjectOfType(Role.self)
         
         
