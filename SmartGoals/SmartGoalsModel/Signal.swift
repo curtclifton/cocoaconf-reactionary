@@ -16,7 +16,7 @@ import CoreData
 // Anything captured by the transform exists until self is deallocated!
 
 public class Signal<Value> {
-    #error HERE is where you're working.
+
     // CCC, 3/6/2016. Signal doesn't reference Result at all, it just has a Payload, which could be a result type, but doesn't have to be.
     private(set) var currentResult: Result<Value>?
     var currentValue: Value? {
