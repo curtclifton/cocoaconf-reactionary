@@ -20,6 +20,9 @@ public class Signal<Value> {
     private(set) var currentValue: Value?
     private var observers: [Value -> ()] = []
     
+    /// Pushes a new value on the signal.
+    ///
+    /// This is private so subclasses can prevent clients from pushes signals. Clients wishing to push signals should use `UpdatableSignal`.
     private func update(toValue value: Value) {
         currentValue = value
         for observer in observers {
@@ -65,6 +68,13 @@ public class Signal<Value> {
         if let existingValue = currentValue {
             observer(existingValue)
         }
+    }
+}
+
+/// A signal to which client code can push new values.
+public class UpdatableSignal<Value>: Signal<Value> {
+    public override func update(toValue value: Value) {
+        super.update(toValue: value)
     }
 }
 
