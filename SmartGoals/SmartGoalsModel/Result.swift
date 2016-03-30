@@ -8,6 +8,7 @@
 
 import Foundation
 
+// CCC, 3/29/2016. Consider just deleting this from the project.
 public enum Result<Value> {
     case value(Value)
     case error(ErrorType)
