@@ -17,43 +17,24 @@ import CoreData
 
 public class Signal<Value> {
 
-    // CCC, 3/6/2016. Signal doesn't reference Result at all, it just has a Payload, which could be a result type, but doesn't have to be.
-    private(set) var currentResult: Result<Value>?
-    var currentValue: Value? {
-        if case let .value(currentValue)? = currentResult {
-            return currentValue
-        }
-        return nil
-    }
-    private var observers: [Result<Value> -> ()] = []
-
-    func updateToValue(value: Value) {
-        updateToResult(.value(value))
-    }
+    // CCC, 3/29/2016. Replace "result" with "value" throughout
+    private(set) var currentValue: Value?
+    private var observers: [Value -> ()] = []
     
-    func updateToError(error: ErrorType) {
-        updateToResult(.error(error))
-    }
-    
-    private func updateToResult(result: Result<Value>) {
-        currentResult = result
+    private func update(toValue value: Value) {
+        currentValue = value
         for observer in observers {
-            observer(result)
+            observer(value)
         }
     }
     
     /// Calls `transform` for all events, pushing the result on the returned signal.
-    public func map<OutValue>(transform: Result<Value> -> Result<OutValue>) -> Signal<OutValue> {
+    public func map<OutValue>(transform: Value -> OutValue) -> Signal<OutValue> {
         let outSignal: Signal<OutValue> = createOutSignal()
         
-        let observer: Result<Value> -> () = { newResult in
-            let outValue = transform(newResult)
-            switch outValue {
-            case .value(let value):
-                outSignal.updateToValue(value)
-            case .error(let error):
-                outSignal.updateToError(error)
-            }
+        let observer: Value -> () = { newValue in
+            let outValue = transform(newValue)
+            outSignal.update(toValue: outValue)
         }
         
         addObserver(observer)
@@ -61,17 +42,12 @@ public class Signal<Value> {
     }
     
     /// Calls `transform` for all events, pushing the non-nil results on the returned signal.
-    public func flatmap<OutValue>(transform: Result<Value> -> Result<OutValue>?) -> Signal<OutValue> {
+    public func flatmap<OutValue>(transform: Value -> OutValue?) -> Signal<OutValue> {
         let outSignal: Signal<OutValue> = createOutSignal()
         
-        let observer: Result<Value> -> () = { newResult in
-            if let outValue = transform(newResult) {
-                switch outValue {
-                case .value(let value):
-                    outSignal.updateToValue(value)
-                case .error(let error):
-                    outSignal.updateToError(error)
-                }
+        let observer: Value -> () = { newValue in
+            if let outValue = transform(newValue) {
+                outSignal.update(toValue: outValue)
             }
         }
         
@@ -85,10 +61,10 @@ public class Signal<Value> {
         return Signal<OutValue>()
     }
     
-    private func addObserver(observer: Result<Value> -> ()) {
+    private func addObserver(observer: Value -> ()) {
         observers.append(observer)
-        if let existingResult = currentResult {
-            observer(existingResult)
+        if let existingValue = currentValue {
+            observer(existingValue)
         }
     }
 }
@@ -121,7 +97,7 @@ func arrayFetchSignal<Value>(fetchRequest fetchRequest: NSFetchRequest, context:
     return result
 }
 
-final class FetchSignal<Value>: Signal<Value> {
+final class FetchSignal<Value>: Signal<Result<Value>> {
     let fetchRequest: NSFetchRequest
     let context: NSManagedObjectContext
     let transform: [AnyObject] -> Value?
@@ -179,10 +155,10 @@ final class FetchSignal<Value>: Signal<Value> {
                 let results = try strongSelf.context.executeFetchRequest(strongSelf.fetchRequest)
                 let transformedResults = strongSelf.transform(results)
                 if let transformedResults = transformedResults {
-                    strongSelf.updateToValue(transformedResults)
+                    strongSelf.update(toValue: .value(transformedResults))
                 }
             } catch {
-                strongSelf.updateToError(error)
+                strongSelf.update(toValue:.error(error))
             }
         }
     }
