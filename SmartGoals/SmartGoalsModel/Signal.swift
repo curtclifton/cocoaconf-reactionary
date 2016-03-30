@@ -17,7 +17,6 @@ import CoreData
 
 public class Signal<Value> {
 
-    // CCC, 3/29/2016. Replace "result" with "value" throughout
     private(set) var currentValue: Value?
     private var observers: [Value -> ()] = []
     
