@@ -8,27 +8,27 @@
 
 import Foundation
 
-public struct GoalSet {
+public struct GoalSet: Reviewable {
     let identifier: Identifier<GoalSet>
     
-    public let goals: [Goal]
-    public let roles: [Role]
+    public let goals: [Goal] // CCC, 3/29/2016. identifiers instead?
+    public let roles: [Role] // CCC, 3/29/2016. identifiers instead?
     
     public let targetDate: NSDate
     
-    public let reviews: [Review]
+    public let reviews: [Review] // CCC, 3/29/2016. identifiers instead?
 }
 
-public struct Goal {
+public struct Goal: Reviewable {
     let identifier: Identifier<Goal>
     
     public let title: String
     public let outcomeDescription: String
     public let evaluationMetricDescription: String
     
-    public let goalsSupported: [Goal]
+    public let goalsSupported: [Goal] // CCC, 3/29/2016. identifiers instead?
     
-    public let reviews: [Review]
+    public let reviews: [Review] // CCC, 3/29/2016. identifiers instead?
 }
 
 
