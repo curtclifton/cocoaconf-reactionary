@@ -8,6 +8,7 @@
 
 import Foundation
 
+// CCC, 4/5/2016. Add to model
 public struct TimeScale {
     let identifier: Identifier<TimeScale>
     

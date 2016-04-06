@@ -8,6 +8,7 @@
 
 import Foundation
 
+// CCC, 4/5/2016. Add to model
 public struct GoalSet: Reviewable {
     let identifier: Identifier<GoalSet>
     
@@ -19,6 +20,8 @@ public struct GoalSet: Reviewable {
     public let reviews: [Review] // CCC, 3/29/2016. identifiers instead?
 }
 
+#error HERE is where you're working.
+// CCC, 4/5/2016. Add to model
 public struct Goal: Reviewable {
     let identifier: Identifier<Goal>
     
