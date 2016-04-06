@@ -121,6 +121,7 @@ class SmartGoalsModelTests: XCTestCase {
         var gotTwo = RefulfillableExpectation(expectationWithDescription("two received"))
         var instantiatedOne = RefulfillableExpectation(expectationWithDescription("instantiated one"))
         var instantiatedTwo = RefulfillableExpectation(expectationWithDescription("instantiated two"))
+        var instantiatedThree = RefulfillableExpectation(expectationWithDescription("instantiated two"))
         
         let signal = self.testModel!.valuesSignalForType(Role.self)
         signal.map { roles in
@@ -145,6 +146,12 @@ class SmartGoalsModelTests: XCTestCase {
         let createSignal2 = self.testModel!.valueSignalForNewInstanceOfType(Role.self)
         createSignal2.map { role in
             instantiatedTwo.fulfill()
+        }
+        
+        // make sure instantiating a Review doesn't strobe the role values signal
+        let createSignal3 = self.testModel!.valueSignalForNewInstanceOfType(Review.self)
+        createSignal3.map { review in
+            instantiatedThree.fulfill()
         }
         
         waitForExpectationsWithTimeout(5)

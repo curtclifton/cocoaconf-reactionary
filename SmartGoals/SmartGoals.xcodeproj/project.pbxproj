@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D09FBBC1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09FBBA1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift */; };
+		4D09FBBD1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09FBBA1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift */; };
+		4D09FBBE1CB4AD83004DE7AF /* SGMReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09FBBB1CB4AD83004DE7AF /* SGMReview.swift */; };
+		4D09FBBF1CB4AD83004DE7AF /* SGMReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09FBBB1CB4AD83004DE7AF /* SGMReview.swift */; };
 		4D0E00161C58921700744A86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0E00151C58921700744A86 /* AppDelegate.swift */; };
 		4D0E00181C58921700744A86 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0E00171C58921700744A86 /* MasterViewController.swift */; };
 		4D0E001A1C58921700744A86 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0E00191C58921700744A86 /* DetailViewController.swift */; };
@@ -91,6 +95,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4D09FBBA1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SGMReview+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4D09FBBB1CB4AD83004DE7AF /* SGMReview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SGMReview.swift; sourceTree = "<group>"; };
 		4D0E00121C58921700744A86 /* SmartGoals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartGoals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D0E00151C58921700744A86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4D0E00171C58921700744A86 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -220,6 +226,8 @@
 		4D0E003D1C58925D00744A86 /* SmartGoalsModel */ = {
 			isa = PBXGroup;
 			children = (
+				4D09FBBA1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift */,
+				4D09FBBB1CB4AD83004DE7AF /* SGMReview.swift */,
 				4D0E003E1C58925D00744A86 /* SmartGoalsModel.h */,
 				4D0E00401C58925D00744A86 /* Info.plist */,
 				4D6F337F1C70502100B1B2B2 /* CoreDataAdapters.swift */,
@@ -487,8 +495,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D09FBBC1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift in Sources */,
 				4D6F337B1C7045BD00B1B2B2 /* SGMIdentifiedObject+CoreDataProperties.swift in Sources */,
 				4D6F33741C70345D00B1B2B2 /* SGMRole+CoreDataProperties.swift in Sources */,
+				4D09FBBE1CB4AD83004DE7AF /* SGMReview.swift in Sources */,
 				4D6F33761C70345D00B1B2B2 /* SGMRole.swift in Sources */,
 				4D6F337D1C7045BD00B1B2B2 /* SGMIdentifiedObject.swift in Sources */,
 				4D2A26281C8D31DF0033E1EB /* Result.swift in Sources */,
@@ -518,8 +528,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D09FBBD1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift in Sources */,
 				4D6F337C1C7045BD00B1B2B2 /* SGMIdentifiedObject+CoreDataProperties.swift in Sources */,
 				4D6F33751C70345D00B1B2B2 /* SGMRole+CoreDataProperties.swift in Sources */,
+				4D09FBBF1CB4AD83004DE7AF /* SGMReview.swift in Sources */,
 				4D6F33771C70345D00B1B2B2 /* SGMRole.swift in Sources */,
 				4D6F337E1C7045BD00B1B2B2 /* SGMIdentifiedObject.swift in Sources */,
 				4D2A262B1C8E6C770033E1EB /* Result.swift in Sources */,

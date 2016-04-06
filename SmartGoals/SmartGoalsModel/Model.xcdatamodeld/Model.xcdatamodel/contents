@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15D21" minimumToolsVersion="Xcode 7.0">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
     <entity name="SGMIdentifiedObject" representedClassName=".SGMIdentifiedObject" isAbstract="YES" syncable="YES">
         <attribute name="sgmIdentifier" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="SGMReview" representedClassName=".SGMReview" parentEntity="SGMIdentifiedObject" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="review" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="SGMRole" representedClassName=".SGMRole" parentEntity="SGMIdentifiedObject" syncable="YES">
         <attribute name="explanation" optional="YES" attributeType="String" syncable="YES"/>
@@ -9,7 +13,8 @@
         <attribute name="shortName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="SGMRole" positionX="-63" positionY="-18" width="128" height="88"/>
         <element name="SGMIdentifiedObject" positionX="-54" positionY="18" width="128" height="60"/>
+        <element name="SGMRole" positionX="-63" positionY="-18" width="128" height="88"/>
+        <element name="SGMReview" positionX="-45" positionY="18" width="128" height="75"/>
     </elements>
 </model>

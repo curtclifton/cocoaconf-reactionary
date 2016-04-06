@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 final class SGMRole: SGMIdentifiedObject {
 }
 

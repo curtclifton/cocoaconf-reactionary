@@ -14,8 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     var window: UIWindow?
 
-    // CCC, 3/1/2016. Test signal:
-    let valuesSignal: Signal<[Role]> = sharedModel.valuesSignalForType(Role.self)
+    // CCC, 3/1/2016. Test signals:
+    let rolesSignal: Signal<[Role]> = sharedModel.valuesSignalForType(Role.self)
+    let reviewsSignal: Signal<[Review]> = sharedModel.valuesSignalForType(Review.self)
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -25,11 +26,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         splitViewController.delegate = self
         
         // CCC, 2/13/2016. Just test MOC loading in main configuration
-        valuesSignal.map { (roles: [Role]) in
+        rolesSignal.map { (roles: [Role]) in
             print("got roles: \(roles)")
         }
-        sharedModel.instantiateObjectOfType(Role.self)
         
+        reviewsSignal.map { (reviews: [Review]) in
+            print("got reviews: \(reviews)")
+        }
+        
+        sharedModel.instantiateObjectOfType(Role.self)
+        sharedModel.instantiateObjectOfType(Review.self)
         
         return true
     }

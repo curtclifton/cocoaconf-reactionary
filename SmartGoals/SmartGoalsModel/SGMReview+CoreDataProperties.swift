@@ -1,5 +1,5 @@
 //
-//  SGMRole+CoreDataProperties.swift
+//  SGMReview+CoreDataProperties.swift
 //  SmartGoals
 //
 //  Created by Curt Clifton on 4/5/16.
@@ -12,10 +12,9 @@
 import Foundation
 import CoreData
 
-extension SGMRole {
+extension SGMReview {
 
-    @NSManaged var explanation: String?
-    @NSManaged var isActive: Bool
-    @NSManaged var shortName: String?
+    @NSManaged var review: String?
+    @NSManaged var date: NSTimeInterval
 
 }
