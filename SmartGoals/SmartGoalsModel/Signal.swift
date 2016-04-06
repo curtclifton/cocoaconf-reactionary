@@ -149,7 +149,6 @@ final class FetchSignal<Value>: Signal<Value> {
             || anyEntityMatches(userInfo: userInfo, key: NSRefreshedObjectsKey)
             || anyEntityMatches(userInfo: userInfo, key: NSUpdatedObjectsKey))
         
-        // CCC, 2/15/2016. Need to test the no-match-found path when we have another entity type
         if matchFound {
             fetchUpdates()
         }
