@@ -8,6 +8,9 @@
 
 import Foundation
 
+#error HERE is where you're working.
+// CCC, 4/10/2016. Need to decide how to handle mapping references between core data and value types. Should we just make all the references to generic SGMIdentifiedObjects? arrays of IDs? actual references? If actual references, we'll have to make updateFromValue() take a context so it can get the objects. That's seems very heavy.
+
 extension SGMGoal: ModelValueUpdatable {
     func updateFromValue<Value : ModelValue>(value: Value) {
         guard let goal = value as? Goal else {
