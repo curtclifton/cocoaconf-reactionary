@@ -164,7 +164,7 @@ protocol ModelValueUpdatable {
     func updateFromValue<Value: ModelValue>(value: Value)
 }
 
-public protocol ModelValue: Equatable {
+public protocol ModelValue {
     static var entityName: String { get }
     static var fetchRequest: NSFetchRequest { get }
     

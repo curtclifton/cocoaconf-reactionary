@@ -25,6 +25,14 @@
 		4D2A26281C8D31DF0033E1EB /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2A26271C8D31DF0033E1EB /* Result.swift */; };
 		4D2A262A1C8D320E0033E1EB /* ResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2A26291C8D320E0033E1EB /* ResultTests.swift */; };
 		4D2A262B1C8E6C770033E1EB /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2A26271C8D31DF0033E1EB /* Result.swift */; };
+		4D3ABFDC1CBB5172002C8581 /* SGMGoalSet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3ABFD81CBB5172002C8581 /* SGMGoalSet+CoreDataProperties.swift */; };
+		4D3ABFDD1CBB5172002C8581 /* SGMGoalSet+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3ABFD81CBB5172002C8581 /* SGMGoalSet+CoreDataProperties.swift */; };
+		4D3ABFDE1CBB5172002C8581 /* SGMGoalSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3ABFD91CBB5172002C8581 /* SGMGoalSet.swift */; };
+		4D3ABFDF1CBB5172002C8581 /* SGMGoalSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3ABFD91CBB5172002C8581 /* SGMGoalSet.swift */; };
+		4D3ABFE01CBB5172002C8581 /* SGMGoal+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3ABFDA1CBB5172002C8581 /* SGMGoal+CoreDataProperties.swift */; };
+		4D3ABFE11CBB5172002C8581 /* SGMGoal+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3ABFDA1CBB5172002C8581 /* SGMGoal+CoreDataProperties.swift */; };
+		4D3ABFE21CBB5172002C8581 /* SGMGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3ABFDB1CBB5172002C8581 /* SGMGoal.swift */; };
+		4D3ABFE31CBB5172002C8581 /* SGMGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3ABFDB1CBB5172002C8581 /* SGMGoal.swift */; };
 		4D63BE811C619E9400FF19E4 /* SmartGoalsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63BE801C619E9400FF19E4 /* SmartGoalsModel.swift */; };
 		4D63BE831C619EB800FF19E4 /* Goals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63BE821C619EB800FF19E4 /* Goals.swift */; };
 		4D63BE851C619FCF00FF19E4 /* TimeScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63BE841C619FCF00FF19E4 /* TimeScale.swift */; };
@@ -117,6 +125,10 @@
 		4D0E00531C58928C00744A86 /* Roles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Roles.swift; sourceTree = "<group>"; };
 		4D2A26271C8D31DF0033E1EB /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		4D2A26291C8D320E0033E1EB /* ResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultTests.swift; sourceTree = "<group>"; };
+		4D3ABFD81CBB5172002C8581 /* SGMGoalSet+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SGMGoalSet+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4D3ABFD91CBB5172002C8581 /* SGMGoalSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SGMGoalSet.swift; sourceTree = "<group>"; };
+		4D3ABFDA1CBB5172002C8581 /* SGMGoal+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SGMGoal+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4D3ABFDB1CBB5172002C8581 /* SGMGoal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SGMGoal.swift; sourceTree = "<group>"; };
 		4D63BE801C619E9400FF19E4 /* SmartGoalsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmartGoalsModel.swift; sourceTree = "<group>"; };
 		4D63BE821C619EB800FF19E4 /* Goals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goals.swift; sourceTree = "<group>"; };
 		4D63BE841C619FCF00FF19E4 /* TimeScale.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeScale.swift; sourceTree = "<group>"; };
@@ -226,6 +238,10 @@
 		4D0E003D1C58925D00744A86 /* SmartGoalsModel */ = {
 			isa = PBXGroup;
 			children = (
+				4D3ABFD81CBB5172002C8581 /* SGMGoalSet+CoreDataProperties.swift */,
+				4D3ABFD91CBB5172002C8581 /* SGMGoalSet.swift */,
+				4D3ABFDA1CBB5172002C8581 /* SGMGoal+CoreDataProperties.swift */,
+				4D3ABFDB1CBB5172002C8581 /* SGMGoal.swift */,
 				4D09FBBA1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift */,
 				4D09FBBB1CB4AD83004DE7AF /* SGMReview.swift */,
 				4D0E003E1C58925D00744A86 /* SmartGoalsModel.h */,
@@ -501,14 +517,18 @@
 				4D09FBBE1CB4AD83004DE7AF /* SGMReview.swift in Sources */,
 				4D6F33761C70345D00B1B2B2 /* SGMRole.swift in Sources */,
 				4D6F337D1C7045BD00B1B2B2 /* SGMIdentifiedObject.swift in Sources */,
+				4D3ABFE21CBB5172002C8581 /* SGMGoal.swift in Sources */,
 				4D2A26281C8D31DF0033E1EB /* Result.swift in Sources */,
 				4D63BE811C619E9400FF19E4 /* SmartGoalsModel.swift in Sources */,
+				4D3ABFE01CBB5172002C8581 /* SGMGoal+CoreDataProperties.swift in Sources */,
+				4D3ABFDC1CBB5172002C8581 /* SGMGoalSet+CoreDataProperties.swift in Sources */,
 				4D74E6E91C61AE8D00E11F3E /* Reviews.swift in Sources */,
 				4D6F33861C710EE900B1B2B2 /* Signal.swift in Sources */,
 				4D63BE851C619FCF00FF19E4 /* TimeScale.swift in Sources */,
 				4D0E00541C58928C00744A86 /* Roles.swift in Sources */,
 				4D63BE831C619EB800FF19E4 /* Goals.swift in Sources */,
 				4D6F33701C70250300B1B2B2 /* Model.xcdatamodeld in Sources */,
+				4D3ABFDE1CBB5172002C8581 /* SGMGoalSet.swift in Sources */,
 				4D6F33831C70509900B1B2B2 /* Identifier.swift in Sources */,
 				4D6F33801C70502100B1B2B2 /* CoreDataAdapters.swift in Sources */,
 			);
@@ -534,14 +554,18 @@
 				4D09FBBF1CB4AD83004DE7AF /* SGMReview.swift in Sources */,
 				4D6F33771C70345D00B1B2B2 /* SGMRole.swift in Sources */,
 				4D6F337E1C7045BD00B1B2B2 /* SGMIdentifiedObject.swift in Sources */,
+				4D3ABFE31CBB5172002C8581 /* SGMGoal.swift in Sources */,
 				4D2A262B1C8E6C770033E1EB /* Result.swift in Sources */,
 				4D74E6E41C61AC7100E11F3E /* Goals.swift in Sources */,
+				4D3ABFE11CBB5172002C8581 /* SGMGoal+CoreDataProperties.swift in Sources */,
+				4D3ABFDD1CBB5172002C8581 /* SGMGoalSet+CoreDataProperties.swift in Sources */,
 				4D74E6EA1C61AEE600E11F3E /* Reviews.swift in Sources */,
 				4D6F33871C710EE900B1B2B2 /* Signal.swift in Sources */,
 				4D74E6E71C61AC7900E11F3E /* TimeScale.swift in Sources */,
 				4D74E6E61C61AC7700E11F3E /* SmartGoalsModel.swift in Sources */,
 				4D74E6E51C61AC7400E11F3E /* Roles.swift in Sources */,
 				4D6F33711C70250300B1B2B2 /* Model.xcdatamodeld in Sources */,
+				4D3ABFDF1CBB5172002C8581 /* SGMGoalSet.swift in Sources */,
 				4D6F33841C70509900B1B2B2 /* Identifier.swift in Sources */,
 				4D6F33811C70502100B1B2B2 /* CoreDataAdapters.swift in Sources */,
 			);

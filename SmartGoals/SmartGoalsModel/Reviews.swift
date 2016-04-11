@@ -46,9 +46,3 @@ public struct Review: ModelValue {
         self.review = object.review ?? ""
     }
 }
-
-public func ==(lhs: Review, rhs: Review) -> Bool {
-    return (lhs.identifier == rhs.identifier
-        && lhs.date == rhs.date
-        && lhs.review == rhs.review)
-}

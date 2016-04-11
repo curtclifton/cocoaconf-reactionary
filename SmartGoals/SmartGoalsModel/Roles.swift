@@ -54,10 +54,3 @@ public struct Role: ModelValue {
         self.isActive = object.isActive
     }
 }
-
-public func ==(lhs: Role, rhs: Role) -> Bool {
-    return (lhs.identifier == rhs.identifier
-        && lhs.explanation == rhs.explanation
-        && lhs.shortName == rhs.shortName
-        && lhs.isActive == rhs.isActive)
-}

@@ -15,12 +15,6 @@ func afterDelay(delay: NSTimeInterval, perform: () -> ()) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, nsDelay), mainQueue, perform)
 }
 
-extension Role: Hashable {
-    public var hashValue: Int {
-        return Int(identifier.uuid)
-    }
-}
-
 struct RefulfillableExpectation {
     let expectation: XCTestExpectation
     var fulfilled: Bool = false

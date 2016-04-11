@@ -1,5 +1,5 @@
 //
-//  SGMIdentifiedObject+CoreDataProperties.swift
+//  SGMGoalSet+CoreDataProperties.swift
 //  SmartGoals
 //
 //  Created by Curt Clifton on 4/10/16.
@@ -12,8 +12,11 @@
 import Foundation
 import CoreData
 
-extension SGMIdentifiedObject {
+extension SGMGoalSet {
 
-    @NSManaged var sgmIdentifier: Int64
+    @NSManaged var targetDate: NSTimeInterval
+    @NSManaged var goals: NSSet?
+    @NSManaged var roles: NSOrderedSet?
+    @NSManaged var reviews: NSSet?
 
 }
