@@ -13,5 +13,5 @@ public struct TimeScale {
     let identifier: Identifier<TimeScale>
     
     public let description: String
-    public let goalSets: [GoalSet]
+    public let goalSets: [Identifier<GoalSet>]
 }
