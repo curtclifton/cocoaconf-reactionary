@@ -26,6 +26,7 @@ public struct Goal: Reviewable {
     public let title: String
     public let outcomeDescription: String
     public let evaluationMetricDescription: String
+    public let roleSupported: Identifier<Role>
     
     public let goalsSupported: [Identifier<Goal>]
     
