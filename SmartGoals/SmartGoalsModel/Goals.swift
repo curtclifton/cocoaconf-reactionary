@@ -12,16 +12,14 @@ import Foundation
 public struct GoalSet: Reviewable {
     let identifier: Identifier<GoalSet>
     
-    public let goals: [Goal] // CCC, 3/29/2016. identifiers instead?
-    public let roles: [Role] // CCC, 3/29/2016. identifiers instead?
+    public let goals: [Identifier<Goal>]
+    public let roles: [Identifier<Role>]
     
     public let targetDate: NSDate
     
-    public let reviews: [Review] // CCC, 3/29/2016. identifiers instead?
+    public let reviews: [Identifier<Review>]
 }
 
-#error HERE is where you're working.
-// CCC, 4/5/2016. Add to model
 public struct Goal: Reviewable {
     let identifier: Identifier<Goal>
     
@@ -29,9 +27,9 @@ public struct Goal: Reviewable {
     public let outcomeDescription: String
     public let evaluationMetricDescription: String
     
-    public let goalsSupported: [Goal] // CCC, 3/29/2016. identifiers instead?
+    public let goalsSupported: [Identifier<Goal>]
     
-    public let reviews: [Review] // CCC, 3/29/2016. identifiers instead?
+    public let reviews: [Identifier<Review>]
 }
 
 

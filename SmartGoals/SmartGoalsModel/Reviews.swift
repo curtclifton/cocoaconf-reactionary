@@ -9,8 +9,8 @@
 import Foundation
 import CoreData
 
-public protocol Reviewable { // CCC, 3/29/2016. what should be Reviewable?
-    var reviews: [Review] { get }
+public protocol Reviewable {
+    var reviews: [Identifier<Review>] { get }
 }
 
 extension SGMReview: ModelValueUpdatable {
