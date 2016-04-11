@@ -26,11 +26,16 @@
         <attribute name="isActive" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="shortName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="SGMTimeScale" representedClassName=".SGMTimeScale" parentEntity="SGMIdentifiedObject" syncable="YES">
+        <attribute name="timeScaleDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="goalSets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SGMGoalSet" syncable="YES"/>
+    </entity>
     <elements>
         <element name="SGMIdentifiedObject" positionX="-54" positionY="18" width="128" height="60"/>
         <element name="SGMReview" positionX="-45" positionY="18" width="128" height="75"/>
         <element name="SGMRole" positionX="-63" positionY="-18" width="128" height="88"/>
         <element name="SGMGoal" positionX="-54" positionY="18" width="128" height="135"/>
         <element name="SGMGoalSet" positionX="-45" positionY="63" width="128" height="105"/>
+        <element name="SGMTimeScale" positionX="-36" positionY="72" width="128" height="75"/>
     </elements>
 </model>

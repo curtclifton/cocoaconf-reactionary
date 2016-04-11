@@ -24,8 +24,16 @@ extension SGMGoal: ModelValueUpdatable {
     }
 }
 
-public struct Goal: Reviewable {
-    let identifier: Identifier<Goal>
+public struct Goal: ModelValue, Reviewable {
+    public static var entityName: String {
+        return SGMGoal.entityName
+    }
+    
+    public static var fetchRequest: NSFetchRequest {
+        return SGMGoal.fetchRequest()
+    }
+    
+    public let identifier: Identifier<Goal>
     
     public let title: String
     public let outcomeDescription: String
@@ -35,6 +43,22 @@ public struct Goal: Reviewable {
     public let goalsSupported: [Identifier<Goal>]
     
     public let reviews: [Identifier<Review>]
+    
+    public init?(fromObject: AnyObject) {
+        guard let object = fromObject as? SGMGoal else {
+            return nil
+        }
+        self.identifier = object.identifier
+        
+        self.title = object.title ?? ""
+        self.outcomeDescription = object.outcomeDescription ?? ""
+        self.evaluationMetricDescription = object.evaluationMetricDescription ?? ""
+        self.roleSupported = object.roleSupported!.identifier // must be defined
+        
+        self.goalsSupported = [] // CCC, 4/10/2016. extract from object.goalsSupported
+        
+        self.reviews = [] // CCC, 4/10/2016. extract from object.reviews
+    }
 }
 
 

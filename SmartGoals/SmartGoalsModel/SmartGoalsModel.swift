@@ -78,6 +78,8 @@ public final class SmartGoalsModel {
         return newSignal
     }
     
+    // CCC, 4/10/2016. Need delete(value:) and delete(value:withToken:)
+    
     /// Updates the corresponding model object based on `value`.
     public func update<Value: ModelValue>(fromValue value:Value) {
         let transactionContext = transactionWritingContext()
@@ -87,22 +89,24 @@ public final class SmartGoalsModel {
     
     /// Begins an atomic update session.
     ///
-    /// - returns an opaque token that should be passed to `update(fromValue:withToken:)` for subseqent updates in the session, and to `endUpdates(forToken:)` to end the session.
+    /// - returns: an opaque token that should be passed to `update(fromValue:withToken:)` for subseqent updates in the session, and to `endUpdates(forToken:)` to end the session.
+    /// - seeAlso: `update(fromValue:withToken:) for adding updates to the session
+    /// - seeAlso: `endUpdates(forToken:) for ending the session
     public func beginUpdates() -> UpdateSessionToken {
         let token = UpdateSessionToken(writingContext: transactionWritingContext())
         return token
     }
     
     /// Updates the corresponding model object based on `value`, delaying writes until the session is ended with `endUdpates(forToken:)`
-    /// - see `beginUpdates()` for starting a session and getting its token
+    /// - seeAlso: `beginUpdates()` for starting a session and getting its token
     public func update<Value: ModelValue>(fromValue value:Value, withToken token: UpdateSessionToken) {
         precondition(!token.isSessionEnded)
         value.updateInContext(token.writingContext)
     }
     
     /// Ends an atomic update session.
-    /// - see `beginUpdates()` for starting a session and getting its token
-    /// - see `update(fromValue:withToken:) for adding updates to the session
+    /// - seeAlso: `beginUpdates()` for starting a session and getting its token
+    /// - seeAlso: `update(fromValue:withToken:) for adding updates to the session
     public func endUpdates(forToken token: UpdateSessionToken) {
         precondition(!token.isSessionEnded)
         token.isSessionEnded = true

@@ -35,6 +35,10 @@
 		4D3ABFE31CBB5172002C8581 /* SGMGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3ABFDB1CBB5172002C8581 /* SGMGoal.swift */; };
 		4D3ABFE51CBB5897002C8581 /* GoalSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3ABFE41CBB5897002C8581 /* GoalSet.swift */; };
 		4D3ABFE61CBB5897002C8581 /* GoalSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3ABFE41CBB5897002C8581 /* GoalSet.swift */; };
+		4D3ABFE91CBB5944002C8581 /* SGMTimeScale+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3ABFE71CBB5944002C8581 /* SGMTimeScale+CoreDataProperties.swift */; };
+		4D3ABFEA1CBB5944002C8581 /* SGMTimeScale+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3ABFE71CBB5944002C8581 /* SGMTimeScale+CoreDataProperties.swift */; };
+		4D3ABFEB1CBB5944002C8581 /* SGMTimeScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3ABFE81CBB5944002C8581 /* SGMTimeScale.swift */; };
+		4D3ABFEC1CBB5944002C8581 /* SGMTimeScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3ABFE81CBB5944002C8581 /* SGMTimeScale.swift */; };
 		4D63BE811C619E9400FF19E4 /* SmartGoalsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63BE801C619E9400FF19E4 /* SmartGoalsModel.swift */; };
 		4D63BE831C619EB800FF19E4 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63BE821C619EB800FF19E4 /* Goal.swift */; };
 		4D63BE851C619FCF00FF19E4 /* TimeScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63BE841C619FCF00FF19E4 /* TimeScale.swift */; };
@@ -132,6 +136,8 @@
 		4D3ABFDA1CBB5172002C8581 /* SGMGoal+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SGMGoal+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4D3ABFDB1CBB5172002C8581 /* SGMGoal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SGMGoal.swift; sourceTree = "<group>"; };
 		4D3ABFE41CBB5897002C8581 /* GoalSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalSet.swift; sourceTree = "<group>"; };
+		4D3ABFE71CBB5944002C8581 /* SGMTimeScale+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SGMTimeScale+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4D3ABFE81CBB5944002C8581 /* SGMTimeScale.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SGMTimeScale.swift; sourceTree = "<group>"; };
 		4D63BE801C619E9400FF19E4 /* SmartGoalsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmartGoalsModel.swift; sourceTree = "<group>"; };
 		4D63BE821C619EB800FF19E4 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		4D63BE841C619FCF00FF19E4 /* TimeScale.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeScale.swift; sourceTree = "<group>"; };
@@ -241,6 +247,8 @@
 		4D0E003D1C58925D00744A86 /* SmartGoalsModel */ = {
 			isa = PBXGroup;
 			children = (
+				4D3ABFE71CBB5944002C8581 /* SGMTimeScale+CoreDataProperties.swift */,
+				4D3ABFE81CBB5944002C8581 /* SGMTimeScale.swift */,
 				4D3ABFD81CBB5172002C8581 /* SGMGoalSet+CoreDataProperties.swift */,
 				4D3ABFD91CBB5172002C8581 /* SGMGoalSet.swift */,
 				4D3ABFDA1CBB5172002C8581 /* SGMGoal+CoreDataProperties.swift */,
@@ -529,9 +537,11 @@
 				4D74E6E91C61AE8D00E11F3E /* Reviews.swift in Sources */,
 				4D6F33861C710EE900B1B2B2 /* Signal.swift in Sources */,
 				4D63BE851C619FCF00FF19E4 /* TimeScale.swift in Sources */,
+				4D3ABFEB1CBB5944002C8581 /* SGMTimeScale.swift in Sources */,
 				4D3ABFE51CBB5897002C8581 /* GoalSet.swift in Sources */,
 				4D0E00541C58928C00744A86 /* Roles.swift in Sources */,
 				4D63BE831C619EB800FF19E4 /* Goal.swift in Sources */,
+				4D3ABFE91CBB5944002C8581 /* SGMTimeScale+CoreDataProperties.swift in Sources */,
 				4D6F33701C70250300B1B2B2 /* Model.xcdatamodeld in Sources */,
 				4D3ABFDE1CBB5172002C8581 /* SGMGoalSet.swift in Sources */,
 				4D6F33831C70509900B1B2B2 /* Identifier.swift in Sources */,
@@ -567,9 +577,11 @@
 				4D74E6EA1C61AEE600E11F3E /* Reviews.swift in Sources */,
 				4D6F33871C710EE900B1B2B2 /* Signal.swift in Sources */,
 				4D74E6E71C61AC7900E11F3E /* TimeScale.swift in Sources */,
+				4D3ABFEC1CBB5944002C8581 /* SGMTimeScale.swift in Sources */,
 				4D3ABFE61CBB5897002C8581 /* GoalSet.swift in Sources */,
 				4D74E6E61C61AC7700E11F3E /* SmartGoalsModel.swift in Sources */,
 				4D74E6E51C61AC7400E11F3E /* Roles.swift in Sources */,
+				4D3ABFEA1CBB5944002C8581 /* SGMTimeScale+CoreDataProperties.swift in Sources */,
 				4D6F33711C70250300B1B2B2 /* Model.xcdatamodeld in Sources */,
 				4D3ABFDF1CBB5172002C8581 /* SGMGoalSet.swift in Sources */,
 				4D6F33841C70509900B1B2B2 /* Identifier.swift in Sources */,
