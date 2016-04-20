@@ -2,17 +2,18 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
     <entity name="SGMGoal" representedClassName=".SGMGoal" parentEntity="SGMIdentifiedObject" syncable="YES">
         <attribute name="evaluationMetricDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="goalsSupportedIDs" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="outcomeDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="reviewsIDs" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="roleSupportedID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="goalsSupported" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SGMGoal" syncable="YES"/>
-        <relationship name="reviews" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SGMReview" syncable="YES"/>
-        <relationship name="roleSupported" maxCount="1" deletionRule="Nullify" destinationEntity="SGMRole" syncable="YES"/>
     </entity>
     <entity name="SGMGoalSet" representedClassName=".SGMGoalSet" parentEntity="SGMIdentifiedObject" syncable="YES">
+        <attribute name="goalsIDs" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="reviewsIDs" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="rolesIDs" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="targetDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="goals" toMany="YES" deletionRule="Nullify" destinationEntity="SGMGoal" syncable="YES"/>
-        <relationship name="reviews" toMany="YES" deletionRule="Nullify" destinationEntity="SGMReview" syncable="YES"/>
-        <relationship name="roles" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SGMRole" syncable="YES"/>
+        <attribute name="timeScaleID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="SGMIdentifiedObject" representedClassName=".SGMIdentifiedObject" isAbstract="YES" syncable="YES">
         <attribute name="sgmIdentifier" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -28,14 +29,13 @@
     </entity>
     <entity name="SGMTimeScale" representedClassName=".SGMTimeScale" parentEntity="SGMIdentifiedObject" syncable="YES">
         <attribute name="timeScaleDescription" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="goalSets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SGMGoalSet" syncable="YES"/>
     </entity>
     <elements>
+        <element name="SGMGoal" positionX="-54" positionY="18" width="128" height="135"/>
+        <element name="SGMGoalSet" positionX="-45" positionY="63" width="128" height="120"/>
         <element name="SGMIdentifiedObject" positionX="-54" positionY="18" width="128" height="60"/>
         <element name="SGMReview" positionX="-45" positionY="18" width="128" height="75"/>
         <element name="SGMRole" positionX="-63" positionY="-18" width="128" height="88"/>
-        <element name="SGMGoal" positionX="-54" positionY="18" width="128" height="135"/>
-        <element name="SGMGoalSet" positionX="-45" positionY="63" width="128" height="105"/>
-        <element name="SGMTimeScale" positionX="-36" positionY="72" width="128" height="75"/>
+        <element name="SGMTimeScale" positionX="-36" positionY="72" width="128" height="60"/>
     </elements>
 </model>

@@ -2,7 +2,7 @@
 //  SGMTimeScale+CoreDataProperties.swift
 //  SmartGoals
 //
-//  Created by Curt Clifton on 4/10/16.
+//  Created by Curt Clifton on 4/19/16.
 //  Copyright © 2016 curtclifton.net. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -15,6 +15,5 @@ import CoreData
 extension SGMTimeScale {
 
     @NSManaged var timeScaleDescription: String?
-    @NSManaged var goalSets: NSSet?
 
 }

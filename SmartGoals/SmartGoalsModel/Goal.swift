@@ -8,7 +8,6 @@
 
 import Foundation
 
-#error HERE is where you're working.
 // CCC, 4/10/2016. Need to decide how to handle mapping references between core data and value types. Should we just make all the references to generic SGMIdentifiedObjects? arrays of IDs? (see https://gregheo.com/blog/core-data-transformable/ ) actual references? If actual references, we'll have to make updateFromValue() take a context so it can get the objects. That's seems very heavy.
 
 extension SGMGoal: ModelValueUpdatable {
@@ -20,10 +19,10 @@ extension SGMGoal: ModelValueUpdatable {
         self.title = goal.title
         self.outcomeDescription = goal.outcomeDescription
         self.evaluationMetricDescription = goal.evaluationMetricDescription
-        self.roleSupported = SGMRole() // CCC, 4/10/2016. need to get from ID on goal to actual object, hrmm
-        self.goalsSupported = nil // CCC, 4/10/2016.
+        self.roleSupportedID = goal.roleSupported.uuid
+        self.goalsSupportedIDs = Identifier<Goal>.arrayObjectFrom(identifiers: goal.goalsSupported)
 
-        self.reviews = nil // CCC, 4/10/2016.
+        self.reviewsIDs = Identifier<Review>.arrayObjectFrom(identifiers: goal.reviews)
     }
 }
 
@@ -56,11 +55,10 @@ public struct Goal: ModelValue, Reviewable {
         self.title = object.title ?? ""
         self.outcomeDescription = object.outcomeDescription ?? ""
         self.evaluationMetricDescription = object.evaluationMetricDescription ?? ""
-        self.roleSupported = object.roleSupported!.identifier // must be defined
+        self.roleSupported = Identifier(uuid: object.roleSupportedID)
+        self.goalsSupported = Identifier<Goal>.from(arrayObject: object.goalsSupportedIDs)
         
-        self.goalsSupported = [] // CCC, 4/10/2016. extract from object.goalsSupported
-        
-        self.reviews = [] // CCC, 4/10/2016. extract from object.reviews
+        self.reviews = Identifier<Review>.from(arrayObject: object.reviewsIDs)
     }
 }
 

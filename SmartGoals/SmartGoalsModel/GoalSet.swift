@@ -14,12 +14,12 @@ extension SGMGoalSet: ModelValueUpdatable {
             fatalError("Attempting to update SGMGoalSet from non-GoalSet value: \(value)")
         }
         
-        self.goals = nil // CCC, 4/10/2016. Need to get from array of IDs on goalSet to actual references, hrmm
-        self.roles = nil // CCC, 4/10/2016.
+        self.goalsIDs = Identifier<Goal>.arrayObjectFrom(identifiers: goalSet.goals)
+        self.rolesIDs = Identifier<Role>.arrayObjectFrom(identifiers: goalSet.roles)
         
         self.targetDate = goalSet.targetDate.timeIntervalSinceReferenceDate
         
-        self.reviews = nil // CCC, 4/10/2016.
+        self.reviewsIDs = Identifier<Review>.arrayObjectFrom(identifiers: goalSet.reviews)
     }
 }
 
@@ -47,17 +47,9 @@ public struct GoalSet: ModelValue, Reviewable {
         }
         self.identifier = object.identifier
         
-        // CCC, 4/10/2016. Seems like we should be able to write this as an extension on Set
-        if let goals = object.goals as? Set<SGMGoal> {
-            self.goals = goals.map { goal in goal.identifier }
-        } else {
-            self.goals = []
-        }
-        
-        self.roles = [] // CCC, 4/10/2016. extract from object.roles
-        
+        self.goals = Identifier<Goal>.from(arrayObject: object.goalsIDs)
+        self.roles = Identifier<Role>.from(arrayObject: object.rolesIDs)
         self.targetDate = NSDate(timeIntervalSinceReferenceDate: object.targetDate)
-        
-        self.reviews = [] // CCC, 4/10/2016. extract from object.reviews
+        self.reviews = Identifier<Review>.from(arrayObject: object.reviewsIDs)
     }
 }
