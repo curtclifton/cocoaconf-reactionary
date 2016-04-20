@@ -35,14 +35,14 @@ public struct Goal: ModelValue, Reviewable {
     
     public let identifier: Identifier<Goal>
     
-    public let title: String
-    public let outcomeDescription: String
-    public let evaluationMetricDescription: String
-    public let roleSupported: Identifier<Role>
+    public var title: String
+    public var outcomeDescription: String
+    public var evaluationMetricDescription: String
+    public var roleSupported: Identifier<Role>
     
-    public let goalsSupported: [Identifier<Goal>]
+    public var goalsSupported: [Identifier<Goal>]
     
-    public let reviews: [Identifier<Review>]
+    public var reviews: [Identifier<Review>]
     
     public init?(fromObject: AnyObject) {
         guard let object = fromObject as? SGMGoal else {

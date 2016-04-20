@@ -34,8 +34,8 @@ public struct Review: ModelValue {
     
     public let identifier: Identifier<Review>
     
-    public let date: NSDate
-    public let review: String
+    public var date: NSDate
+    public var review: String
     
     public init?(fromObject: AnyObject) {
         guard let object = fromObject as? SGMReview else {

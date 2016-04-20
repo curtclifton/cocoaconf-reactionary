@@ -28,7 +28,7 @@ public struct TimeScale: ModelValue {
     
     public let identifier: Identifier<TimeScale>
     
-    public let timeScaleDescription: String
+    public var timeScaleDescription: String
     
     public init?(fromObject: AnyObject) {
         guard let object = fromObject as? SGMTimeScale else {
