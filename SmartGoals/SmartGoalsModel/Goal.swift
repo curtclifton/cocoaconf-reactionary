@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 extension SGMGoal: ModelValueUpdatable {
     func updateFromValue<Value : ModelValue>(value: Value) {
