@@ -22,12 +22,10 @@ public class Signal<Value> {
     
     /// Pushes a new value on the signal.
     ///
-    /// This is private so subclasses can prevent clients from pushes signals. Clients wishing to push signals should use `UpdatableSignal`.
+    /// This is private so subclasses can prevent clients from pushing signals. Clients wishing to push signals should use `UpdatableSignal`.
     private func update(toValue value: Value) {
         currentValue = value
-        for observer in observers {
-            observer(value)
-        }
+        notifyObservers(ofValue: value)
     }
     
     /// Calls `transform` for all events, pushing the result on the returned signal.
@@ -58,6 +56,12 @@ public class Signal<Value> {
     }
 
     //MARK: Private API
+
+    func notifyObservers(ofValue value: Value) {
+        for observer in observers {
+            observer(value)
+        }
+    }
     
     private func createOutSignal<OutValue>() -> Signal<OutValue> {
         return Signal<OutValue>()
@@ -75,6 +79,33 @@ public class Signal<Value> {
 public class UpdatableSignal<Value>: Signal<Value> {
     public override func update(toValue value: Value) {
         super.update(toValue: value)
+    }
+}
+
+// CCC, 4/19/2016. Add a signal that just delivers the first item?
+
+public class QueueSpecificSignal<Value>: Signal<Value> {
+    let sourceSignal: Signal<Value>
+    let notificationQueue: NSOperationQueue
+    
+    public init(signal: Signal<Value>, notificationQueue: NSOperationQueue) {
+        self.sourceSignal = signal
+        self.notificationQueue = notificationQueue
+        super.init()
+
+        signal.addObserver { value in
+            self.update(toValue: value)
+        }
+    }
+    
+    /// Overrides `notifyObservers(ofValue:)` to push notifications on `notificationQueue`.
+    override func notifyObservers(ofValue value: Value) {
+        let observers = self.observers
+        notificationQueue.addOperationWithBlock { 
+            for observer in observers {
+                observer(value)
+            }
+        }
     }
 }
 

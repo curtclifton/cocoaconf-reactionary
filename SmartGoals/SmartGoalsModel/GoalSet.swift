@@ -18,7 +18,8 @@ extension SGMGoalSet: ModelValueUpdatable {
         self.rolesIDs = Identifier<Role>.arrayObjectFrom(identifiers: goalSet.roles)
         
         self.targetDate = goalSet.targetDate.timeIntervalSinceReferenceDate
-        
+        self.timeScaleID = goalSet.timeScale.uuid
+            
         self.reviewsIDs = Identifier<Review>.arrayObjectFrom(identifiers: goalSet.reviews)
     }
 }
@@ -34,12 +35,12 @@ public struct GoalSet: ModelValue, Reviewable {
     
     public let identifier: Identifier<GoalSet>
     
-    public let goals: [Identifier<Goal>]
-    public let roles: [Identifier<Role>]
+    public var goals: [Identifier<Goal>]
+    public var roles: [Identifier<Role>]
     
-    public let targetDate: NSDate
-    
-    public let reviews: [Identifier<Review>]
+    public var targetDate: NSDate
+    public var timeScale: Identifier<TimeScale>
+    public var reviews: [Identifier<Review>]
     
     public init?(fromObject: AnyObject) {
         guard let object = fromObject as? SGMGoalSet else {
@@ -50,6 +51,7 @@ public struct GoalSet: ModelValue, Reviewable {
         self.goals = Identifier<Goal>.from(arrayObject: object.goalsIDs)
         self.roles = Identifier<Role>.from(arrayObject: object.rolesIDs)
         self.targetDate = NSDate(timeIntervalSinceReferenceDate: object.targetDate)
+        self.timeScale = Identifier<TimeScale>(uuid: object.timeScaleID)
         self.reviews = Identifier<Review>.from(arrayObject: object.reviewsIDs)
     }
 }
