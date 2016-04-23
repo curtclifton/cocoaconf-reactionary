@@ -1,5 +1,5 @@
 //
-//  MasterViewController.swift
+//  RolesTableViewController.swift
 //  SmartGoals
 //
 //  Created by Curt Clifton on 1/26/16.
@@ -8,18 +8,19 @@
 
 import UIKit
 
-class MasterViewController: UITableViewController {
+// CCC, 4/23/2016. Likely need code along these lines for each of the tab views
+class RolesTableViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
     var objects = [AnyObject]()
 
-
+    // CCC, 4/23/2016. This hacky generated code is like what you need to go fish for the detail view:
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
 
-        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(MasterViewController.insertNewObject(_:)))
+        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(RolesTableViewController.insertNewObject(_:)))
         self.navigationItem.rightBarButtonItem = addButton
         if let split = self.splitViewController {
             let controllers = split.viewControllers
