@@ -1,5 +1,5 @@
 //
-//  DetailViewController.swift
+//  EmptyDetailViewController
 //  SmartGoals
 //
 //  Created by Curt Clifton on 1/26/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class EmptyDetailViewController: UIViewController {
 
     @IBOutlet weak var detailDescriptionLabel: UILabel!
 

@@ -11,10 +11,10 @@ import UIKit
 // CCC, 4/23/2016. Likely need code along these lines for each of the tab views
 class RolesTableViewController: UITableViewController {
 
-    var detailViewController: DetailViewController? = nil
+    // CCC, 4/23/2016. May want a generic detail view controller protocol? Or maybe just use a computed property to get the non-empty view controller if any?
+//    var detailViewController: DetailViewController? = nil
     var objects = [AnyObject]()
 
-    // CCC, 4/23/2016. This hacky generated code is like what you need to go fish for the detail view:
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -22,10 +22,12 @@ class RolesTableViewController: UITableViewController {
 
         let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(RolesTableViewController.insertNewObject(_:)))
         self.navigationItem.rightBarButtonItem = addButton
-        if let split = self.splitViewController {
-            let controllers = split.viewControllers
-            self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
-        }
+        
+        // CCC, 4/23/2016. This hacky generated code is like what you need to go fish for the detail view:
+//        if let split = self.splitViewController {
+//            let controllers = split.viewControllers
+//            self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
+//        }
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -47,15 +49,16 @@ class RolesTableViewController: UITableViewController {
     // MARK: - Segues
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "showDetail" {
-            if let indexPath = self.tableView.indexPathForSelectedRow {
-                let object = objects[indexPath.row] as! NSDate
-                let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
-                controller.detailItem = object
-                controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-                controller.navigationItem.leftItemsSupplementBackButton = true
-            }
-        }
+        // CCC, 4/23/2016. Handle pushing actual detail
+//        if segue.identifier == "showDetail" {
+//            if let indexPath = self.tableView.indexPathForSelectedRow {
+//                let object = objects[indexPath.row] as! NSDate
+//                let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
+//                controller.detailItem = object
+//                controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+//                controller.navigationItem.leftItemsSupplementBackButton = true
+//            }
+//        }
     }
 
     // MARK: - Table View
