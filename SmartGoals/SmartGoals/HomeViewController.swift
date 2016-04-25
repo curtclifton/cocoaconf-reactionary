@@ -30,6 +30,9 @@ class HomeViewController: UITabBarController {
         }
         
         self.viewControllers = viewControllers
+        
+        // CCC, 4/24/2016. Should be whatever the title of the selected tab is, used on button to reveal sidebar when it's hidden:
+        navigationController!.title = NSLocalizedString("Home", comment: "list title")
     }
 
     override func didReceiveMemoryWarning() {

@@ -17,13 +17,7 @@ final class RolesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        navigationItem.leftBarButtonItem = self.editButtonItem()
-        navigationItem.title = NSLocalizedString("Roles", comment: "list title")
 
-        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(insertNewObject(_:)))
-        navigationItem.rightBarButtonItem = addButton
-        
         // CCC, 4/24/2016. Do we want to use a Router to control detail views and whatnot?
         
         // CCC, 4/23/2016. This hacky generated code is like what you need to go fish for the detail view:
@@ -34,10 +28,23 @@ final class RolesTableViewController: UITableViewController {
     }
 
     override func viewWillAppear(animated: Bool) {
+        // CCC, 4/24/2016. OK? Reaching through to nav controller to circumvent tab bar controller shenanigans
+        let navigationItem = tabBarController!.navigationItem
+        navigationItem.leftBarButtonItem = self.editButtonItem()
+        navigationItem.title = NSLocalizedString("Roles", comment: "list title")
+        
+        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(insertNewObject(_:)))
+        navigationItem.rightBarButtonItem = addButton
+        
         self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
         super.viewWillAppear(animated)
     }
 
+    override func viewDidAppear(animated: Bool) {
+        // CCC, 4/24/2016. 
+        print("🐶")
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
