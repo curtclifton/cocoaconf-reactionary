@@ -230,7 +230,7 @@ class SmartGoalsModelTests: XCTestCase {
     }
     
     func testReferences() {
-        let timeScaleID = testModel!.instantiateObjectOfType(TimeScale.self)
+        let reviewID = testModel!.instantiateObjectOfType(Review.self)
         let goalSetSignal = testModel!.valueSignalForNewInstanceOfType(GoalSet.self)
         let mainQueueGoalSetSignal = QueueSpecificSignal(signal: goalSetSignal, notificationQueue: NSOperationQueue.mainQueue())
         
@@ -244,12 +244,12 @@ class SmartGoalsModelTests: XCTestCase {
             case 0:
                 stage += 1
                 gotStageZero.fulfill()
-                goalSet.timeScale = timeScaleID
+                goalSet.reviews = [reviewID]
                 self.testModel!.update(fromValue: goalSet)
             case 1:
                 stage += 1
                 gotStageOne.fulfill()
-                XCTAssertEqual(goalSet.timeScale, timeScaleID)
+                XCTAssertEqual(goalSet.reviews, [reviewID])
             default:
                 break
             }

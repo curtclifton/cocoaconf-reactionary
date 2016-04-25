@@ -2,7 +2,7 @@
 //  SGMGoal+CoreDataProperties.swift
 //  SmartGoals
 //
-//  Created by Curt Clifton on 4/19/16.
+//  Created by Curt Clifton on 4/24/16.
 //  Copyright © 2016 curtclifton.net. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -15,10 +15,10 @@ import CoreData
 extension SGMGoal {
 
     @NSManaged var evaluationMetricDescription: String?
-    @NSManaged var outcomeDescription: String?
-    @NSManaged var title: String?
     @NSManaged var goalsSupportedIDs: NSObject?
+    @NSManaged var outcomeDescription: String?
     @NSManaged var reviewsIDs: NSObject?
     @NSManaged var roleSupportedID: Int64
+    @NSManaged var title: String?
 
 }
