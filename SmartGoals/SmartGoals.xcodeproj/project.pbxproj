@@ -68,6 +68,7 @@
 		4DED3F981CCC38B500182A3F /* GoalSetTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED3F971CCC38B500182A3F /* GoalSetTableViewController.swift */; };
 		4DED3F9A1CCDB76500182A3F /* ModelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED3F991CCDB76500182A3F /* ModelExtensions.swift */; };
 		4DED3F9C1CCDC73600182A3F /* Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED3F9B1CCDC73600182A3F /* Storyboard.swift */; };
+		4DED3F9E1CCDD29C00182A3F /* RolesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED3F9D1CCDD29C00182A3F /* RolesController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -156,6 +157,7 @@
 		4DED3F971CCC38B500182A3F /* GoalSetTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalSetTableViewController.swift; sourceTree = "<group>"; };
 		4DED3F991CCDB76500182A3F /* ModelExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelExtensions.swift; sourceTree = "<group>"; };
 		4DED3F9B1CCDC73600182A3F /* Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storyboard.swift; sourceTree = "<group>"; };
+		4DED3F9D1CCDD29C00182A3F /* RolesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RolesController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,6 +234,7 @@
 				4DED3F971CCC38B500182A3F /* GoalSetTableViewController.swift */,
 				4DED3F951CCC367000182A3F /* HomeViewController.swift */,
 				4DED3F991CCDB76500182A3F /* ModelExtensions.swift */,
+				4DED3F9D1CCDD29C00182A3F /* RolesController.swift */,
 				4D0E00171C58921700744A86 /* RolesTableViewController.swift */,
 				4DED3F9B1CCDC73600182A3F /* Storyboard.swift */,
 				4D0E001E1C58921700744A86 /* Assets.xcassets */,
@@ -510,6 +513,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DED3F981CCC38B500182A3F /* GoalSetTableViewController.swift in Sources */,
+				4DED3F9E1CCDD29C00182A3F /* RolesController.swift in Sources */,
 				4DED3F9A1CCDB76500182A3F /* ModelExtensions.swift in Sources */,
 				4D0E001A1C58921700744A86 /* EmptyDetailViewController.swift in Sources */,
 				4DED3F9C1CCDC73600182A3F /* Storyboard.swift in Sources */,

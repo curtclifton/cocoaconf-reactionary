@@ -28,14 +28,37 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="0.2336723678" blue="0.26905391629999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="Kkx-Ip-7H8" style="IBUITableViewCellStyleDefault" id="b3O-Nq-LDh">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="b3O-Nq-LDh" id="QPH-3W-pYd">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Kkx-Ip-7H8">
+                                            <rect key="frame" x="15" y="0.0" width="570" height="43"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="YtO-DB-JPF" id="7Uf-yD-T9a"/>
-                            <outlet property="delegate" destination="YtO-DB-JPF" id="Vt2-xf-Vk9"/>
+                            <outlet property="dataSource" destination="v6t-CT-zRm" id="Gdu-QX-J3F"/>
+                            <outlet property="delegate" destination="YtO-DB-JPF" id="8lc-Y5-03t"/>
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Roles" id="QLO-ig-yWx"/>
+                    <connections>
+                        <outlet property="rolesController" destination="v6t-CT-zRm" id="q9i-Lx-HtV"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wN8-UM-fwK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="v6t-CT-zRm" customClass="RolesController" customModule="SmartGoals" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="1472" y="-1192"/>
         </scene>
