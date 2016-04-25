@@ -23,21 +23,11 @@
         <!--Roles-->
         <scene sceneID="k2g-FB-2r0">
             <objects>
-                <tableViewController id="YtO-DB-JPF" customClass="RolesTableViewController" customModule="SmartGoals" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="Roles" id="YtO-DB-JPF" customClass="RolesTableViewController" customModule="SmartGoals" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="4Gc-oV-rsX">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="hTw-bF-8jo">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hTw-bF-8jo" id="uFY-JR-iDb">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
+                        <color key="backgroundColor" red="1" green="0.2336723678" blue="0.26905391629999997" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
                             <outlet property="dataSource" destination="YtO-DB-JPF" id="7Uf-yD-T9a"/>
                             <outlet property="delegate" destination="YtO-DB-JPF" id="Vt2-xf-Vk9"/>
@@ -52,21 +42,11 @@
         <!--5 Year-->
         <scene sceneID="qHu-Sb-PJx">
             <objects>
-                <tableViewController id="8pJ-c4-CTo" customClass="GoalSetTableViewController" customModule="SmartGoals" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="AJl-bz-c10">
+                <tableViewController storyboardIdentifier="GoalSet" id="8pJ-c4-CTo" customClass="GoalSetTableViewController" customModule="SmartGoals" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="AJl-bz-c10">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="meA-Yg-BOK">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="meA-Yg-BOK" id="S5R-NQ-LyL">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
+                        <color key="backgroundColor" red="0.44484919309999998" green="1" blue="0.31143206359999998" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
                             <outlet property="dataSource" destination="8pJ-c4-CTo" id="dlA-ml-KFm"/>
                             <outlet property="delegate" destination="8pJ-c4-CTo" id="5Dn-7f-UZb"/>
@@ -88,12 +68,6 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
-                    <connections>
-                        <segue destination="YtO-DB-JPF" kind="relationship" relationship="viewControllers" id="xHK-vc-FlA"/>
-                        <segue destination="8pJ-c4-CTo" kind="relationship" relationship="viewControllers" id="lP8-nb-yQF"/>
-                        <segue destination="8pJ-c4-CTo" kind="relationship" relationship="viewControllers" id="uTP-lY-51l"/>
-                        <segue destination="8pJ-c4-CTo" kind="relationship" relationship="viewControllers" id="LFe-Zw-1BD"/>
-                    </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sf8-Oe-9r4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -161,7 +135,4 @@
             <point key="canvasLocation" x="-45" y="129"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="uTP-lY-51l"/>
-    </inferredMetricsTieBreakers>
 </document>

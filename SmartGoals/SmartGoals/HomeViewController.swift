@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SmartGoalsModelTouch
 
 class HomeViewController: UITabBarController {
 
@@ -14,18 +15,21 @@ class HomeViewController: UITabBarController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        print("View Controllers: \(viewControllers)")
-        let tabLabels = [
-            NSLocalizedString("5 Year", comment: "goal set interval"),
-            NSLocalizedString("1 Year", comment: "goal set interval"),
-            NSLocalizedString("Monthly", comment: "goal set interval"),
-        ]
-        var tabLabelGenerator = tabLabels.generate()
-        for case let goalSetViewController as GoalSetTableViewController in viewControllers! {
-            let tabBarItem = goalSetViewController.tabBarItem
-            tabBarItem.title = tabLabelGenerator.next()! // programmer error to not match tabLabels to storyboard
-            print(goalSetViewController)
+        var viewControllers: [UIViewController] = []
+
+        let roleController = MainStoryboard().instantiateViewController(.Roles)
+        roleController.tabBarItem.title = NSLocalizedString("Roles", comment: "tab title")
+        // CCC, 4/24/2016. Set image
+        viewControllers.append(roleController)
+        
+        for timeScale in TimeScale.allValues() {
+            let goalSetController = MainStoryboard().instantiateViewController(.GoalSet)
+            goalSetController.tabBarItem.title = timeScale.title
+            // CCC, 4/24/2016. Set image
+            viewControllers.append(goalSetController)
         }
+        
+        self.viewControllers = viewControllers
     }
 
     override func didReceiveMemoryWarning() {

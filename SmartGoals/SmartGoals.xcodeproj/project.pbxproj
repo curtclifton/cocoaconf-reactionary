@@ -66,6 +66,8 @@
 		4D74E6EA1C61AEE600E11F3E /* Reviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D74E6E81C61AE8C00E11F3E /* Reviews.swift */; };
 		4DED3F961CCC367000182A3F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED3F951CCC367000182A3F /* HomeViewController.swift */; };
 		4DED3F981CCC38B500182A3F /* GoalSetTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED3F971CCC38B500182A3F /* GoalSetTableViewController.swift */; };
+		4DED3F9A1CCDB76500182A3F /* ModelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED3F991CCDB76500182A3F /* ModelExtensions.swift */; };
+		4DED3F9C1CCDC73600182A3F /* Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED3F9B1CCDC73600182A3F /* Storyboard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -152,6 +154,8 @@
 		4D74E6E81C61AE8C00E11F3E /* Reviews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reviews.swift; sourceTree = "<group>"; };
 		4DED3F951CCC367000182A3F /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		4DED3F971CCC38B500182A3F /* GoalSetTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalSetTableViewController.swift; sourceTree = "<group>"; };
+		4DED3F991CCDB76500182A3F /* ModelExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelExtensions.swift; sourceTree = "<group>"; };
+		4DED3F9B1CCDC73600182A3F /* Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storyboard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,15 +226,17 @@
 		4D0E00141C58921700744A86 /* SmartGoals */ = {
 			isa = PBXGroup;
 			children = (
+				4D0E00231C58921700744A86 /* Info.plist */,
 				4D0E00151C58921700744A86 /* AppDelegate.swift */,
-				4D0E00171C58921700744A86 /* RolesTableViewController.swift */,
+				4D0E00191C58921700744A86 /* EmptyDetailViewController.swift */,
 				4DED3F971CCC38B500182A3F /* GoalSetTableViewController.swift */,
 				4DED3F951CCC367000182A3F /* HomeViewController.swift */,
-				4D0E00191C58921700744A86 /* EmptyDetailViewController.swift */,
-				4D0E001B1C58921700744A86 /* Main.storyboard */,
+				4DED3F991CCDB76500182A3F /* ModelExtensions.swift */,
+				4D0E00171C58921700744A86 /* RolesTableViewController.swift */,
+				4DED3F9B1CCDC73600182A3F /* Storyboard.swift */,
 				4D0E001E1C58921700744A86 /* Assets.xcassets */,
 				4D0E00201C58921700744A86 /* LaunchScreen.storyboard */,
-				4D0E00231C58921700744A86 /* Info.plist */,
+				4D0E001B1C58921700744A86 /* Main.storyboard */,
 			);
 			path = SmartGoals;
 			sourceTree = "<group>";
@@ -504,7 +510,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DED3F981CCC38B500182A3F /* GoalSetTableViewController.swift in Sources */,
+				4DED3F9A1CCDB76500182A3F /* ModelExtensions.swift in Sources */,
 				4D0E001A1C58921700744A86 /* EmptyDetailViewController.swift in Sources */,
+				4DED3F9C1CCDC73600182A3F /* Storyboard.swift in Sources */,
 				4D0E00181C58921700744A86 /* RolesTableViewController.swift in Sources */,
 				4D0E00161C58921700744A86 /* AppDelegate.swift in Sources */,
 				4DED3F961CCC367000182A3F /* HomeViewController.swift in Sources */,

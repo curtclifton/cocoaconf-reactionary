@@ -13,4 +13,8 @@ public enum TimeScale: Int {
     case FiveYear = 1
     case OneYear
     case Monthly
+    
+    public static func allValues() -> [TimeScale] {
+        return [.FiveYear, .OneYear, .Monthly]
+    }
 }
