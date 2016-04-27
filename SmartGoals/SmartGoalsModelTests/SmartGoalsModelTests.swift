@@ -229,6 +229,8 @@ class SmartGoalsModelTests: XCTestCase {
         waitForExpectationsWithTimeout(5)
     }
     
+    // CCC, 4/26/2016. Test delete
+    
     func testReferences() {
         let reviewID = testModel!.instantiateObjectOfType(Review.self)
         let goalSetSignal = testModel!.valueSignalForNewInstanceOfType(GoalSet.self)

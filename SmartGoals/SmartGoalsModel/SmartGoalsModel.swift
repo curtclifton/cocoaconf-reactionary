@@ -78,12 +78,17 @@ public final class SmartGoalsModel {
         return newSignal
     }
     
-    // CCC, 4/10/2016. Need delete(value:) and delete(value:withToken:)
-    
     /// Updates the corresponding model object based on `value`.
     public func update<Value: ModelValue>(fromValue value:Value) {
         let transactionContext = transactionWritingContext()
         value.updateInContext(transactionContext)
+        self.saveWritingContext(transactionContext)
+    }
+    
+    /// Deletes the model object corresponding to `value`.
+    public func delete<Value: ModelValue>(value value:Value) {
+        let transactionContext = transactionWritingContext()
+        value.deleteInContext(transactionContext)
         self.saveWritingContext(transactionContext)
     }
     
@@ -102,6 +107,13 @@ public final class SmartGoalsModel {
     public func update<Value: ModelValue>(fromValue value:Value, withToken token: UpdateSessionToken) {
         precondition(!token.isSessionEnded)
         value.updateInContext(token.writingContext)
+    }
+    
+    /// Deletes the model object corresponding to `value`, delaying writes until the session is ended with `endUdpates(forToken:)`
+    /// - seeAlso: `beginUpdates()` for starting a session and getting its token
+    public func delete<Value: ModelValue>(value value:Value, withToken token: UpdateSessionToken) {
+        precondition(!token.isSessionEnded)
+        value.deleteInContext(token.writingContext)
     }
     
     /// Ends an atomic update session.
@@ -201,6 +213,22 @@ extension ModelValue {
                     fatalError("no existing object found for updating \(self)")
                 }
                 object.updateFromValue(self)
+            } catch {
+                fatalError("error fetching backing object for \(self):\n\(error)")
+            }
+        }
+    }
+    
+    func deleteInContext(context: SmartGoalsManagedObjectContext) {
+        let fetchRequest = self.dynamicType.fetchRequest
+        fetchRequest.predicate = self.identifier.predicate
+        context.performBlock { () -> () in
+            do {
+                let fetchResult = try context.executeFetchRequest(fetchRequest)
+                guard let object = fetchResult.first as? NSManagedObject else {
+                    fatalError("no existing object found for updating \(self)")
+                }
+                context.deleteObject(object)
             } catch {
                 fatalError("error fetching backing object for \(self):\n\(error)")
             }
