@@ -15,7 +15,6 @@ final class RolesController: NSObject, UITableViewDataSource {
     
     private var roles: [Role] = [] {
         didSet {
-            print("beep")
             // CCC, 4/26/2016. Need to diff and do a sensible reload
             tableView.reloadData()
         }

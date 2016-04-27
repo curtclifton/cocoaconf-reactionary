@@ -15,6 +15,8 @@ final class RolesTableViewController: UITableViewController {
 //    var detailViewController: DetailViewController? = nil
     @IBOutlet var rolesController: RolesController!
     
+    // MARK: - UIViewController subclass
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,8 +42,6 @@ final class RolesTableViewController: UITableViewController {
         super.viewWillAppear(animated)
     }
 
-    // MARK: - Segues
-
     // CCC, 4/24/2016. Do we want to use a Router to control detail views and whatnot?
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // CCC, 4/23/2016. Handle pushing actual detail
@@ -54,6 +54,14 @@ final class RolesTableViewController: UITableViewController {
 //                controller.navigationItem.leftItemsSupplementBackButton = true
 //            }
 //        }
+    }
+    
+    // MARK: - UITableViewDelegate
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        #error HERE is where you're working. 
+        // CCC, 4/24/2016. Do we want to use a Router to control detail views and whatnot?
+        print("tap: \(indexPath)")
     }
 }
 
