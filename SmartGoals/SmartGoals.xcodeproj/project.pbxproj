@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D028BF21CD0656800BCE481 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D028BF11CD0656800BCE481 /* ArrayExtensions.swift */; };
 		4D09FBBC1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09FBBA1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift */; };
 		4D09FBBD1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09FBBA1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift */; };
 		4D09FBBE1CB4AD83004DE7AF /* SGMReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09FBBB1CB4AD83004DE7AF /* SGMReview.swift */; };
@@ -110,6 +111,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4D028BF11CD0656800BCE481 /* ArrayExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
 		4D09FBBA1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SGMReview+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4D09FBBB1CB4AD83004DE7AF /* SGMReview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SGMReview.swift; sourceTree = "<group>"; };
 		4D0E00121C58921700744A86 /* SmartGoals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartGoals.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -201,6 +203,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4D028BF01CD0654E00BCE481 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4D028BF11CD0656800BCE481 /* ArrayExtensions.swift */,
+				4DED3F991CCDB76500182A3F /* ModelExtensions.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		4D0E00091C58921700744A86 = {
 			isa = PBXGroup;
 			children = (
@@ -233,10 +244,10 @@
 				4D0E00191C58921700744A86 /* EmptyDetailViewController.swift */,
 				4DED3F971CCC38B500182A3F /* GoalSetTableViewController.swift */,
 				4DED3F951CCC367000182A3F /* HomeViewController.swift */,
-				4DED3F991CCDB76500182A3F /* ModelExtensions.swift */,
 				4DED3F9D1CCDD29C00182A3F /* RolesController.swift */,
 				4D0E00171C58921700744A86 /* RolesTableViewController.swift */,
 				4DED3F9B1CCDC73600182A3F /* Storyboard.swift */,
+				4D028BF01CD0654E00BCE481 /* Extensions */,
 				4D0E001E1C58921700744A86 /* Assets.xcassets */,
 				4D0E00201C58921700744A86 /* LaunchScreen.storyboard */,
 				4D0E001B1C58921700744A86 /* Main.storyboard */,
@@ -519,6 +530,7 @@
 				4DED3F9C1CCDC73600182A3F /* Storyboard.swift in Sources */,
 				4D0E00181C58921700744A86 /* RolesTableViewController.swift in Sources */,
 				4D0E00161C58921700744A86 /* AppDelegate.swift in Sources */,
+				4D028BF21CD0656800BCE481 /* ArrayExtensions.swift in Sources */,
 				4DED3F961CCC367000182A3F /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

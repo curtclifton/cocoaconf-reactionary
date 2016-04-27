@@ -33,29 +33,11 @@ final class RolesTableViewController: UITableViewController {
         navigationItem.leftBarButtonItem = self.editButtonItem()
         navigationItem.title = NSLocalizedString("Roles", comment: "list title")
         
-        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(insertNewObject(_:)))
+        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: rolesController, action: #selector(RolesController.insertItem(_:)))
         navigationItem.rightBarButtonItem = addButton
         
         self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
         super.viewWillAppear(animated)
-    }
-
-    override func viewDidAppear(animated: Bool) {
-        // CCC, 4/24/2016. 
-        print("🐶")
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    func insertNewObject(sender: AnyObject) {
-        // CCC, 4/24/2016. Call through to rolesController
-        // CCC, 4/24/2016. update the table when the results come back
-//        objects.insert(NSDate(), atIndex: 0)
-//        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-//        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
     }
 
     // MARK: - Segues
@@ -73,25 +55,5 @@ final class RolesTableViewController: UITableViewController {
 //            }
 //        }
     }
-
-    // MARK: - Table View
-
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // CCC, 4/24/2016. Call through to rolesController
-            // CCC, 4/24/2016. update the table when the results come back
-//            objects.removeAtIndex(indexPath.row)
-//            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-        }
-    }
-
-
 }
 

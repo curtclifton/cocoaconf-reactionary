@@ -11,14 +11,47 @@ import SmartGoalsModelTouch
 
 // CCC, 4/24/2016. Might be able to extract a protocol for the table view data sources that cover the model
 final class RolesController: NSObject, UITableViewDataSource {
-    private var roles: [Role] = []
+    @IBOutlet var tableView: UITableView!
+    
+    private var roles: [Role] = [] {
+        didSet {
+            print("beep")
+            // CCC, 4/26/2016. Need to diff and do a sensible reload
+            tableView.reloadData()
+        }
+    }
+    
+    private var rolesSignal: Signal<[Role]>!
+    
+    // MARK: - NSObject subclass
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        #error HERE is where you're working.
-        // CCC, 4/24/2016. Kick off roles fetch, retain the signal, implement editing operations
+        let backgroundSignal = sharedModel.valuesSignalForType(Role.self)
+        rolesSignal = QueueSpecificSignal<[Role]>(signal: backgroundSignal, notificationQueue: NSOperationQueue.mainQueue())
+        rolesSignal.map { (roles: [Role]) -> Void in
+            self.roles = roles
+        }
     }
+    
+    // MARK: - Internal API
+    
+    func insertItem(sender: AnyObject? = nil) {
+        let _ = sharedModel.instantiateObjectOfType(Role.self)
+    }
+    
+    func deleteItem(atIndexPath indexPath: NSIndexPath) {
+        let row = indexPath.row
+        guard let roleToDelete = roles[row, defaultValue: nil] else {
+            assert(false, "unexpected index path: \(indexPath)")
+            return
+        }
+        
+        sharedModel.delete(value: roleToDelete)
+    }
+    
+    // MARK: - UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return roles.count
@@ -30,7 +63,15 @@ final class RolesController: NSObject, UITableViewDataSource {
         }
         
         // CCC, 4/24/2016. want a custom cell eventually, set the cell's view model object to the correct role
+        // CCC, 4/26/2016. Make a ViewModel struct that vends textLabel, detailTextLabel, placeholderTextLabel
+        // CCC, 4/26/2016. Make a UITableCellView extension that extracts info from the view model
         cell.textLabel?.text = roles[indexPath.row].shortName
         return cell
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            deleteItem(atIndexPath: indexPath)
+        }
     }
 }
