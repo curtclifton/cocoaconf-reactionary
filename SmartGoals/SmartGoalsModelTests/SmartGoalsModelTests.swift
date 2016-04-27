@@ -229,7 +229,36 @@ class SmartGoalsModelTests: XCTestCase {
         waitForExpectationsWithTimeout(5)
     }
     
-    // CCC, 4/26/2016. Test delete
+    func testDelete() {
+        var stage = 0
+        let gotNoRoles = expectationWithDescription("no roles")
+        let gotOneRole = expectationWithDescription("one role")
+        let gotNoRolesAgain = expectationWithDescription("no roles again")
+        
+        let rolesSignal = QueueSpecificSignal(signal: testModel!.valuesSignalForType(Role.self), notificationQueue: NSOperationQueue.mainQueue())
+        rolesSignal.map { (roles: [Role]) -> Void in
+            switch stage {
+            case 0:
+                stage += 1
+                XCTAssert(roles.count == 0)
+                gotNoRoles.fulfill()
+                let _ = self.testModel!.instantiateObjectOfType(Role.self)
+            case 1:
+                stage += 1
+                XCTAssert(roles.count == 1)
+                gotOneRole.fulfill()
+                self.testModel!.delete(value: roles[0])
+            case 2:
+                stage += 1
+                XCTAssert(roles.count == 0)
+                gotNoRolesAgain.fulfill()
+            default:
+                XCTFail("should be reached")
+            }
+        }
+
+        waitForExpectationsWithTimeout(5)
+    }
     
     func testReferences() {
         let reviewID = testModel!.instantiateObjectOfType(Review.self)
