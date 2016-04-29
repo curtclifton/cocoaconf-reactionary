@@ -17,7 +17,7 @@ import CoreData
 
 public class Signal<Value> {
 
-    private(set) var currentValue: Value?
+    public private(set) var currentValue: Value?
     private var observers: [Value -> ()] = []
     
     /// Pushes a new value on the signal.
@@ -77,6 +77,10 @@ public class Signal<Value> {
 
 /// A signal to which client code can push new values.
 public class UpdatableSignal<Value>: Signal<Value> {
+    public override init() {
+        super.init()
+    }
+    
     public override func update(toValue value: Value) {
         super.update(toValue: value)
     }

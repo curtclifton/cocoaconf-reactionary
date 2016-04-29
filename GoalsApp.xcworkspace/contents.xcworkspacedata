@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:SignalsPlayground.playground">
+   </FileRef>
+   <FileRef
       location = "group:SmartGoals/SmartGoals.xcodeproj">
    </FileRef>
 </Workspace>
