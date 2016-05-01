@@ -11,12 +11,13 @@ import SmartGoalsModelTouch
 
 // CCC, 4/24/2016. Should be able to extract a protocol for the table view data sources that cover the model
 final class RolesController: NSObject, UITableViewDataSource {
-    @IBOutlet var tableView: UITableView!
+    // This needs to be an optional rather than an implicitly unwrapped optional so that we don't trap on roles.didSet if the database is live before all objects are awoken from the nib.
+    @IBOutlet var tableView: UITableView?
     
     private var roles: [Role] = [] {
         didSet {
             // CCC, 4/26/2016. Need to diff and do a sensible reload
-            tableView.reloadData()
+            tableView?.reloadData()
         }
     }
     
