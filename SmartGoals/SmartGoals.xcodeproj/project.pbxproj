@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4D028BF21CD0656800BCE481 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D028BF11CD0656800BCE481 /* ArrayExtensions.swift */; };
 		4D028BF41CD5839A00BCE481 /* UITableViewCellExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D028BF31CD5839A00BCE481 /* UITableViewCellExtensions.swift */; };
+		4D028BF61CD5B5C900BCE481 /* RoleDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D028BF51CD5B5C900BCE481 /* RoleDetailViewController.swift */; };
 		4D09FBBC1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09FBBA1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift */; };
 		4D09FBBD1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09FBBA1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift */; };
 		4D09FBBE1CB4AD83004DE7AF /* SGMReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09FBBB1CB4AD83004DE7AF /* SGMReview.swift */; };
@@ -114,6 +115,7 @@
 /* Begin PBXFileReference section */
 		4D028BF11CD0656800BCE481 /* ArrayExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
 		4D028BF31CD5839A00BCE481 /* UITableViewCellExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewCellExtensions.swift; sourceTree = "<group>"; };
+		4D028BF51CD5B5C900BCE481 /* RoleDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoleDetailViewController.swift; sourceTree = "<group>"; };
 		4D09FBBA1CB4AD83004DE7AF /* SGMReview+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SGMReview+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4D09FBBB1CB4AD83004DE7AF /* SGMReview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SGMReview.swift; sourceTree = "<group>"; };
 		4D0E00121C58921700744A86 /* SmartGoals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartGoals.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -249,6 +251,7 @@
 				4DED3F951CCC367000182A3F /* HomeViewController.swift */,
 				4DED3F9D1CCDD29C00182A3F /* RolesController.swift */,
 				4D0E00171C58921700744A86 /* RolesTableViewController.swift */,
+				4D028BF51CD5B5C900BCE481 /* RoleDetailViewController.swift */,
 				4DED3F9B1CCDC73600182A3F /* Storyboard.swift */,
 				4D028BF01CD0654E00BCE481 /* Extensions */,
 				4D0E001E1C58921700744A86 /* Assets.xcassets */,
@@ -526,6 +529,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D028BF61CD5B5C900BCE481 /* RoleDetailViewController.swift in Sources */,
 				4DED3F981CCC38B500182A3F /* GoalSetTableViewController.swift in Sources */,
 				4DED3F9E1CCDD29C00182A3F /* RolesController.swift in Sources */,
 				4DED3F9A1CCDB76500182A3F /* ModelExtensions.swift in Sources */,
