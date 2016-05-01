@@ -17,13 +17,13 @@ class HomeViewController: UITabBarController {
         // Do any additional setup after loading the view.
         var viewControllers: [UIViewController] = []
 
-        let roleController = MainStoryboard().instantiateViewController(.Roles)
+        let roleController = mainStoryboard.instantiateViewController(.Roles)
         roleController.tabBarItem.title = NSLocalizedString("Roles", comment: "tab title")
         // CCC, 4/24/2016. Set image
         viewControllers.append(roleController)
         
         for timeScale in TimeScale.allValues() {
-            let goalSetController = MainStoryboard().instantiateViewController(.GoalSet)
+            let goalSetController = mainStoryboard.instantiateViewController(.GoalSet)
             goalSetController.tabBarItem.title = timeScale.title
             // CCC, 4/24/2016. Set image
             viewControllers.append(goalSetController)

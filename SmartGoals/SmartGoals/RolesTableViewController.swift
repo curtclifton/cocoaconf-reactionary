@@ -60,7 +60,10 @@ final class RolesTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // CCC, 4/24/2016. Do we want to use a Router to control detail views and whatnot?
-        print("tap: \(indexPath)")
+        if let splitViewController = self.splitViewController {
+            let detailViewController = mainStoryboard.instantiateViewController(.RoleDetail)
+            splitViewController.showDetailViewController(detailViewController, sender: nil)
+        }
     }
 }
 

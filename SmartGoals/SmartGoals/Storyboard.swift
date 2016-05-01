@@ -32,6 +32,7 @@ extension Storyboard {
 enum MainViewControllers: String, ViewControllerType {
     case Roles = "Roles"
     case GoalSet = "GoalSet"
+    case RoleDetail = "RoleDetail"
 }
 
 struct MainStoryboard: Storyboard {
@@ -39,3 +40,4 @@ struct MainStoryboard: Storyboard {
     let storyboardName = "Main"
 }
 
+let mainStoryboard = MainStoryboard()
