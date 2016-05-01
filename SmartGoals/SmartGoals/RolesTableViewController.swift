@@ -59,7 +59,6 @@ final class RolesTableViewController: UITableViewController {
     // MARK: - UITableViewDelegate
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        #error HERE is where you're working. 
         // CCC, 4/24/2016. Do we want to use a Router to control detail views and whatnot?
         print("tap: \(indexPath)")
     }

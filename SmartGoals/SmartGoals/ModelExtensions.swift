@@ -22,3 +22,21 @@ extension TimeScale {
     }
 }
 
+struct RoleViewModel: TableViewCellModel {
+    let text: String?
+    let detailText: String?
+    let textPlaceholder: String? = NSLocalizedString("untitled role", comment: "placeholder text")
+    let detailTextPlaceholder: String? = " " // non-empty string to consume vertical space
+    
+    init(_ role: Role) {
+        self.text = role.shortName
+        // CCC, 4/30/2016. Need to trim to the first X characters?
+        self.detailText = role.explanation
+    }
+}
+
+extension Role {
+    var viewModel: RoleViewModel {
+        return RoleViewModel(self)
+    }
+}

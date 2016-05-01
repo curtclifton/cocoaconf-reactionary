@@ -9,7 +9,7 @@
 import Foundation
 import SmartGoalsModelTouch
 
-// CCC, 4/24/2016. Might be able to extract a protocol for the table view data sources that cover the model
+// CCC, 4/24/2016. Should be able to extract a protocol for the table view data sources that cover the model
 final class RolesController: NSObject, UITableViewDataSource {
     @IBOutlet var tableView: UITableView!
     
@@ -61,10 +61,8 @@ final class RolesController: NSObject, UITableViewDataSource {
             fatalError("Misconfigured table view")
         }
         
-        // CCC, 4/24/2016. want a custom cell eventually, set the cell's view model object to the correct role
-        // CCC, 4/26/2016. Make a ViewModel struct that vends textLabel, detailTextLabel, placeholderTextLabel
-        // CCC, 4/26/2016. Make a UITableCellView extension that extracts info from the view model
-        cell.textLabel?.text = roles[indexPath.row].shortName
+        let viewModel = roles[indexPath.row].viewModel
+        cell.configure(withViewModel: viewModel)
         return cell
     }
     
