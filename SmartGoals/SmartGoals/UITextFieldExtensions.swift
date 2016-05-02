@@ -14,7 +14,7 @@ import UIKit
 private var setterSignalKey: UInt8 = 0
 private var valueChangedSignalKey: UInt8 = 0
 
-// CCC, 5/1/2016. Should be able to generalize a protocol for this
+// CCC, 5/1/2016. Use conformance to ReactiveControl instead
 extension UITextField {
     func takeValue(fromSignal signal: Signal<String>) {
         let mainThreadSignal = QueueSpecificSignal(signal: signal, notificationQueue: NSOperationQueue.mainQueue())

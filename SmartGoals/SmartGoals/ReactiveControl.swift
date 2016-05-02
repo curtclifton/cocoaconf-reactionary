@@ -1,6 +1,5 @@
-// CCC, 5/1/2016. Rename this file to ReactiveControl and move it to top level group
 //
-//  UIControlExtensions.swift
+//  ReactiveControl
 //  SmartGoals
 //
 //  Created by Curt Clifton on 5/1/16.
@@ -15,8 +14,6 @@ import UIKit
 private var setterSignalKey: UInt8 = 0
 private var valueChangedSignalKey: UInt8 = 0
 private var dynamicTargetKey: UInt8 = 0
-
-// CCC, 5/1/2016. Use this for UITextView and UISwitch, but leave UITextField "simple"
 
 /// Protocol that can be adopted by `UIControl`s via extensions to make them take and vend reactive signals.
 protocol ReactiveControl: class {
