@@ -14,6 +14,8 @@ protocol TableViewCellModel {
     var detailText: String? { get }
     var textPlaceholder: String? { get }
     var detailTextPlaceholder: String? { get }
+    var textColor: UIColor { get }
+    var detailTextColor: UIColor { get }
 }
 
 extension TableViewCellModel {
@@ -32,14 +34,15 @@ extension TableViewCellModel {
     }
     
     var textColor: UIColor {
-        if let text = self.text where !text.isEmpty {
-            return labelColor
-        }
-        return placeholderColor
+        return color(forText: self.text)
     }
     
     var detailTextColor: UIColor {
-        if let detailText = self.detailText where !detailText.isEmpty {
+        return color(forText: self.detailText)
+    }
+    
+    func color(forText text: String?) -> UIColor {
+        if let text = text where !text.isEmpty {
             return labelColor
         }
         return placeholderColor
@@ -51,6 +54,10 @@ extension TableViewCellModel {
     
     var placeholderColor: UIColor {
         return UIColor.grayColor()
+    }
+    
+    var inactiveColor: UIColor {
+        return UIColor.lightGrayColor()
     }
 }
 

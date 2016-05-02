@@ -27,10 +27,25 @@ struct RoleViewModel: TableViewCellModel {
     let detailText: String?
     let textPlaceholder: String? = NSLocalizedString("untitled role", comment: "placeholder text")
     let detailTextPlaceholder: String? = " " // non-empty string to consume vertical space
+    var textColor: UIColor {
+        if isActive {
+            return color(forText: self.text)
+        }
+        return inactiveColor
+    }
+    var detailTextColor: UIColor {
+        if isActive {
+            return color(forText: self.detailText)
+        }
+        return inactiveColor
+    }
+    
+    private let isActive: Bool
     
     init(_ role: Role) {
         self.text = role.shortName
         self.detailText = role.explanation
+        self.isActive = role.isActive
     }
 }
 
