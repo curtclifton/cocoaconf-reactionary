@@ -67,7 +67,10 @@
 		4D74E6E71C61AC7900E11F3E /* TimeScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63BE841C619FCF00FF19E4 /* TimeScale.swift */; };
 		4D74E6E91C61AE8D00E11F3E /* Reviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D74E6E81C61AE8C00E11F3E /* Reviews.swift */; };
 		4D74E6EA1C61AEE600E11F3E /* Reviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D74E6E81C61AE8C00E11F3E /* Reviews.swift */; };
-		4D91E4F71CD6CE3500B3346A /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D91E4F61CD6CE3500B3346A /* UITextField.swift */; };
+		4D91E4F71CD6CE3500B3346A /* UITextFieldExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D91E4F61CD6CE3500B3346A /* UITextFieldExtensions.swift */; };
+		4D91E4F91CD6E2DD00B3346A /* UIControlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D91E4F81CD6E2DD00B3346A /* UIControlExtensions.swift */; };
+		4D91E4FF1CD7045A00B3346A /* UITextViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D91E4FE1CD7045A00B3346A /* UITextViewExtensions.swift */; };
+		4D91E5011CD7113800B3346A /* UISwitchExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D91E5001CD7113800B3346A /* UISwitchExtensions.swift */; };
 		4DED3F961CCC367000182A3F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED3F951CCC367000182A3F /* HomeViewController.swift */; };
 		4DED3F981CCC38B500182A3F /* GoalSetTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED3F971CCC38B500182A3F /* GoalSetTableViewController.swift */; };
 		4DED3F9A1CCDB76500182A3F /* ModelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED3F991CCDB76500182A3F /* ModelExtensions.swift */; };
@@ -160,7 +163,10 @@
 		4D74E6D91C61AC2E00E11F3E /* SmartGoalsModelTouch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SmartGoalsModelTouch.h; sourceTree = "<group>"; };
 		4D74E6DB1C61AC2E00E11F3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4D74E6E81C61AE8C00E11F3E /* Reviews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reviews.swift; sourceTree = "<group>"; };
-		4D91E4F61CD6CE3500B3346A /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
+		4D91E4F61CD6CE3500B3346A /* UITextFieldExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextFieldExtensions.swift; sourceTree = "<group>"; };
+		4D91E4F81CD6E2DD00B3346A /* UIControlExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIControlExtensions.swift; sourceTree = "<group>"; };
+		4D91E4FE1CD7045A00B3346A /* UITextViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextViewExtensions.swift; sourceTree = "<group>"; };
+		4D91E5001CD7113800B3346A /* UISwitchExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISwitchExtensions.swift; sourceTree = "<group>"; };
 		4DED3F951CCC367000182A3F /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		4DED3F971CCC38B500182A3F /* GoalSetTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalSetTableViewController.swift; sourceTree = "<group>"; };
 		4DED3F991CCDB76500182A3F /* ModelExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelExtensions.swift; sourceTree = "<group>"; };
@@ -214,8 +220,11 @@
 			children = (
 				4D028BF11CD0656800BCE481 /* ArrayExtensions.swift */,
 				4DED3F991CCDB76500182A3F /* ModelExtensions.swift */,
+				4D91E4F81CD6E2DD00B3346A /* UIControlExtensions.swift */,
+				4D91E5001CD7113800B3346A /* UISwitchExtensions.swift */,
 				4D028BF31CD5839A00BCE481 /* UITableViewCellExtensions.swift */,
-				4D91E4F61CD6CE3500B3346A /* UITextField.swift */,
+				4D91E4F61CD6CE3500B3346A /* UITextFieldExtensions.swift */,
+				4D91E4FE1CD7045A00B3346A /* UITextViewExtensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -536,14 +545,17 @@
 				4DED3F981CCC38B500182A3F /* GoalSetTableViewController.swift in Sources */,
 				4DED3F9E1CCDD29C00182A3F /* RolesController.swift in Sources */,
 				4DED3F9A1CCDB76500182A3F /* ModelExtensions.swift in Sources */,
+				4D91E4F91CD6E2DD00B3346A /* UIControlExtensions.swift in Sources */,
 				4D0E001A1C58921700744A86 /* EmptyDetailViewController.swift in Sources */,
+				4D91E5011CD7113800B3346A /* UISwitchExtensions.swift in Sources */,
 				4DED3F9C1CCDC73600182A3F /* Storyboard.swift in Sources */,
+				4D91E4FF1CD7045A00B3346A /* UITextViewExtensions.swift in Sources */,
 				4D0E00181C58921700744A86 /* RolesTableViewController.swift in Sources */,
 				4D0E00161C58921700744A86 /* AppDelegate.swift in Sources */,
 				4D028BF21CD0656800BCE481 /* ArrayExtensions.swift in Sources */,
 				4DED3F961CCC367000182A3F /* HomeViewController.swift in Sources */,
 				4D028BF41CD5839A00BCE481 /* UITableViewCellExtensions.swift in Sources */,
-				4D91E4F71CD6CE3500B3346A /* UITextField.swift in Sources */,
+				4D91E4F71CD6CE3500B3346A /* UITextFieldExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
