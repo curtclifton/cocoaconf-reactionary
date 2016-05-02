@@ -20,9 +20,9 @@ extension UITextField {
         let mainThreadSignal = QueueSpecificSignal(signal: signal, notificationQueue: NSOperationQueue.mainQueue())
         // Need to hang onto the signal so it isn't deallocated
         objc_setAssociatedObject(self, &setterSignalKey, mainThreadSignal, .OBJC_ASSOCIATION_RETAIN)
-        mainThreadSignal.map { (value: String) -> Void in
-            if self.text != value {
-                self.text = value
+        mainThreadSignal.map { [weak self] (value: String) -> Void in
+            if self?.text != value {
+                self?.text = value
             }
         }
     }
@@ -49,8 +49,6 @@ extension UITextField {
         return signal
     }
     
-    // CCC, 5/1/2016. Need @objc?
-//    @objc(valueChanged)
     dynamic private func valueChanged() {
         guard let signal = _valueChangedSignal else {
             fatalError("how did we register an action without storing a signal?")

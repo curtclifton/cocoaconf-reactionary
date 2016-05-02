@@ -37,7 +37,7 @@ class RoleDetailViewController: UIViewController {
         self.signal = signal
         
         // Update local copy of role whenever it changes
-        signal.map { self.role = $0 }
+        signal.map { [weak self] role in self?.role = role }
         
         // Make name text field update whenever the name changes
         let shortNameSignal = signal
@@ -50,8 +50,8 @@ class RoleDetailViewController: UIViewController {
         let shortNameUpdateSignal = name.valueChangedSignal()
         shortNameUpdateSignal
             .flatmap({ $0 })
-            .map({
-                self.role?.shortName = $0
+            .map({ [weak self] role in
+                self?.role?.shortName = role
             })
         
         // CCC, 5/1/2016. Need to wire signals for explanation and isActive
