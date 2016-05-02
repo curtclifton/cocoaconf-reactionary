@@ -11,7 +11,7 @@ import UIKit
 
 class RoleDetailViewController: UIViewController {
 
-    // CCC, 5/1/2016. It would be nice to isolate this from the model, perhaps, but that can be a refactoring.
+    // CCC, 5/1/2016. It would be nice to isolate this from the model.
     var identifier: Identifier<Role>!
     private var signal: Signal<Role>?
     private var role: Role? {

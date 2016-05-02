@@ -9,12 +9,11 @@
 import Foundation
 import CoreData
 
-
-// CCC, 2/14/2016. Document capture pattern. Someone has to capture the root Signal or the whole chain will be deallocated. May want a different mapping function for the case where the observer and output signal should be held weakly.
-// Currently, clients must retain self directly or indirectly, or the signal chain will be deallocated.
-// capture pattern: self -> observer block -> outSignal and transform
-// Anything captured by the transform exists until self is deallocated!
-
+/// A mappable signal producing values of type `Value`.
+///
+/// In general, clients must retain instances of `Signal` except as documented. The basic capture pattern is that a signal captures the blocks passed to `map` and `flatmap`. Those blocks capture both the signal returned by the mapping function.
+///
+/// N.B., anything captured by a block passed to `map` and `flatmap` will be retained until the `Signal` is released. Capturing strong `self` in one of these blocks is a great way to created a retain cycle.
 public class Signal<Value> {
 
     public private(set) var currentValue: Value?
@@ -85,8 +84,6 @@ public class UpdatableSignal<Value>: Signal<Value> {
         super.update(toValue: value)
     }
 }
-
-// CCC, 4/19/2016. Add a signal that just delivers the first item?
 
 public class QueueSpecificSignal<Value>: Signal<Value> {
     let sourceSignal: Signal<Value>

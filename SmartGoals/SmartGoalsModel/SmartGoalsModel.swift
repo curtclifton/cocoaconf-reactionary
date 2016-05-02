@@ -64,8 +64,6 @@ public final class SmartGoalsModel {
         return newSignal
     }
     
-    // CCC, 3/29/2016. Need a countSignalForType to get the number of matches without polling for them all?
-    
     /// Returns a signal vending all values for items of `type`.
     ///
     /// Pushes all values whenever any one of them changes.
