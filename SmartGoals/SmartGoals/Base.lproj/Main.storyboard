@@ -123,7 +123,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Explanation" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="mz2-iM-qCi">
-                                <rect key="frame" x="118" y="57" width="462" height="481"/>
+                                <rect key="frame" x="118" y="56" width="462" height="482"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -141,7 +141,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="jTT-UN-F9E" firstAttribute="trailing" secondItem="wM9-yl-LeK" secondAttribute="trailing" id="278-3j-Kpe"/>
-                            <constraint firstItem="2Z5-F1-9dL" firstAttribute="top" secondItem="mz2-iM-qCi" secondAttribute="top" constant="7" id="4JM-lL-axV"/>
+                            <constraint firstItem="2Z5-F1-9dL" firstAttribute="top" secondItem="mz2-iM-qCi" secondAttribute="top" constant="8" id="4JM-lL-axV"/>
                             <constraint firstItem="2Z5-F1-9dL" firstAttribute="top" secondItem="wM9-yl-LeK" secondAttribute="bottom" constant="16" id="5ja-5g-YqK"/>
                             <constraint firstAttribute="trailingMargin" secondItem="mz2-iM-qCi" secondAttribute="trailing" id="682-Lj-QGa"/>
                             <constraint firstItem="COb-lh-vez" firstAttribute="bottom" secondItem="wM9-yl-LeK" secondAttribute="bottom" id="7gE-Lh-hUA"/>
@@ -173,7 +173,8 @@
                     </view>
                     <connections>
                         <outlet property="explanation" destination="mz2-iM-qCi" id="hkH-RS-6mt"/>
-                        <outlet property="explanationLabel" destination="2Z5-F1-9dL" id="Qyn-SX-OFK"/>
+                        <outlet property="isActive" destination="kZK-Sl-EDh" id="9e1-ar-Ndg"/>
+                        <outlet property="name" destination="COb-lh-vez" id="oTg-Oi-sTS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G0W-V2-Qwq" userLabel="First Responder" sceneMemberID="firstResponder"/>

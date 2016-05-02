@@ -61,9 +61,7 @@ final class RolesTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // CCC, 4/24/2016. Do we want to use a Router to control detail views and whatnot?
         if let splitViewController = self.splitViewController {
-            // CCC, 4/30/2016. Need to pass the model data to the detailViewController somehow
-            #error HERE is where you're working. 
-            let detailViewController = mainStoryboard.instantiateViewController(.RoleDetail)
+            let detailViewController = rolesController.detailView(forRowAtIndexPath: indexPath)
             splitViewController.showDetailViewController(detailViewController, sender: nil)
         }
     }

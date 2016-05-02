@@ -50,7 +50,18 @@ final class RolesController: NSObject, UITableViewDataSource {
         
         sharedModel.delete(value: roleToDelete)
     }
-    
+        
+    func detailView(forRowAtIndexPath indexPath: NSIndexPath) -> UIViewController {
+        let row = indexPath.row
+        guard let roleToEdit = roles[row, defaultValue: nil] else {
+            fatalError("unexpected index path: \(indexPath)")
+        }
+        
+        let detailViewController = mainStoryboard.instantiateViewController(.RoleDetail) as! RoleDetailViewController
+        detailViewController.identifier = roleToEdit.identifier
+        return detailViewController
+    }
+
     // MARK: - UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -73,3 +84,5 @@ final class RolesController: NSObject, UITableViewDataSource {
         }
     }
 }
+
+

@@ -14,28 +14,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     var window: UIWindow?
 
-    // CCC, 3/1/2016. Test signals:
-    let rolesSignal: Signal<[Role]> = sharedModel.valuesSignalForType(Role.self)
-    let reviewsSignal: Signal<[Review]> = sharedModel.valuesSignalForType(Review.self)
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         let splitViewController = self.window!.rootViewController as! UISplitViewController
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
         splitViewController.delegate = self
-        
-        // CCC, 2/13/2016. Just test MOC loading in main configuration
-        rolesSignal.map { (roles: [Role]) in
-            print("got roles: \(roles)")
-        }
-        
-        reviewsSignal.map { (reviews: [Review]) in
-            print("got reviews: \(reviews)")
-        }
-        
-        sharedModel.instantiateObjectOfType(Role.self)
-        sharedModel.instantiateObjectOfType(Review.self)
         
         return true
     }
