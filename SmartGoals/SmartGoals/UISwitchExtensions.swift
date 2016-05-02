@@ -11,7 +11,7 @@ import UIKit
 
 extension UISwitch: ReactiveControl {
     var monitoredControlEvents: UIControlEvents {
-        return .EditingChanged
+        return .ValueChanged
     }
     
     var reactiveValue: Bool {

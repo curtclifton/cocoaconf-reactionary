@@ -39,21 +39,40 @@ class RoleDetailViewController: UIViewController {
         // Update local copy of role whenever it changes
         signal.map { [weak self] role in self?.role = role }
         
-        // Make name text field update whenever the name changes
+        // Make fields update whenever the pertinent properties change
         let shortNameSignal = signal
             .map({
                 $0.shortName
             })
         name.takeValue(fromSignal: shortNameSignal)
         
+        let explanationSignal = signal
+            .map({
+                $0.explanation
+            })
+        explanation.takeValue(fromSignal: explanationSignal)
+        
+        let isActiveSignal = signal
+            .map({
+                $0.isActive
+            })
+        isActive.takeValue(fromSignal: isActiveSignal)
+        
         // Update our local copy of role whenever the user types
-        let shortNameUpdateSignal = name.valueChangedSignal()
-        shortNameUpdateSignal
+        name.valueChangedSignal()
             .flatmap({ $0 })
-            .map({ [weak self] role in
-                self?.role?.shortName = role
+            .map({ [weak self] shortName in
+                self?.role?.shortName = shortName
             })
         
-        // CCC, 5/1/2016. Need to wire signals for explanation and isActive
+        explanation.valueChangedSignal()
+            .map({ [weak self] explanation in
+                self?.role?.explanation = explanation
+            })
+        
+        isActive.valueChangedSignal()
+            .map({ [weak self] isActive in
+                self?.role?.isActive = isActive
+            })
     }
 }

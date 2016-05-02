@@ -65,7 +65,7 @@ extension ReactiveControl {
         // keep dynamic target from being dealloc'd
         objc_setAssociatedObject(self, &dynamicTargetKey, dynamicTarget, .OBJC_ASSOCIATION_RETAIN)
         let sel = #selector(dynamicTarget.valueChanged)
-        addTarget(dynamicTarget, action: sel, forControlEvents: .EditingChanged)
+        addTarget(dynamicTarget, action: sel, forControlEvents: monitoredControlEvents)
         return signal
     }
 }
