@@ -6,8 +6,9 @@
 //  Copyright © 2016 curtclifton.net. All rights reserved.
 //
 
-import Foundation
 import CoreData
+import Foundation
+import Reactionary
 
 /// This façade is the public interface to the model.
 ///

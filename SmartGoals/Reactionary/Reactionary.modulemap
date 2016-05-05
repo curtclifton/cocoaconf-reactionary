@@ -1,0 +1,7 @@
+// Using a modulemap to make a single framework that works for iOS and Mac.
+framework module Reactionary {
+    umbrella header "Reactionary.h"
+    
+    export *
+    module * { export * }
+}
