@@ -6,7 +6,9 @@
 //  Copyright © 2016 curtclifton.net. All rights reserved.
 //
 
+import Reactionary
 import XCTest
+
 @testable import SmartGoalsModel
 
 func afterDelay(delay: NSTimeInterval, perform: () -> ()) {

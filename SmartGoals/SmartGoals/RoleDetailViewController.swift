@@ -6,6 +6,7 @@
 //  Copyright © 2016 curtclifton.net. All rights reserved.
 //
 
+import Reactionary
 import SmartGoalsModelTouch
 import UIKit
 

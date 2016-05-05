@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Reactionary
 import SmartGoalsModelTouch
 
 // CCC, 4/24/2016. Should be able to extract a protocol for the table view data sources that cover the model

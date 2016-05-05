@@ -113,7 +113,7 @@ public class QueueSpecificSignal<Value>: Signal<Value> {
 /// Instantiates a signal that executes `fetchRequest` in `context`, passing the fetched objects through `transform` and propagating the non-nil results on the signal.
 ///
 /// Expects 0 or 1 non-nil results for each fetch.
-func itemFetchSignal<Value>(fetchRequest fetchRequest: NSFetchRequest, context: NSManagedObjectContext, transform: AnyObject -> Value?) -> FetchSignal<Value> {
+public func itemFetchSignal<Value>(fetchRequest fetchRequest: NSFetchRequest, context: NSManagedObjectContext, transform: AnyObject -> Value?) -> Signal<Value> {
     let signal = FetchSignal<Value>(fetchRequest: fetchRequest, context: context) { (results: [AnyObject]) -> Value? in
         let typedMatches = results.flatMap { transform($0) }
         assert(typedMatches.count <= 1)
@@ -128,7 +128,7 @@ func itemFetchSignal<Value>(fetchRequest fetchRequest: NSFetchRequest, context: 
 /// Instantiates a signal that executes `fetchRequest` in `context`, passing the fetched objects through `transform` and propagating the non-nil results on the signal. 
 /// 
 /// If there are no non-nil results, will propagate an empty array if the context returns no matching results.
-func arrayFetchSignal<Value>(fetchRequest fetchRequest: NSFetchRequest, context: NSManagedObjectContext, transform: AnyObject -> Value?) -> FetchSignal<[Value]> {
+public func arrayFetchSignal<Value>(fetchRequest fetchRequest: NSFetchRequest, context: NSManagedObjectContext, transform: AnyObject -> Value?) -> Signal<[Value]> {
     let signal = FetchSignal<[Value]>(fetchRequest: fetchRequest, context: context) { (results: [AnyObject]) -> [Value]? in
         let typedMatches = results.flatMap { transform($0) }
         return typedMatches
