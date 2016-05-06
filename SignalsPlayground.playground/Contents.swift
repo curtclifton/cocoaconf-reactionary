@@ -1,7 +1,7 @@
 //: Playground - noun: a place where people can play
 
 import UIKit
-import ReactionaryTouch
+import Reactionary
 
 let signal = UpdatableSignal<String>()
 signal.map { (str: String) -> Void in

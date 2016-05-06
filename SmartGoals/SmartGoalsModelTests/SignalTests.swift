@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import SmartGoalsModel
+@testable import Reactionary
 
 class SignalTests: XCTestCase {
     func testMap() {
