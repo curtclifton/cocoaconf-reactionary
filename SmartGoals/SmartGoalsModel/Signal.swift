@@ -88,8 +88,8 @@ public class UpdatableSignal<Value>: Signal<Value> {
 // CCC, 5/15/2016. Extend Signal with fluent method to create queueSpecificSignal, make the init private
 // CCC, 5/15/2016. Document memory management.
 public class QueueSpecificSignal<Value>: Signal<Value> {
-    let sourceSignal: Signal<Value>
-    let notificationQueue: NSOperationQueue
+    private let sourceSignal: Signal<Value>
+    private let notificationQueue: NSOperationQueue
     
     public init(signal: Signal<Value>, notificationQueue: NSOperationQueue) {
         self.sourceSignal = signal
@@ -115,7 +115,7 @@ public class QueueSpecificSignal<Value>: Signal<Value> {
 // CCC, 5/15/2016. Extend Signal with fluent method to create oneShotSignal, make the init private
 // CCC, 5/15/2016. document memory management
 public final class OneShotSignal<Value>: Signal<Value> {
-    let sourceSignal: Signal<Value>
+    private let sourceSignal: Signal<Value>
     public init(signal: Signal<Value>) {
         self.sourceSignal = signal
         super.init()
@@ -144,6 +144,32 @@ public final class OneShotSignal<Value>: Signal<Value> {
     
     public var isPrimed: Bool {
         return currentValue != nil
+    }
+}
+
+extension Signal {
+    func signal(withDelay delay: NSTimeInterval) -> DelayedSignal<Value> {
+        let result = DelayedSignal(signal: self, delay: delay)
+        return result
+    }
+}
+
+public final class DelayedSignal<Value>: Signal<Value> {
+    private let sourceSignal: Signal<Value>
+    private let delayInNanoseconds: Int64
+    
+    private init(signal: Signal<Value>, delay: NSTimeInterval) {
+        self.sourceSignal = signal
+        self.delayInNanoseconds = Int64(round(delay * 1e9))
+        super.init()
+        
+        signal.map { newValue in
+            let propagateTime = dispatch_time(0, self.delayInNanoseconds)
+            let queue = dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0)
+            dispatch_after(propagateTime, queue) {
+                self.update(toValue: newValue)
+            }
+        }
     }
 }
 

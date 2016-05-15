@@ -65,4 +65,32 @@ class SignalTests: XCTestCase {
         XCTAssert(firstNotificationCount == 1, "should be unchanged")
         XCTAssert(secondNotificationCount == 1, "should be unchanged")
     }
+    
+    func testDelayedSignal() {
+        let delay: NSTimeInterval = 3.0
+        let intSignal = UpdatableSignal<Int>()
+        let delayedSignal = intSignal.signal(withDelay: delay)
+        
+        let gotDelayedSignal = expectationWithDescription("Delayed")
+        var startTime: NSDate?
+        var propagateTime: NSDate?
+        intSignal.map { _ in
+            startTime = NSDate()
+        }
+        delayedSignal.map { _ in
+            propagateTime = NSDate()
+            gotDelayedSignal.fulfill()
+        }
+        
+        intSignal.update(toValue: 1)
+        
+        waitForExpectationsWithTimeout(delay + 2.0, handler: nil)
+        guard let start = startTime, let end = propagateTime else {
+            XCTFail("Did not set start or end time")
+            return
+        }
+        
+        let difference = round(end.timeIntervalSinceDate(start))
+        XCTAssert(difference == delay, "Expected approximately \(delay) second delay. Got \(difference)")
+    }
 }
