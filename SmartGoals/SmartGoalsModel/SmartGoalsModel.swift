@@ -235,6 +235,17 @@ extension ModelValue {
     }
 }
 
-// CCC, 2/13/2016. We're using an in-memory store for now. Will need to switch to a persistent store once the model is sorted.
-let rootManagedObjectContext: SmartGoalsManagedObjectContext = SmartGoalsManagedObjectContext(name: "Root Context")
-public let sharedModel = SmartGoalsModel(managedObjectContext: rootManagedObjectContext)
+public func loadSharedModel(completionHandler: (SmartGoalsModel) -> Void) {
+    let queue = NSOperationQueue()
+    queue.qualityOfService = .UserInteractive
+    queue.addOperationWithBlock {
+        // CCC, 2/13/2016. We're using an in-memory store for now. Will need to switch to a persistent store once the model is sorted.
+        let rootManagedObjectContext: SmartGoalsManagedObjectContext = SmartGoalsManagedObjectContext(name: "Root Context")
+        let sharedModel = SmartGoalsModel(managedObjectContext: rootManagedObjectContext)
+        sleep(5) // CCC, 5/14/2016. Just testing.
+        let mainQueue = NSOperationQueue.mainQueue()
+        mainQueue.addOperationWithBlock {
+            completionHandler(sharedModel)
+        }
+    }
+}

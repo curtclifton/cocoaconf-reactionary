@@ -29,6 +29,7 @@ final class RolesController: NSObject, UITableViewDataSource {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        // CCC, 5/14/2016. Can't do this work until sharedModel is loaded
         let backgroundSignal = sharedModel.valuesSignalForType(Role.self)
         rolesSignal = QueueSpecificSignal<[Role]>(signal: backgroundSignal, notificationQueue: NSOperationQueue.mainQueue())
         rolesSignal.map { (roles: [Role]) -> Void in

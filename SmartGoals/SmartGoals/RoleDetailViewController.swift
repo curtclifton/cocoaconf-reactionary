@@ -18,6 +18,7 @@ class RoleDetailViewController: UIViewController {
     private var role: Role? {
         didSet {
             if let role = role where role != oldValue {
+                // CCC, 5/14/2016. can't do this until shared model is loaded, but perhaps it always is here
                 sharedModel.update(fromValue: role)
             }
         }
@@ -34,6 +35,7 @@ class RoleDetailViewController: UIViewController {
     @IBOutlet var isActive: UISwitch!
     
     override func viewDidLoad() {
+        // CCC, 5/14/2016. Can't do this until sharedModel is loaded
         let signal = sharedModel.valueSignalForIdentifier(identifier)
         self.signal = signal
         

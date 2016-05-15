@@ -9,6 +9,8 @@
 import UIKit
 import SmartGoalsModelTouch
 
+var sharedModel: SmartGoalsModel!
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
@@ -20,6 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
         splitViewController.delegate = self
+        
+        // CCC, 5/14/2016. This sets sharedModel asynchronously, so our other controllers will trap if we don't have a mechanism to make them wait.
+        loadSharedModel { sharedModel = $0 }
         
         return true
     }
