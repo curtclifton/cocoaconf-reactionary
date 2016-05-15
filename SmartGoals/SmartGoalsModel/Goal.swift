@@ -14,6 +14,7 @@ extension SGMGoal: ModelValueUpdatable {
         guard let goal = value as? Goal else {
             fatalError("Attempting to update SGMGoal from non-Goal value: \(value)")
         }
+        precondition(self.sgmIdentifier == goal.identifier.uuid)
         
         self.title = goal.title
         self.outcomeDescription = goal.outcomeDescription

@@ -18,6 +18,8 @@ extension SGMReview: ModelValueUpdatable {
         guard let review = value as? Review else {
             fatalError("Attempting to update SGMReview from non-Review value: \(value)")
         }
+        precondition(self.sgmIdentifier == review.identifier.uuid)
+
         self.date = review.date.timeIntervalSinceReferenceDate
         self.review = review.review
     }

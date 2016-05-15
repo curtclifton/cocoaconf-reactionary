@@ -14,7 +14,8 @@ extension SGMGoalSet: ModelValueUpdatable {
         guard let goalSet = value as? GoalSet else {
             fatalError("Attempting to update SGMGoalSet from non-GoalSet value: \(value)")
         }
-        
+        precondition(self.sgmIdentifier == goalSet.identifier.uuid)
+
         self.goalsIDs = Identifier<Goal>.arrayObjectFrom(identifiers: goalSet.goals)
         self.rolesIDs = Identifier<Role>.arrayObjectFrom(identifiers: goalSet.roles)
         

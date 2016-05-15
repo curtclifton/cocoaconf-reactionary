@@ -14,6 +14,8 @@ extension SGMRole: ModelValueUpdatable {
         guard let role = value as? Role else {
             fatalError("Attempting to update SGMRole from non-Role value: \(value)")
         }
+        precondition(self.sgmIdentifier == role.identifier.uuid)
+        
         self.explanation = role.explanation
         self.shortName = role.shortName
         self.isActive = role.isActive
