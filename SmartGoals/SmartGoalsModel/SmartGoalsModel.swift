@@ -235,18 +235,26 @@ extension ModelValue {
     }
 }
 
-// CCC, 5/14/2016. Document
-public func loadSharedModel(completionHandler: (SmartGoalsModel) -> Void) {
+private var _sharedModelVendor: OneShotSignal<SmartGoalsModel>?
+private var _modelSpinUpQueue: NSOperationQueue?
+public func sharedModelVendor() -> OneShotSignal<SmartGoalsModel> {
+    if let existingVendor = _sharedModelVendor {
+        return existingVendor
+    }
+    let updatableSignal = UpdatableSignal<SmartGoalsModel>()
+    let mainSignal = QueueSpecificSignal(signal: updatableSignal, notificationQueue: .mainQueue())
+    _sharedModelVendor = OneShotSignal(signal: mainSignal)
+    
     let queue = NSOperationQueue()
+    _modelSpinUpQueue = queue
     queue.qualityOfService = .UserInteractive
     queue.addOperationWithBlock {
         // CCC, 2/13/2016. We're using an in-memory store for now. Will need to switch to a persistent store once the model is sorted.
         let rootManagedObjectContext: SmartGoalsManagedObjectContext = SmartGoalsManagedObjectContext(name: "Root Context")
         let sharedModel = SmartGoalsModel(managedObjectContext: rootManagedObjectContext)
         sleep(5) // CCC, 5/14/2016. Just testing.
-        let mainQueue = NSOperationQueue.mainQueue()
-        mainQueue.addOperationWithBlock {
-            completionHandler(sharedModel)
-        }
+        updatableSignal.update(toValue: sharedModel)
     }
+
+    return _sharedModelVendor! // instantiated above
 }

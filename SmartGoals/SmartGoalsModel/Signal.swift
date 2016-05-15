@@ -85,6 +85,7 @@ public class UpdatableSignal<Value>: Signal<Value> {
     }
 }
 
+// CCC, 5/15/2016. Document memory management.
 public class QueueSpecificSignal<Value>: Signal<Value> {
     let sourceSignal: Signal<Value>
     let notificationQueue: NSOperationQueue
@@ -108,6 +109,22 @@ public class QueueSpecificSignal<Value>: Signal<Value> {
             }
         }
     }
+}
+
+// CCC, 5/15/2016. Want something like a OneShotSignal that fires observer immediately if currentValue is set not returning observer; otherwise waits for a value, fires observers, releases them
+public final class OneShotSignal<Value>: Signal<Value> {
+    let sourceSignal: Signal<Value>
+    public init(signal: Signal<Value>) {
+        self.sourceSignal = signal
+        super.init()
+        
+        signal.addObserver { value in
+            self.update(toValue: value)
+        }
+    }
+    
+    // CCC, 5/15/2016. Unit tests
+    // CCC, 5/15/2016. HERE need to override to get right behavior
 }
 
 /// Instantiates a signal that executes `fetchRequest` in `context`, passing the fetched objects through `transform` and propagating the non-nil results on the signal.
