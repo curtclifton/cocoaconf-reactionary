@@ -235,6 +235,7 @@ extension ModelValue {
     }
 }
 
+// CCC, 5/14/2016. Document
 public func loadSharedModel(completionHandler: (SmartGoalsModel) -> Void) {
     let queue = NSOperationQueue()
     queue.qualityOfService = .UserInteractive

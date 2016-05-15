@@ -12,14 +12,18 @@ import UIKit
 
 class RoleDetailViewController: UIViewController {
 
-    // CCC, 5/1/2016. It would be nice to isolate this from the model.
-    var identifier: Identifier<Role>!
-    private var signal: Signal<Role>?
+    private var signal: Signal<Role>? {
+        didSet {
+            signalIsConnected = false // new signal, so force reconnect
+            connectSignalIfNeeded()
+        }
+    }
+    private var updater: ((Role) -> Void)?
+    
     private var role: Role? {
         didSet {
             if let role = role where role != oldValue {
-                // CCC, 5/14/2016. can't do this until shared model is loaded, but perhaps it always is here
-                sharedModel.update(fromValue: role)
+                updater?(role)
             }
         }
     }
@@ -35,10 +39,26 @@ class RoleDetailViewController: UIViewController {
     @IBOutlet var isActive: UISwitch!
     
     override func viewDidLoad() {
-        // CCC, 5/14/2016. Can't do this until sharedModel is loaded
-        let signal = sharedModel.valueSignalForIdentifier(identifier)
+        connectSignalIfNeeded()
+    }
+    
+    // MARK: - Public API
+    
+    func configure(withSignal signal:Signal<Role>, updater: (Role) -> Void) {
         self.signal = signal
-        
+        self.updater = updater
+    }
+    
+    // MARK: - Private PAI
+    
+    private var signalIsConnected = false
+    func connectSignalIfNeeded() {
+        guard !signalIsConnected else { return /* done */ }
+        guard isViewLoaded(), let signal = self.signal else {
+            // nothing to do yet
+            return
+        }
+
         // Update local copy of role whenever it changes
         signal.map { [weak self] role in self?.role = role }
         
@@ -66,16 +86,18 @@ class RoleDetailViewController: UIViewController {
             .flatmap({ $0 })
             .map({ [weak self] shortName in
                 self?.role?.shortName = shortName
-            })
+                })
         
         explanation.valueChangedSignal()
             .map({ [weak self] explanation in
                 self?.role?.explanation = explanation
-            })
+                })
         
         isActive.valueChangedSignal()
             .map({ [weak self] isActive in
                 self?.role?.isActive = isActive
-            })
+                })
+
+        signalIsConnected = true
     }
 }

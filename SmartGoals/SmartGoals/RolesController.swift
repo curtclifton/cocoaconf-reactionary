@@ -60,7 +60,11 @@ final class RolesController: NSObject, UITableViewDataSource {
         }
         
         let detailViewController = mainStoryboard.instantiateViewController(.RoleDetail) as! RoleDetailViewController
-        detailViewController.identifier = roleToEdit.identifier
+        // CCC, 5/15/2016. shouldn't reach here without a valid sharedModel
+        let signal = sharedModel.valueSignalForIdentifier(roleToEdit.identifier)
+        detailViewController.configure(withSignal: signal) { role in
+            sharedModel.update(fromValue: role)
+        }
         return detailViewController
     }
 
