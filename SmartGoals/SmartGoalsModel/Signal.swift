@@ -85,7 +85,7 @@ public class UpdatableSignal<Value>: Signal<Value> {
     }
 }
 
-// CCC, 5/15/2016. Extend Signal with fluent method to create queueSpecificSignal, make the class private
+// CCC, 5/15/2016. Extend Signal with fluent method to create queueSpecificSignal, make the init private
 // CCC, 5/15/2016. Document memory management.
 public class QueueSpecificSignal<Value>: Signal<Value> {
     let sourceSignal: Signal<Value>
@@ -112,7 +112,7 @@ public class QueueSpecificSignal<Value>: Signal<Value> {
     }
 }
 
-// CCC, 5/15/2016. Extend Signal with fluent method to create oneShotSignal, make the class private
+// CCC, 5/15/2016. Extend Signal with fluent method to create oneShotSignal, make the init private
 // CCC, 5/15/2016. document memory management
 public final class OneShotSignal<Value>: Signal<Value> {
     let sourceSignal: Signal<Value>
@@ -140,6 +140,10 @@ public final class OneShotSignal<Value>: Signal<Value> {
         } else {
             observers.append(observer)
         }
+    }
+    
+    public var isPrimed: Bool {
+        return currentValue != nil
     }
 }
 

@@ -252,7 +252,7 @@ public func sharedModelVendor() -> OneShotSignal<SmartGoalsModel> {
         // CCC, 2/13/2016. We're using an in-memory store for now. Will need to switch to a persistent store once the model is sorted.
         let rootManagedObjectContext: SmartGoalsManagedObjectContext = SmartGoalsManagedObjectContext(name: "Root Context")
         let sharedModel = SmartGoalsModel(managedObjectContext: rootManagedObjectContext)
-        sleep(5) // CCC, 5/14/2016. Just testing.
+        sleep(10) // CCC, 5/15/2016. testing delay indicator
         updatableSignal.update(toValue: sharedModel)
     }
 

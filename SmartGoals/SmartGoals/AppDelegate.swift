@@ -21,7 +21,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
         splitViewController.delegate = self
         
-        // CCC, 5/15/2016. Would like to present a hold-ones-horses indicator after a beat if the database doesn't spin up immediately, then enable user interaction when it is up.
+        let vendor = sharedModelVendor()
+        if !vendor.isPrimed {
+            application.beginIgnoringInteractionEvents()
+            // CCC, 5/15/2016. Would like to present a hold-ones-horses indicator after a beat if the database doesn't spin up immediately, then enable user interaction when it is up.
+            // on 0.5 second delay, if not yet live, present loading indicator
+            // after at least one second, or when model is live, remove loading indicator
+            vendor.map { _ in
+                application.endIgnoringInteractionEvents()
+            }
+        }
         
         return true
     }
