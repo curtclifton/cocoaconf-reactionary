@@ -22,25 +22,28 @@ final class RolesController: NSObject, UITableViewDataSource {
         }
     }
     
-    private var rolesSignal: Signal<[Role]>!
+    private var rolesSignal: Signal<[Role]>?
     
     // MARK: - NSObject subclass
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        // CCC, 5/14/2016. Can't do this work until sharedModel is loaded
-        let backgroundSignal = sharedModel.valuesSignalForType(Role.self)
-        rolesSignal = QueueSpecificSignal<[Role]>(signal: backgroundSignal, notificationQueue: NSOperationQueue.mainQueue())
-        rolesSignal.map { (roles: [Role]) -> Void in
-            self.roles = roles
+        sharedModelVendor().map { sharedModel in
+            let backgroundSignal = sharedModel.valuesSignalForType(Role.self)
+            let rolesSignal = QueueSpecificSignal<[Role]>(signal: backgroundSignal, notificationQueue: NSOperationQueue.mainQueue())
+            rolesSignal.map { (roles: [Role]) -> Void in
+                self.roles = roles
+            }
+            self.rolesSignal = rolesSignal // necessary to keep signal alive
         }
     }
     
     // MARK: - Internal API
     
     func insertItem(sender: AnyObject? = nil) {
-        let _ = sharedModel.instantiateObjectOfType(Role.self)
+        sharedModelVendor().map { sharedModel in
+            let _ = sharedModel.instantiateObjectOfType(Role.self)
+        }
     }
     
     func deleteItem(atIndexPath indexPath: NSIndexPath) {
@@ -50,7 +53,9 @@ final class RolesController: NSObject, UITableViewDataSource {
             return
         }
         
-        sharedModel.delete(value: roleToDelete)
+        sharedModelVendor().map { sharedModel in
+            sharedModel.delete(value: roleToDelete)
+        }
     }
         
     func detailView(forRowAtIndexPath indexPath: NSIndexPath) -> UIViewController {
@@ -60,10 +65,11 @@ final class RolesController: NSObject, UITableViewDataSource {
         }
         
         let detailViewController = mainStoryboard.instantiateViewController(.RoleDetail) as! RoleDetailViewController
-        // CCC, 5/15/2016. shouldn't reach here without a valid sharedModel
-        let signal = sharedModel.valueSignalForIdentifier(roleToEdit.identifier)
-        detailViewController.configure(withSignal: signal) { role in
-            sharedModel.update(fromValue: role)
+        sharedModelVendor().map { sharedModel in
+            let signal = sharedModel.valueSignalForIdentifier(roleToEdit.identifier)
+            detailViewController.configure(withSignal: signal) { role in
+                sharedModel.update(fromValue: role)
+            }
         }
         return detailViewController
     }
