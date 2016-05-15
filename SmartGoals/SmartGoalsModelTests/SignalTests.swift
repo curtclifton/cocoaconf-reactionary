@@ -41,4 +41,28 @@ class SignalTests: XCTestCase {
         stringSignal.update(toValue: "dog")
         XCTAssertEqual(results, [1, 2, 3])
     }
+    
+    func testOneShotSignal() {
+        let intSignal = UpdatableSignal<Int>()
+        let oneShot = OneShotSignal(signal: intSignal)
+        
+        var firstNotificationCount = 0
+        oneShot.map { _ in
+            firstNotificationCount += 1
+        }
+        XCTAssert(firstNotificationCount == 0, "no value on signal yet, so shouldn't have counted")
+        intSignal.update(toValue: 0)
+        XCTAssert(firstNotificationCount == 1, "should count value on signal")
+        
+        var secondNotificationCount = 0
+        oneShot.map { _ in
+            secondNotificationCount += 1
+        }
+        XCTAssert(secondNotificationCount == 1, "value on signal, so should count immediately")
+        
+        // Finally, update signal again. Nothing should be notified:
+        intSignal.update(toValue: 1)
+        XCTAssert(firstNotificationCount == 1, "should be unchanged")
+        XCTAssert(secondNotificationCount == 1, "should be unchanged")
+    }
 }
