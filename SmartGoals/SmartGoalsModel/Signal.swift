@@ -19,6 +19,8 @@ import CoreData
 public class Signal<Value> {
 
     public private(set) var currentValue: Value?
+    public lazy var weakProxy: WeakProxySignal<Value> = WeakProxySignal<Value>(signal: self)
+    
     private var observers: [Value -> ()] = []
     
     /// Pushes a new value on the signal.
@@ -31,7 +33,7 @@ public class Signal<Value> {
     
     /// Calls `transform` for all events, pushing the result on the returned signal.
     public func map<OutValue>(transform: Value -> OutValue) -> Signal<OutValue> {
-        let outSignal: Signal<OutValue> = createOutSignal()
+        let outSignal = Signal<OutValue>()
         
         let observer: Value -> () = { newValue in
             let outValue = transform(newValue)
@@ -44,7 +46,7 @@ public class Signal<Value> {
     
     /// Calls `transform` for all events, pushing the non-nil results on the returned signal.
     public func flatmap<OutValue>(transform: Value -> OutValue?) -> Signal<OutValue> {
-        let outSignal: Signal<OutValue> = createOutSignal()
+        let outSignal = Signal<OutValue>()
         
         let observer: Value -> () = { newValue in
             if let outValue = transform(newValue) {
@@ -56,16 +58,12 @@ public class Signal<Value> {
         return outSignal
     }
 
-    //MARK: Private API
+    //MARK: Subclass API
 
     private func notifyObservers(ofValue value: Value) {
         for observer in observers {
             observer(value)
         }
-    }
-    
-    private func createOutSignal<OutValue>() -> Signal<OutValue> {
-        return Signal<OutValue>()
     }
     
     private func addObserver(observer: Value -> ()) {
@@ -94,6 +92,104 @@ public class UpdatableSignal<Value>: Signal<Value> {
 
 // CCC, 5/15/2016. All the composite signals create retain cycles! We need some way to break those.
 
+// MARK: - Reference Management
+
+/// A signal-like class that supports unsubscribing.
+///
+/// Instances of this are obtained via the `weakProxy` property of true `Signal`s.
+public final class WeakProxySignal<Value> {
+    public private(set) var currentValue: Value?
+    private var wrappedTransforms: [WeakWrapper<WeakTransform<Value>>] = []
+    
+    private init(signal: Signal<Value>) {
+        signal.map { value in
+            self.notifyObservers(ofValue: value)
+        }
+    }
+
+    /// Calls `transform` for all events, pushing the result on the returned signal.
+    ///
+    /// Callers must ensure that they retain a reference to the returned `Transform` object as long as they wish to subscribe to the receiver. The `transform` function will cease to be called sometime after the last reference to the returned `Transform` is nilled. Because of the vagaries of memory management, this may not be immediately.
+    public func map<OutValue>(transform: Value -> OutValue) -> (Transform, Signal<OutValue>) {
+        let outSignal = Signal<OutValue>()
+        
+        let observer: Value -> () = { newValue in
+            let outValue = transform(newValue)
+            outSignal.update(toValue: outValue)
+        }
+        
+        let transform = addObserver(observer)
+        return (transform, outSignal)
+    }
+    
+    /// Calls `transform` for all events, pushing the non-nil results on the returned signal.
+    ///
+    /// Callers must ensure that they retain a reference to the returned `Transform` object as long as they wish to subscribe to the receiver. The `transform` function will cease to be called sometime after the last reference to the returned `Transform` is nilled. Because of the vagaries of memory management, this may not be immediately.
+    public func flatmap<OutValue>(transform: Value -> OutValue?) -> (Transform, Signal<OutValue>) {
+        let outSignal = Signal<OutValue>()
+        
+        let observer: Value -> () = { newValue in
+            if let outValue = transform(newValue) {
+                outSignal.update(toValue: outValue)
+            }
+        }
+        
+        let transform = addObserver(observer)
+        return (transform, outSignal)
+    }
+    
+    private func notifyObservers(ofValue value: Value) {
+        cleanTransforms()
+        let observers = wrappedTransforms.flatMap { wrapper in wrapper.value?.observer }
+        for observer in observers {
+            observer(value)
+        }
+    }
+    
+    private func addObserver(observer: Value -> ()) -> WeakTransform<Value> {
+        cleanTransforms()
+        let result = WeakTransform(observer)
+        let wrapped = WeakWrapper(result)
+        wrappedTransforms.append(wrapped)
+        if let existingValue = currentValue {
+            observer(existingValue)
+        }
+        return result
+    }
+
+    private func cleanTransforms() {
+        wrappedTransforms = wrappedTransforms.filter { wrapper in !wrapper.isEmptied }
+    }
+}
+
+/// This opaque class is returned by the map functions on a signal's `weakProxy`.
+///
+/// It is used to keep a transform applied to a signal's `weakProxy` alive. A client maintains its subscription to the signal by keeping a reference to the returned `WeakTransform`. The client can unsubscribe from the signal by releasing the corresponding `WeakTransform`.
+public class Transform {
+}
+
+/// The actual class we used to allow weak references to the observer blocks.
+///
+/// This is a private subclass so we can hide the generic `Value`.
+private final class WeakTransform<Value>: Transform {
+    let observer: (Value) -> Void
+    
+    init(_ observer: (Value) -> Void) {
+        self.observer = observer
+    }
+}
+
+/// A utility wrapper class so we can put weak references inside Swift arrays with strong typing.
+private final class WeakWrapper<Wrapped: AnyObject> {
+    weak var value: Wrapped?
+    var isEmptied: Bool {
+        return value == nil
+    }
+    init(_ value: Wrapped) {
+        self.value = value
+    }
+}
+
 // MARK: - Queues
 
 // CCC, 5/15/2016. Extend Signal with fluent method to create queueSpecificSignal, make the init private
@@ -101,13 +197,14 @@ public class UpdatableSignal<Value>: Signal<Value> {
 public class QueueSpecificSignal<Value>: Signal<Value> {
     private let sourceSignal: Signal<Value>
     private let notificationQueue: NSOperationQueue
+    private var transform: Transform? // must be an optional var so we can use `self` in definition
     
     public init(signal: Signal<Value>, notificationQueue: NSOperationQueue) {
         self.sourceSignal = signal
         self.notificationQueue = notificationQueue
         super.init()
-
-        signal.addObserver { value in
+        
+        self.transform = signal.weakProxy.addObserver { value in
             self.update(toValue: value)
         }
     }

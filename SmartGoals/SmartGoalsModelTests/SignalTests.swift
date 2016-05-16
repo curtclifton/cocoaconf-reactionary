@@ -120,4 +120,28 @@ class SignalTests: XCTestCase {
             XCTAssertEqual(result.1, expected.1)
         }
     }
+    
+    func testWeakProxy() {
+        let intSignal = UpdatableSignal<Int>()
+        var strongResults: [Int] = []
+        var weakResults: [Int] = []
+        autoreleasepool {
+            intSignal.map { strongResults.append($0) }
+            let (transform, _) = intSignal.weakProxy.map { weakResults.append($0) }
+            
+            // push through some values that should land in both accumulators
+            intSignal.update(toValue: 0)
+            intSignal.update(toValue: 1)
+            intSignal.update(toValue: 2)
+            
+            print("transform: \(transform)") // keeps compiler from complaining about unused `transform`
+        }
+        
+        // push through values that should only land in strong accumulator
+        intSignal.update(toValue: 3)
+        intSignal.update(toValue: 4)
+        
+        XCTAssertEqual(strongResults, [0,1,2,3,4])
+        XCTAssertEqual(weakResults, [0,1,2])
+    }
 }
