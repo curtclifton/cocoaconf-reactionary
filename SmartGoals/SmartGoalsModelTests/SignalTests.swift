@@ -100,7 +100,10 @@ class SignalTests: XCTestCase {
         
         var results: [(Int?, String?)] = []
         
-        intSignal.signal(zippingWith: stringSignal).map { pair in results.append(pair) }
+        let zipSignal = intSignal.signal(zippingWith: stringSignal)
+        zipSignal.map { pair in
+            results.append(pair)
+        }
         
         intSignal.update(toValue: 0)
         stringSignal.update(toValue: "A")
