@@ -93,4 +93,31 @@ class SignalTests: XCTestCase {
         let difference = round(end.timeIntervalSinceDate(start))
         XCTAssert(difference == delay, "Expected approximately \(delay) second delay. Got \(difference)")
     }
+    
+    func testZip2Signal() {
+        let intSignal = UpdatableSignal<Int>()
+        let stringSignal = UpdatableSignal<String>()
+        
+        var results: [(Int?, String?)] = []
+        
+        intSignal.signal(zippingWith: stringSignal).map { pair in results.append(pair) }
+        
+        intSignal.update(toValue: 0)
+        stringSignal.update(toValue: "A")
+        stringSignal.update(toValue: "B")
+        intSignal.update(toValue: 1)
+        
+        let expectedResults: [(Int?, String?)] = [
+            (0, nil),
+            (0, "A"),
+            (0, "B"),
+            (1, "B"),
+        ]
+        
+        XCTAssertEqual(results.count, expectedResults.count)
+        for (result, expected) in zip(results, expectedResults) {
+            XCTAssertEqual(result.0, expected.0)
+            XCTAssertEqual(result.1, expected.1)
+        }
+    }
 }

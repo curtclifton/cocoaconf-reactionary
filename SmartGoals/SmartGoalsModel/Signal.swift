@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+// CCC, 5/15/2016. Split out Signal subclasses. Make most functions internal, since we have our own module for these now.
+
 /// A mappable signal producing values of type `Value`.
 ///
 /// In general, clients must retain instances of `Signal` except as documented. The basic capture pattern is that a signal captures the blocks passed to `map` and `flatmap`. Those blocks capture both the signal returned by the mapping function.
@@ -76,6 +78,11 @@ public class Signal<Value> {
 
 /// A signal to which client code can push new values.
 public class UpdatableSignal<Value>: Signal<Value> {
+    public convenience init(withInitialValue value: Value) {
+        self.init()
+        update(toValue: value)
+    }
+    
     public override init() {
         super.init()
     }
@@ -84,6 +91,8 @@ public class UpdatableSignal<Value>: Signal<Value> {
         super.update(toValue: value)
     }
 }
+
+// MARK: - Queues
 
 // CCC, 5/15/2016. Extend Signal with fluent method to create queueSpecificSignal, make the init private
 // CCC, 5/15/2016. Document memory management.
@@ -111,6 +120,8 @@ public class QueueSpecificSignal<Value>: Signal<Value> {
         }
     }
 }
+
+// MARK: - One Shots
 
 // CCC, 5/15/2016. Extend Signal with fluent method to create oneShotSignal, make the init private
 // CCC, 5/15/2016. document memory management
@@ -147,12 +158,7 @@ public final class OneShotSignal<Value>: Signal<Value> {
     }
 }
 
-extension Signal {
-    func signal(withDelay delay: NSTimeInterval) -> DelayedSignal<Value> {
-        let result = DelayedSignal(signal: self, delay: delay)
-        return result
-    }
-}
+// MARK: - Delays
 
 public final class DelayedSignal<Value>: Signal<Value> {
     private let sourceSignal: Signal<Value>
@@ -172,6 +178,43 @@ public final class DelayedSignal<Value>: Signal<Value> {
         }
     }
 }
+
+extension Signal {
+    public func signal(withDelay delay: NSTimeInterval) -> DelayedSignal<Value> {
+        let result = DelayedSignal(signal: self, delay: delay)
+        return result
+    }
+}
+
+// MARK: - Combinators
+
+public final class Zip2Signal<InValue1, InValue2>: Signal<(InValue1?, InValue2?)> {
+    private let signal1: Signal<InValue1>
+    private let signal2: Signal<InValue2>
+    
+    private init(signal1: Signal<InValue1>, signal2: Signal<InValue2>) {
+        self.signal1 = signal1
+        self.signal2 = signal2
+        super.init()
+        
+        signal1.map { value1 in
+            self.update(toValue: (value1, self.signal2.currentValue))
+        }
+        
+        signal2.map { value2 in
+            self.update(toValue: (self.signal1.currentValue, value2))
+        }
+    }
+}
+
+extension Signal {
+    public func signal<Value2>(zippingWith other: Signal<Value2>) -> Zip2Signal<Value, Value2> {
+        let result = Zip2Signal(signal1: self, signal2: other)
+        return result
+    }
+}
+
+// MARK: - Core Data Fetching
 
 /// Instantiates a signal that executes `fetchRequest` in `context`, passing the fetched objects through `transform` and propagating the non-nil results on the signal.
 ///
