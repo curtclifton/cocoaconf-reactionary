@@ -15,8 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     var window: UIWindow?
     
-    // CCC, 5/15/2016. hacking in to keep signal alive
-    var modelInitiationSignal: Signal<(SmartGoalsModel?, Bool?, Bool?)>?
+    // Keeps the signal alive during model spin-up.
+    private var modelInitiationSignal: Signal<(SmartGoalsModel?, Bool?, Bool?)>?
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -43,23 +43,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                 switch (sharedModel, start, canEnd) {
                 case (.None, .Some, .None):
                     print("start spinner") // CCC, 5/15/2016.
+                    #error HERE is where you're working. get view controller from storyboard, configure it for full-screen, crossfade presentation
+//                    splitViewController.presentViewController(<#T##viewControllerToPresent: UIViewController##UIViewController#>, animated: <#T##Bool#>, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
                 case (.Some, .Some, .None):
                     print("keep spinning, we started and haven't spun long enough yet") // CCC, 5/15/2016.
                 case (.Some, .Some, .Some):
                     print("stop spinner") // CCC, 5/15/2016.
+                    splitViewController.dismissViewControllerAnimated(true, completion: { 
+                        application.endIgnoringInteractionEvents()
+                    })
                     strongSelf.modelInitiationSignal = nil
                 case (.Some, .None, .None):
                     print("no need to spin, model went live quickly") // CCC, 5/15/2016.
+                    application.endIgnoringInteractionEvents()
                     strongSelf.modelInitiationSignal = nil
+                case (.None, .Some, .Some):
+                    // still waiting on the model, so nothing to do
+                    break
                 default:
-                    print("Unhandled case: \(triple)")
+                    fatalError("Unhandled case: \(triple)")
                 }
-            }
-            
-            // CCC, 5/15/2016. Would like to present a hold-ones-horses indicator after a beat if the database doesn't spin up immediately, then enable user interaction when it is up.
-            // after at least one second, or when model is live, remove loading indicator
-            vendor.map { _ in
-                application.endIgnoringInteractionEvents()
             }
         }
         
