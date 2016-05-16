@@ -92,6 +92,8 @@ public class UpdatableSignal<Value>: Signal<Value> {
     }
 }
 
+// CCC, 5/15/2016. All the composite signals create retain cycles! We need some way to break those.
+
 // MARK: - Queues
 
 // CCC, 5/15/2016. Extend Signal with fluent method to create queueSpecificSignal, make the init private
@@ -207,9 +209,44 @@ public final class Zip2Signal<InValue1, InValue2>: Signal<(InValue1?, InValue2?)
     }
 }
 
+public final class Zip3Signal<InValue1, InValue2, InValue3>: Signal<(InValue1?, InValue2?, InValue3?)> {
+    private let signal1: Signal<InValue1>
+    private let signal2: Signal<InValue2>
+    private let signal3: Signal<InValue3>
+    
+    private init(signal1: Signal<InValue1>, signal2: Signal<InValue2>, signal3: Signal<InValue3>) {
+        self.signal1 = signal1
+        self.signal2 = signal2
+        self.signal3 = signal3
+        super.init()
+        
+        signal1.map { value1 in
+            self.update(toValue: (value1, self.signal2.currentValue, self.signal3.currentValue))
+        }
+        
+        signal2.map { value2 in
+            self.update(toValue: (self.signal1.currentValue, value2, self.signal3.currentValue))
+        }
+        
+        signal3.map { value3 in
+            self.update(toValue: (self.signal1.currentValue, self.signal2.currentValue, value3))
+        }
+    }
+    
+    deinit {
+        // CCC, 5/15/2016. Unreachable, I think.
+        print("actually deallocated a Zip3Signal")
+    }
+}
+
 extension Signal {
     public func signal<Value2>(zippingWith other: Signal<Value2>) -> Zip2Signal<Value, Value2> {
         let result = Zip2Signal(signal1: self, signal2: other)
+        return result
+    }
+
+    public func signal<Value2, Value3>(zippingWith other2: Signal<Value2>, and other3: Signal<Value3>) -> Zip3Signal<Value, Value2, Value3> {
+        let result = Zip3Signal(signal1: self, signal2: other2, signal3: other3)
         return result
     }
 }
