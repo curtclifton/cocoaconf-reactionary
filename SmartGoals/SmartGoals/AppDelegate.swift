@@ -8,12 +8,16 @@
 
 import UIKit
 import SmartGoalsModelTouch
+import Reactionary
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
     var window: UIWindow?
-
+    
+    // CCC, 5/15/2016. hacking in to keep signal alive
+    var modelInitiationSignal: Signal<(Bool?, Bool?)>?
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         let splitViewController = self.window!.rootViewController as! UISplitViewController
@@ -23,9 +27,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         let vendor = sharedModelVendor()
         if !vendor.isPrimed {
+            // on 0.5 second delay, if not yet live, present loading indicator
+            let startSpinner = UpdatableSignal(withInitialValue: true).signal(withDelay: 2.0)
+            let canEndSpinner = startSpinner.signal(withDelay: 3.0)
+            let spinnerState = startSpinner.signal(zippingWith: canEndSpinner)
+            
+            modelInitiationSignal = spinnerState
+            print("\(NSDate())")
+            spinnerState.map { state in
+                print("\(NSDate()) spinner state: \(state)")
+            }
+            
             application.beginIgnoringInteractionEvents()
             // CCC, 5/15/2016. Would like to present a hold-ones-horses indicator after a beat if the database doesn't spin up immediately, then enable user interaction when it is up.
-            // on 0.5 second delay, if not yet live, present loading indicator
             // after at least one second, or when model is live, remove loading indicator
             vendor.map { _ in
                 application.endIgnoringInteractionEvents()
