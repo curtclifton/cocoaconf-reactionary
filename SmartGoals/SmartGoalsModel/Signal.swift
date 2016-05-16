@@ -23,6 +23,11 @@ public class Signal<Value> {
     
     private var observers: [Value -> ()] = []
     
+    // CCC, 5/15/2016. debugging:
+    deinit {
+        print("Deallocating \(self.dynamicType)")
+    }
+    
     /// Pushes a new value on the signal.
     ///
     /// This is private so subclasses can prevent clients from pushing signals. Clients wishing to push signals should use `UpdatableSignal`.
@@ -90,8 +95,6 @@ public class UpdatableSignal<Value>: Signal<Value> {
     }
 }
 
-// CCC, 5/15/2016. All the composite signals create retain cycles! We need some way to break those.
-
 // MARK: - Reference Management
 
 /// A signal-like class that supports unsubscribing.
@@ -102,15 +105,17 @@ public final class WeakProxySignal<Value> {
     private var wrappedTransforms: [WeakWrapper<WeakTransform<Value>>] = []
     
     private init(signal: Signal<Value>) {
+        // OK to capture self here. The underlying signal keeps us alive, but we don't keep a pointer to it.
         signal.map { value in
+            self.currentValue = value
             self.notifyObservers(ofValue: value)
         }
     }
 
     /// Calls `transform` for all events, pushing the result on the returned signal.
     ///
-    /// Callers must ensure that they retain a reference to the returned `Transform` object as long as they wish to subscribe to the receiver. The `transform` function will cease to be called sometime after the last reference to the returned `Transform` is nilled. Because of the vagaries of memory management, this may not be immediately.
-    public func map<OutValue>(transform: Value -> OutValue) -> (Transform, Signal<OutValue>) {
+    /// Callers must ensure that they retain a reference to the returned `TransformID` object as long as they wish to subscribe to the receiver. The `transform` function will cease to be called sometime after the last reference to the returned `TransformID` is nilled. Because of the vagaries of memory management, this may not be immediately.
+    public func map<OutValue>(transform: Value -> OutValue) -> (TransformID, Signal<OutValue>) {
         let outSignal = Signal<OutValue>()
         
         let observer: Value -> () = { newValue in
@@ -124,8 +129,8 @@ public final class WeakProxySignal<Value> {
     
     /// Calls `transform` for all events, pushing the non-nil results on the returned signal.
     ///
-    /// Callers must ensure that they retain a reference to the returned `Transform` object as long as they wish to subscribe to the receiver. The `transform` function will cease to be called sometime after the last reference to the returned `Transform` is nilled. Because of the vagaries of memory management, this may not be immediately.
-    public func flatmap<OutValue>(transform: Value -> OutValue?) -> (Transform, Signal<OutValue>) {
+    /// Callers must ensure that they retain a reference to the returned `TransformID` object as long as they wish to subscribe to the receiver. The `transform` function will cease to be called sometime after the last reference to the returned `TransformID` is nilled. Because of the vagaries of memory management, this may not be immediately.
+    public func flatmap<OutValue>(transform: Value -> OutValue?) -> (TransformID, Signal<OutValue>) {
         let outSignal = Signal<OutValue>()
         
         let observer: Value -> () = { newValue in
@@ -165,13 +170,13 @@ public final class WeakProxySignal<Value> {
 /// This opaque class is returned by the map functions on a signal's `weakProxy`.
 ///
 /// It is used to keep a transform applied to a signal's `weakProxy` alive. A client maintains its subscription to the signal by keeping a reference to the returned `WeakTransform`. The client can unsubscribe from the signal by releasing the corresponding `WeakTransform`.
-public class Transform {
+public class TransformID {
 }
 
 /// The actual class we used to allow weak references to the observer blocks.
 ///
 /// This is a private subclass so we can hide the generic `Value`.
-private final class WeakTransform<Value>: Transform {
+private final class WeakTransform<Value>: TransformID {
     let observer: (Value) -> Void
     
     init(_ observer: (Value) -> Void) {
@@ -197,15 +202,15 @@ private final class WeakWrapper<Wrapped: AnyObject> {
 public class QueueSpecificSignal<Value>: Signal<Value> {
     private let sourceSignal: Signal<Value>
     private let notificationQueue: NSOperationQueue
-    private var transform: Transform? // must be an optional var so we can use `self` in definition
+    private var transform: TransformID? // must be an optional var so we can use `self` in definition
     
     public init(signal: Signal<Value>, notificationQueue: NSOperationQueue) {
         self.sourceSignal = signal
         self.notificationQueue = notificationQueue
         super.init()
         
-        self.transform = signal.weakProxy.addObserver { value in
-            self.update(toValue: value)
+        self.transform = signal.weakProxy.addObserver { [weak self] value in
+            self?.update(toValue: value)
         }
     }
     
@@ -226,12 +231,14 @@ public class QueueSpecificSignal<Value>: Signal<Value> {
 // CCC, 5/15/2016. document memory management
 public final class OneShotSignal<Value>: Signal<Value> {
     private let sourceSignal: Signal<Value>
+    private var transform: TransformID? // must be an optional var so we can use `self` in definition
+
     public init(signal: Signal<Value>) {
         self.sourceSignal = signal
         super.init()
         
-        signal.addObserver { value in
-            self.update(toValue: value)
+        transform = signal.weakProxy.addObserver { [weak self] value in
+            self?.update(toValue: value)
         }
     }
     
@@ -262,17 +269,19 @@ public final class OneShotSignal<Value>: Signal<Value> {
 public final class DelayedSignal<Value>: Signal<Value> {
     private let sourceSignal: Signal<Value>
     private let delayInNanoseconds: Int64
+    private var transform: TransformID? // must be an optional var so we can use `self` in definition
     
     private init(signal: Signal<Value>, delay: NSTimeInterval) {
         self.sourceSignal = signal
         self.delayInNanoseconds = Int64(round(delay * 1e9))
         super.init()
         
-        signal.map { newValue in
-            let propagateTime = dispatch_time(0, self.delayInNanoseconds)
+        transform = signal.weakProxy.addObserver { [weak self] newValue in
+            guard let strongSelf = self else { return }
+            let propagateTime = dispatch_time(0, strongSelf.delayInNanoseconds)
             let queue = dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0)
             dispatch_after(propagateTime, queue) {
-                self.update(toValue: newValue)
+                self?.update(toValue: newValue) // intentionally using weak self again
             }
         }
     }
@@ -290,19 +299,22 @@ extension Signal {
 public final class Zip2Signal<InValue1, InValue2>: Signal<(InValue1?, InValue2?)> {
     private let signal1: Signal<InValue1>
     private let signal2: Signal<InValue2>
-    
+    private var transforms: [TransformID] = [] // must be a var so we can use `self` in definitions
+
     private init(signal1: Signal<InValue1>, signal2: Signal<InValue2>) {
         self.signal1 = signal1
         self.signal2 = signal2
         super.init()
         
-        signal1.map { value1 in
-            self.update(toValue: (value1, self.signal2.currentValue))
-        }
+        transforms.append(signal1.weakProxy.addObserver { [weak self] value1 in
+            guard let strongSelf = self else { return }
+            strongSelf.update(toValue: (value1, strongSelf.signal2.currentValue))
+        })
         
-        signal2.map { value2 in
-            self.update(toValue: (self.signal1.currentValue, value2))
-        }
+        transforms.append(signal2.weakProxy.addObserver { [weak self] value2 in
+            guard let strongSelf = self else { return }
+            strongSelf.update(toValue: (strongSelf.signal1.currentValue, value2))
+        })
     }
 }
 
@@ -310,29 +322,28 @@ public final class Zip3Signal<InValue1, InValue2, InValue3>: Signal<(InValue1?, 
     private let signal1: Signal<InValue1>
     private let signal2: Signal<InValue2>
     private let signal3: Signal<InValue3>
-    
+    private var transforms: [TransformID] = [] // must be a var so we can use `self` in definitions
+
     private init(signal1: Signal<InValue1>, signal2: Signal<InValue2>, signal3: Signal<InValue3>) {
         self.signal1 = signal1
         self.signal2 = signal2
         self.signal3 = signal3
         super.init()
         
-        signal1.map { value1 in
-            self.update(toValue: (value1, self.signal2.currentValue, self.signal3.currentValue))
-        }
+        transforms.append(signal1.weakProxy.addObserver { [weak self] value1 in
+            guard let strongSelf = self else { return }
+            strongSelf.update(toValue: (value1, strongSelf.signal2.currentValue, strongSelf.signal3.currentValue))
+        })
         
-        signal2.map { value2 in
-            self.update(toValue: (self.signal1.currentValue, value2, self.signal3.currentValue))
-        }
+        transforms.append(signal2.weakProxy.addObserver { [weak self] value2 in
+            guard let strongSelf = self else { return }
+            strongSelf.update(toValue: (strongSelf.signal1.currentValue, value2, strongSelf.signal3.currentValue))
+        })
         
-        signal3.map { value3 in
-            self.update(toValue: (self.signal1.currentValue, self.signal2.currentValue, value3))
-        }
-    }
-    
-    deinit {
-        // CCC, 5/15/2016. Unreachable, I think.
-        print("actually deallocated a Zip3Signal")
+        transforms.append(signal3.weakProxy.addObserver { [weak self] value3 in
+            guard let strongSelf = self else { return }
+            strongSelf.update(toValue: (strongSelf.signal1.currentValue, strongSelf.signal2.currentValue, value3))
+        })
     }
 }
 
