@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     var window: UIWindow?
     
     // CCC, 5/15/2016. hacking in to keep signal alive
-    var modelInitiationSignal: Signal<(Bool?, Bool?)>?
+    var modelInitiationSignal: Signal<(SmartGoalsModel?, Bool?, Bool?)>?
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -27,18 +27,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         let vendor = sharedModelVendor()
         if !vendor.isPrimed {
+            application.beginIgnoringInteractionEvents()
+            
             // on 0.5 second delay, if not yet live, present loading indicator
             let startSpinner = UpdatableSignal(withInitialValue: true).signal(withDelay: 2.0)
             let canEndSpinner = startSpinner.signal(withDelay: 3.0)
-            let spinnerState = startSpinner.signal(zippingWith: canEndSpinner)
             
-            modelInitiationSignal = spinnerState
+            let composite = vendor.signal(zippingWith: startSpinner, and: canEndSpinner)
+            modelInitiationSignal = composite
+            
             print("\(NSDate())")
-            spinnerState.map { state in
-                print("\(NSDate()) spinner state: \(state)")
+            composite.map { [weak self] triple in
+                let (sharedModel, start, canEnd) = triple
+                switch (sharedModel, start, canEnd) {
+                case (.None, .Some, .None):
+                    print("start spinner") // CCC, 5/15/2016.
+                case (.Some, .Some, .None):
+                    print("keep spinning, we started and haven't spun long enough yet") // CCC, 5/15/2016.
+                case (.Some, .Some, .Some):
+                    print("stop spinner") // CCC, 5/15/2016.
+                    self?.modelInitiationSignal = nil
+                case (.Some, .None, .None):
+                    print("no need to spin, model went live quickly") // CCC, 5/15/2016.
+                    self?.modelInitiationSignal = nil
+                default:
+                    print("Unhandled case: \(triple)")
+                }
             }
             
-            application.beginIgnoringInteractionEvents()
             // CCC, 5/15/2016. Would like to present a hold-ones-horses indicator after a beat if the database doesn't spin up immediately, then enable user interaction when it is up.
             // after at least one second, or when model is live, remove loading indicator
             vendor.map { _ in
