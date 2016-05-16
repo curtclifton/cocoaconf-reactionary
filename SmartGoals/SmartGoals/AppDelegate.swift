@@ -38,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             
             print("\(NSDate())")
             composite.map { [weak self] triple in
+                guard let strongSelf = self else { return }
                 let (sharedModel, start, canEnd) = triple
                 switch (sharedModel, start, canEnd) {
                 case (.None, .Some, .None):
@@ -46,10 +47,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                     print("keep spinning, we started and haven't spun long enough yet") // CCC, 5/15/2016.
                 case (.Some, .Some, .Some):
                     print("stop spinner") // CCC, 5/15/2016.
-                    self?.modelInitiationSignal = nil
+                    strongSelf.modelInitiationSignal = nil
                 case (.Some, .None, .None):
                     print("no need to spin, model went live quickly") // CCC, 5/15/2016.
-                    self?.modelInitiationSignal = nil
+                    strongSelf.modelInitiationSignal = nil
                 default:
                     print("Unhandled case: \(triple)")
                 }
