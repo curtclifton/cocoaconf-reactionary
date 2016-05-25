@@ -23,11 +23,6 @@ public class Signal<Value> {
     
     private var observers: [Value -> ()] = []
     
-    // CCC, 5/15/2016. debugging:
-    deinit {
-        print("Deallocating \(self.dynamicType)")
-    }
-    
     /// Pushes a new value on the signal.
     ///
     /// This is private so subclasses can prevent clients from pushing signals. Clients wishing to push signals should use `UpdatableSignal`.
