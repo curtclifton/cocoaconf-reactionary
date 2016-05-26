@@ -46,7 +46,7 @@ class SpinnerViewController: UIViewController {
             case (.Some, .Some, .None): // keep spinning, we started and haven't spun long enough yet
                 break
             case (.Some, .Some, .Some): // stop spinner
-                host.dismissViewControllerAnimated(false, completion: {
+                host.dismissViewControllerAnimated(true, completion: {
                     completion()
                     presenterCompositeSignal = nil
                 })
