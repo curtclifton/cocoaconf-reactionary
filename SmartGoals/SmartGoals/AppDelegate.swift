@@ -43,9 +43,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                 switch (sharedModel, start, canEnd) {
                 case (.None, .Some, .None):
                     print("start spinner") // CCC, 5/15/2016.
-                    let spinnerViewController = MainStoryboard().instantiateViewController(.Spinner)
+                    let spinnerViewController = MainStoryboard().instantiateViewController(.Spinner) as! SpinnerViewController
                     spinnerViewController.modalTransitionStyle = .CrossDissolve
                     spinnerViewController.modalPresentationStyle = .OverFullScreen
+                    spinnerViewController.message = "Loading Data"
                     splitViewController.presentViewController(spinnerViewController, animated: true, completion: nil)
                 case (.Some, .Some, .None):
                     print("keep spinning, we started and haven't spun long enough yet") // CCC, 5/15/2016.

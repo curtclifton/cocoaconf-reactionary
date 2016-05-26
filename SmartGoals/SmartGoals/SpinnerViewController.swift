@@ -9,7 +9,13 @@
 import UIKit
 
 class SpinnerViewController: UIViewController {
-
+    var message = ""
+    
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var label: UILabel!
+    
+    override func viewWillAppear(animated: Bool) {
+        label.text = message
+        activityIndicator.startAnimating()
+    }
 }
