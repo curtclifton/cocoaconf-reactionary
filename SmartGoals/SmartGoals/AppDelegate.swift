@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     private var modelInitiationSignal: Signal<(SmartGoalsModel?, Bool?, Bool?)>?
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
         let splitViewController = self.window!.rootViewController as! UISplitViewController
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
@@ -30,8 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             application.beginIgnoringInteractionEvents()
             
             // on 0.5 second delay, if not yet live, present loading indicator
-            let startSpinner = UpdatableSignal(withInitialValue: true).signal(withDelay: 2.0)
-            let canEndSpinner = startSpinner.signal(withDelay: 3.0)
+            let startSpinner = UpdatableSignal(withInitialValue: true).signal(withDelay: 0.5)
+            let canEndSpinner = startSpinner.signal(withDelay: 1.0)
             
             let composite = vendor.signal(zippingWith: startSpinner, and: canEndSpinner)
             modelInitiationSignal = composite
