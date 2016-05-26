@@ -269,7 +269,7 @@ public final class DelayedSignal<Value>: Signal<Value> {
     
     private init(signal: Signal<Value>, delay: NSTimeInterval) {
         self.sourceSignal = signal
-        self.delayInNanoseconds = Int64(round(delay * 1e9))
+        self.delayInNanoseconds = Int64(round(delay * 1_000_000_000))
         super.init()
         
         transform = signal.weakProxy.addObserver { [weak self] newValue in
