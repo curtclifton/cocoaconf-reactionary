@@ -19,6 +19,7 @@ import CoreData
 public class Signal<Value> {
 
     public private(set) var currentValue: Value?
+    // CCC, 5/25/2016. document
     public lazy var weakProxy: WeakProxySignal<Value> = WeakProxySignal<Value>(signal: self)
     
     private var observers: [Value -> ()] = []
@@ -148,7 +149,7 @@ public final class WeakProxySignal<Value> {
     
     private func addObserver(observer: Value -> ()) -> WeakTransform<Value> {
         cleanTransforms()
-        let result = WeakTransform(observer)
+        let result = WeakTransform(observer) // CCC, 5/25/2016. Use Jim's trick of putting a deinit on WeakTransform that triggers clean-up, probably can lose the manual clean-up then
         let wrapped = WeakWrapper(result)
         wrappedTransforms.append(wrapped)
         if let existingValue = currentValue {

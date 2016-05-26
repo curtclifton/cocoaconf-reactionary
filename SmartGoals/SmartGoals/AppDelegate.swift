@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     var window: UIWindow?
     
     // Keeps the signal alive during model spin-up.
-    private var modelInitiationSignal: Signal<(SmartGoalsModel?, Bool?, Bool?)>?
+    private var modelInitiationSignal: Signal<(Bool?, Bool?, Bool?)>? // CCC, 5/25/2016. move to spinner view helper
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         let splitViewController = self.window!.rootViewController as! UISplitViewController
@@ -26,37 +26,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         let vendor = sharedModelVendor()
         if !vendor.isPrimed {
+            let isPrimedSignal = vendor.map { _ in true }
             application.beginIgnoringInteractionEvents()
+            // CCC, 5/25/2016. Move the rest of this to a helper, passing label, hostViewController, and completion block.
+            // CCC, 5/25/2016. May need to get back a keep alive token, or might stash it on the SpinnerViewController
             
             // on 0.5 second delay, if not yet live, present loading indicator
             let startSpinner = UpdatableSignal(withInitialValue: true).signal(withDelay: 0.5)
             let canEndSpinner = startSpinner.signal(withDelay: 1.0)
             
-            let composite = vendor.signal(zippingWith: startSpinner, and: canEndSpinner)
+            let composite = isPrimedSignal.signal(zippingWith: startSpinner, and: canEndSpinner)
             modelInitiationSignal = composite
             
-            print("\(NSDate())")
             composite.map { [weak self] triple in
                 guard let strongSelf = self else { return }
                 let (sharedModel, start, canEnd) = triple
                 switch (sharedModel, start, canEnd) {
-                case (.None, .Some, .None):
-                    print("start spinner") // CCC, 5/15/2016.
+                case (.None, .Some, .None): // start spinner
                     let spinnerViewController = MainStoryboard().instantiateViewController(.Spinner) as! SpinnerViewController
                     spinnerViewController.modalTransitionStyle = .CrossDissolve
                     spinnerViewController.modalPresentationStyle = .OverFullScreen
                     spinnerViewController.message = "Loading Data"
                     splitViewController.presentViewController(spinnerViewController, animated: true, completion: nil)
-                case (.Some, .Some, .None):
-                    print("keep spinning, we started and haven't spun long enough yet") // CCC, 5/15/2016.
-                case (.Some, .Some, .Some):
-                    print("stop spinner") // CCC, 5/15/2016.
+                case (.Some, .Some, .None): // keep spinning, we started and haven't spun long enough yet
+                    break
+                case (.Some, .Some, .Some): // stop spinner
                     splitViewController.dismissViewControllerAnimated(true, completion: { 
                         application.endIgnoringInteractionEvents()
                     })
                     strongSelf.modelInitiationSignal = nil
-                case (.Some, .None, .None):
-                    print("no need to spin, model went live quickly") // CCC, 5/15/2016.
+                case (.Some, .None, .None): // no need to spin, wait ended quickly
                     application.endIgnoringInteractionEvents()
                     strongSelf.modelInitiationSignal = nil
                 case (.None, .Some, .Some):

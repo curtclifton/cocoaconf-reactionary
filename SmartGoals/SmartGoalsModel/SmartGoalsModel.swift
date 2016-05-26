@@ -237,6 +237,8 @@ extension ModelValue {
 
 private var _sharedModelVendor: OneShotSignal<SmartGoalsModel>?
 private var _modelSpinUpQueue: NSOperationQueue?
+
+/// Returns a `OneShotSignal` that vends a model singleton on the main queue.
 public func sharedModelVendor() -> OneShotSignal<SmartGoalsModel> {
     if let existingVendor = _sharedModelVendor {
         return existingVendor
@@ -252,7 +254,7 @@ public func sharedModelVendor() -> OneShotSignal<SmartGoalsModel> {
         // CCC, 2/13/2016. We're using an in-memory store for now. Will need to switch to a persistent store once the model is sorted.
         let rootManagedObjectContext: SmartGoalsManagedObjectContext = SmartGoalsManagedObjectContext(name: "Root Context")
         let sharedModel = SmartGoalsModel(managedObjectContext: rootManagedObjectContext)
-        sleep(5) // CCC, 5/15/2016. testing delay indicator
+        sleep(1) // CCC, 5/15/2016. testing delay indicator
         updatableSignal.update(toValue: sharedModel)
     }
 
