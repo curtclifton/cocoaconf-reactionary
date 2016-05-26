@@ -43,8 +43,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                 switch (sharedModel, start, canEnd) {
                 case (.None, .Some, .None):
                     print("start spinner") // CCC, 5/15/2016.
-                    #error HERE is where you're working. get view controller from storyboard, configure it for full-screen, crossfade presentation
-//                    splitViewController.presentViewController(<#T##viewControllerToPresent: UIViewController##UIViewController#>, animated: <#T##Bool#>, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
+                    let spinnerViewController = MainStoryboard().instantiateViewController(.Spinner)
+                    spinnerViewController.modalTransitionStyle = .CrossDissolve
+                    spinnerViewController.modalPresentationStyle = .OverFullScreen
+                    splitViewController.presentViewController(spinnerViewController, animated: true, completion: nil)
                 case (.Some, .Some, .None):
                     print("keep spinning, we started and haven't spun long enough yet") // CCC, 5/15/2016.
                 case (.Some, .Some, .Some):

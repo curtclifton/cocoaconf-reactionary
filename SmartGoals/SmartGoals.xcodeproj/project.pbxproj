@@ -79,6 +79,7 @@
 		4DED3F9A1CCDB76500182A3F /* ModelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED3F991CCDB76500182A3F /* ModelExtensions.swift */; };
 		4DED3F9C1CCDC73600182A3F /* Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED3F9B1CCDC73600182A3F /* Storyboard.swift */; };
 		4DED3F9E1CCDD29C00182A3F /* RolesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED3F9D1CCDD29C00182A3F /* RolesController.swift */; };
+		4DF152CF1CF6B028004D1FE1 /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF152CE1CF6B028004D1FE1 /* SpinnerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -195,6 +196,7 @@
 		4DED3F991CCDB76500182A3F /* ModelExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelExtensions.swift; sourceTree = "<group>"; };
 		4DED3F9B1CCDC73600182A3F /* Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storyboard.swift; sourceTree = "<group>"; };
 		4DED3F9D1CCDD29C00182A3F /* RolesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RolesController.swift; sourceTree = "<group>"; };
+		4DF152CE1CF6B028004D1FE1 /* SpinnerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,6 +318,7 @@
 				4DED3F9D1CCDD29C00182A3F /* RolesController.swift */,
 				4D0E00171C58921700744A86 /* RolesTableViewController.swift */,
 				4D028BF51CD5B5C900BCE481 /* RoleDetailViewController.swift */,
+				4DF152CE1CF6B028004D1FE1 /* SpinnerViewController.swift */,
 				4DED3F9B1CCDC73600182A3F /* Storyboard.swift */,
 				4D028BF01CD0654E00BCE481 /* Extensions */,
 				4D0E001E1C58921700744A86 /* Assets.xcassets */,
@@ -718,6 +721,7 @@
 				4DED3F981CCC38B500182A3F /* GoalSetTableViewController.swift in Sources */,
 				4DED3F9E1CCDD29C00182A3F /* RolesController.swift in Sources */,
 				4DED3F9A1CCDB76500182A3F /* ModelExtensions.swift in Sources */,
+				4DF152CF1CF6B028004D1FE1 /* SpinnerViewController.swift in Sources */,
 				4D91E4F91CD6E2DD00B3346A /* ReactiveControl.swift in Sources */,
 				4D0E001A1C58921700744A86 /* EmptyDetailViewController.swift in Sources */,
 				4D91E5011CD7113800B3346A /* UISwitchExtensions.swift in Sources */,
@@ -1308,6 +1312,7 @@
 				4D3F59121CDBA69B00A1869C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4D3F59161CDBA69B00A1869C /* Build configuration list for PBXNativeTarget "ReactionaryTests" */ = {
 			isa = XCConfigurationList;
@@ -1316,6 +1321,7 @@
 				4D3F59141CDBA69B00A1869C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4D3F59371CDBAAA100A1869C /* Build configuration list for PBXNativeTarget "ReactionaryTouch" */ = {
 			isa = XCConfigurationList;
@@ -1324,6 +1330,7 @@
 				4D3F59391CDBAAA100A1869C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4D74E6E21C61AC2E00E11F3E /* Build configuration list for PBXNativeTarget "SmartGoalsModelTouch" */ = {
 			isa = XCConfigurationList;

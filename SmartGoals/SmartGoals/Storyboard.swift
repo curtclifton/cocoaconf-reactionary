@@ -33,6 +33,7 @@ enum MainViewControllers: String, ViewControllerType {
     case Roles = "Roles"
     case GoalSet = "GoalSet"
     case RoleDetail = "RoleDetail"
+    case Spinner = "Spinner"
 }
 
 struct MainStoryboard: Storyboard {
