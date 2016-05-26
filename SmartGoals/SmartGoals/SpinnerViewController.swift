@@ -18,6 +18,7 @@ class SpinnerViewController: UIViewController {
             }
         }
     }
+    
     /// Waits asynchronously for `signal` to vend a value, presenting a delay indicator if needed.
     ///
     /// If `signal` vends a value quickly, then no delay indicator is presented. Otherwise an indicator is presented modally over the full screen and is left visible for at least long enough for the user to see it. It's dismissed when, or shortly after, `signal` vends its value.
@@ -38,14 +39,14 @@ class SpinnerViewController: UIViewController {
             switch (sharedModel, start, canEnd) {
             case (.None, .Some, .None): // start spinner
                 let spinnerViewController = MainStoryboard().instantiateViewController(.Spinner) as! SpinnerViewController
-//                spinnerViewController.modalTransitionStyle = .CrossDissolve
-                spinnerViewController.modalPresentationStyle = .OverFullScreen
+                spinnerViewController.modalTransitionStyle = .CrossDissolve
+                spinnerViewController.modalPresentationStyle = .FullScreen
                 spinnerViewController.message = message
                 host.presentViewController(spinnerViewController, animated: true, completion: nil)
             case (.Some, .Some, .None): // keep spinning, we started and haven't spun long enough yet
                 break
             case (.Some, .Some, .Some): // stop spinner
-                host.dismissViewControllerAnimated(true, completion: {
+                host.dismissViewControllerAnimated(false, completion: {
                     completion()
                     presenterCompositeSignal = nil
                 })
