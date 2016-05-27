@@ -263,7 +263,25 @@ class SmartGoalsModelTests: XCTestCase {
         waitForExpectationsWithTimeout(5)
     }
     
-    // CCC, 5/26/2016. need to test delete with an item fetch too
+    func testItemDelete() {
+        let gotOneRole = expectationWithDescription("one role")
+        let gotNoRolesAgain = expectationWithDescription("no roles again")
+        
+        let identifier = self.testModel!.instantiateObjectOfType(Role.self)
+        let roleSignal = testModel!.valueSignalForIdentifier(identifier)
+        
+        roleSignal.map { (roleResult: Result<Role, FetchError>) -> Void in
+            switch roleResult {
+            case .value(let role):
+                gotOneRole.fulfill()
+                self.testModel!.delete(value: role)
+            case .error(.deleted):
+                gotNoRolesAgain.fulfill()
+            }
+        }
+        
+        waitForExpectationsWithTimeout(5)
+    }
     
     func testReferences() {
         let reviewID = testModel!.instantiateObjectOfType(Review.self)
