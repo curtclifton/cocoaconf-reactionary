@@ -20,10 +20,9 @@ class RoleDetailViewController: UIViewController {
     }
     private var updater: ((Role) -> Void)?
     
-    // CCC, 5/15/2016. We have no mechanism to clear/close the detail editor. So deleting the active role then editing it leads to a crash.
     private var role: Role? {
         didSet {
-            // CCC, 5/27/2016. Don't push if we got EOL
+            // CCC, 5/27/2016. Don't push if we got EOL? Or count on someone else to tear us down.
             if let role = role where role != oldValue {
                 updater?(role)
             }

@@ -252,10 +252,10 @@ public func sharedModelVendor() -> OneShotSignal<SmartGoalsModel> {
     _modelSpinUpQueue = queue
     queue.qualityOfService = .UserInteractive
     queue.addOperationWithBlock {
-        // CCC, 2/13/2016. We're using an in-memory store for now. Will need to switch to a persistent store once the model is sorted.
+        // CCC, 2/13/2016. We're using an in-memory store for now. Will need to switch to a persistent store once the model is sorted. Take out this delay then:
+        sleep(1) // simulate delay so app start-up is more like a disk-based store
         let rootManagedObjectContext: SmartGoalsManagedObjectContext = SmartGoalsManagedObjectContext(name: "Root Context")
         let sharedModel = SmartGoalsModel(managedObjectContext: rootManagedObjectContext)
-        sleep(1) // CCC, 5/15/2016. testing delay indicator
         updatableSignal.update(toValue: sharedModel)
     }
 
