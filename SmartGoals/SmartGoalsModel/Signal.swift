@@ -13,13 +13,18 @@ import CoreData
 
 /// A mappable signal producing values of type `Value`.
 ///
-/// In general, clients must retain instances of `Signal` except as documented. The basic capture pattern is that a signal captures the blocks passed to `map` and `flatmap`. Those blocks capture both the signal returned by the mapping function.
+/// In general, clients must retain instances of `Signal` except as documented. The basic capture pattern is that a signal captures the blocks passed to `map` and `flatmap`. The new signal returned from an invocation of either mapping function is also retained by the original signal.
+///
+/// Clients wishing to unsubscribe from a signal should instead subscribe to the signal's `weakProxy`.
 ///
 /// N.B., anything captured by a block passed to `map` and `flatmap` will be retained until the `Signal` is released. Capturing strong `self` in one of these blocks is a great way to created a retain cycle.
 public class Signal<Value> {
 
     public private(set) var currentValue: Value?
-    // CCC, 5/25/2016. document
+    
+    /// Returns the weak proxy object for this signal.
+    ///
+    /// - SeeAlso: `WeakProxySignal`
     public lazy var weakProxy: WeakProxySignal<Value> = WeakProxySignal<Value>(signal: self)
     
     private var observers: [Value -> ()] = []
@@ -110,7 +115,7 @@ public final class WeakProxySignal<Value> {
 
     /// Calls `transform` for all events, pushing the result on the returned signal.
     ///
-    /// Callers must ensure that they retain a reference to the returned `TransformID` object as long as they wish to subscribe to the receiver. The `transform` function will cease to be called sometime after the last reference to the returned `TransformID` is nilled. Because of the vagaries of memory management, this may not be immediately.
+    /// Callers must ensure that they retain a reference to the returned `TransformID` object as long as they wish to subscribe to the receiver. The `transform` function will cease to be called sometime after the last reference to the returned `TransformID` is nilled. Because of the vagaries of memory management, this may not happen immediately.
     public func map<OutValue>(transform: Value -> OutValue) -> (TransformID, Signal<OutValue>) {
         let outSignal = Signal<OutValue>()
         
@@ -125,7 +130,7 @@ public final class WeakProxySignal<Value> {
     
     /// Calls `transform` for all events, pushing the non-nil results on the returned signal.
     ///
-    /// Callers must ensure that they retain a reference to the returned `TransformID` object as long as they wish to subscribe to the receiver. The `transform` function will cease to be called sometime after the last reference to the returned `TransformID` is nilled. Because of the vagaries of memory management, this may not be immediately.
+    /// Callers must ensure that they retain a reference to the returned `TransformID` object as long as they wish to subscribe to the receiver. The `transform` function will cease to be called sometime after the last reference to the returned `TransformID` is nilled. Because of the vagaries of memory management, this may not happen immediately.
     public func flatmap<OutValue>(transform: Value -> OutValue?) -> (TransformID, Signal<OutValue>) {
         let outSignal = Signal<OutValue>()
         
@@ -193,14 +198,15 @@ private final class WeakWrapper<Wrapped: AnyObject> {
 
 // MARK: - Queues
 
-// CCC, 5/15/2016. Extend Signal with fluent method to create queueSpecificSignal, make the init private
-// CCC, 5/15/2016. Document memory management.
+/// A signal that notifies its observer on a specific queue.
+///
+/// A `QueueSpecificSignal` retains its source signal so that clients need only retain the `QueueSpecificSignal` itself.
 public class QueueSpecificSignal<Value>: Signal<Value> {
     private let sourceSignal: Signal<Value>
     private let notificationQueue: NSOperationQueue
     private var transform: TransformID? // must be an optional var so we can use `self` in definition
     
-    public init(signal: Signal<Value>, notificationQueue: NSOperationQueue) {
+    private init(signal: Signal<Value>, notificationQueue: NSOperationQueue) {
         self.sourceSignal = signal
         self.notificationQueue = notificationQueue
         super.init()
@@ -221,15 +227,23 @@ public class QueueSpecificSignal<Value>: Signal<Value> {
     }
 }
 
+extension Signal {
+    public func signal(onQueue queue: NSOperationQueue) -> QueueSpecificSignal<Value> {
+        let result = QueueSpecificSignal(signal: self, notificationQueue: queue)
+        return result
+    }
+}
+
 // MARK: - One Shots
 
-// CCC, 5/15/2016. Extend Signal with fluent method to create oneShotSignal, make the init private
-// CCC, 5/15/2016. document memory management
+/// A signal that notifies its observers exactly once.
+///
+/// A `OneShotSignal` retains its source signal so that clients need only retain the `OneShotSignal` itself.
 public final class OneShotSignal<Value>: Signal<Value> {
     private let sourceSignal: Signal<Value>
     private var transform: TransformID? // must be an optional var so we can use `self` in definition
 
-    public init(signal: Signal<Value>) {
+    private init(signal: Signal<Value>) {
         self.sourceSignal = signal
         super.init()
         
@@ -257,6 +271,13 @@ public final class OneShotSignal<Value>: Signal<Value> {
     
     public var isPrimed: Bool {
         return currentValue != nil
+    }
+}
+
+extension Signal {
+    public func oneShotSignal() -> OneShotSignal<Value> {
+        let result = OneShotSignal(signal: self)
+        return result
     }
 }
 

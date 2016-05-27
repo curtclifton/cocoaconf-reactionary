@@ -30,7 +30,7 @@ final class RolesController: NSObject, UITableViewDataSource {
         super.awakeFromNib()
         sharedModelVendor().map { sharedModel in
             let backgroundSignal = sharedModel.valuesSignalForType(Role.self)
-            let rolesSignal = QueueSpecificSignal<[Role]>(signal: backgroundSignal, notificationQueue: NSOperationQueue.mainQueue())
+            let rolesSignal = backgroundSignal.signal(onQueue: .mainQueue())
             rolesSignal.map { (roles: [Role]) -> Void in
                 self.roles = roles
             }

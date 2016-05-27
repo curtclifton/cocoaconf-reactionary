@@ -262,6 +262,8 @@ class SmartGoalsModelTests: XCTestCase {
         waitForExpectationsWithTimeout(5)
     }
     
+    // CCC, 5/26/2016. need to test delete with an item fetch too
+    
     func testReferences() {
         let reviewID = testModel!.instantiateObjectOfType(Review.self)
         let goalSetSignal = testModel!.valueSignalForNewInstanceOfType(GoalSet.self)

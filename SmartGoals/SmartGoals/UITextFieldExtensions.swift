@@ -18,7 +18,7 @@ private var valueChangedSignalKey: UInt8 = 0
 // CCC, 5/1/2016. Use conformance to ReactiveControl instead
 extension UITextField {
     func takeValue(fromSignal signal: Signal<String>) {
-        let mainThreadSignal = QueueSpecificSignal(signal: signal, notificationQueue: NSOperationQueue.mainQueue())
+        let mainThreadSignal = signal.signal(onQueue: .mainQueue())
         // Need to hang onto the signal so it isn't deallocated
         objc_setAssociatedObject(self, &setterSignalKey, mainThreadSignal, .OBJC_ASSOCIATION_RETAIN)
         mainThreadSignal.map { [weak self] (value: String) -> Void in

@@ -244,8 +244,8 @@ public func sharedModelVendor() -> OneShotSignal<SmartGoalsModel> {
         return existingVendor
     }
     let updatableSignal = UpdatableSignal<SmartGoalsModel>()
-    let mainSignal = QueueSpecificSignal(signal: updatableSignal, notificationQueue: .mainQueue())
-    _sharedModelVendor = OneShotSignal(signal: mainSignal)
+    let mainSignal = updatableSignal.signal(onQueue: .mainQueue())
+    _sharedModelVendor = mainSignal.oneShotSignal()
     
     let queue = NSOperationQueue()
     _modelSpinUpQueue = queue
