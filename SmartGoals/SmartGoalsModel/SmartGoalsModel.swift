@@ -46,7 +46,7 @@ public final class SmartGoalsModel {
     }
     
     /// Instantiates an object corresponding to the given type and returns a value signal for it.
-    public func valueSignalForNewInstanceOfType<Value: ModelValue>(type: Value.Type) -> Signal<Value> {
+    public func valueSignalForNewInstanceOfType<Value: ModelValue>(type: Value.Type) -> Signal<Result<Value, FetchError>> {
         let identifier = instantiateObjectOfType(type)
         let result = valueSignalForIdentifier(identifier)
         return result
@@ -55,7 +55,7 @@ public final class SmartGoalsModel {
     /// Returns a signal vending new values for the item with the given identifier.
     ///
     /// Pushes new values whenever the underlying object is updated.
-    public func valueSignalForIdentifier<Value: ModelValue>(identifier: Identifier<Value>) -> Signal<Value> {
+    public func valueSignalForIdentifier<Value: ModelValue>(identifier: Identifier<Value>) -> Signal<Result<Value, FetchError>> {
         let fetchRequest = Value.fetchRequest
         fetchRequest.predicate = identifier.predicate
         let newSignal = itemFetchSignal(fetchRequest: fetchRequest, context: self.readingManagedObjectContext) {

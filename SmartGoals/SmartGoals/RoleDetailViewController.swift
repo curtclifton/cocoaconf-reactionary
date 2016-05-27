@@ -12,7 +12,7 @@ import UIKit
 
 class RoleDetailViewController: UIViewController {
 
-    private var signal: Signal<Role>? {
+    private var signal: Signal<Result<Role, FetchError>>? {
         didSet {
             signalIsConnected = false // new signal, so force reconnect
             connectSignalIfNeeded()
@@ -45,7 +45,7 @@ class RoleDetailViewController: UIViewController {
     
     // MARK: - Public API
     
-    func configure(withSignal signal:Signal<Role>, updater: (Role) -> Void) {
+    func configure(withSignal signal:Signal<Result<Role, FetchError>>, updater: (Role) -> Void) {
         self.signal = signal
         self.updater = updater
     }
@@ -60,23 +60,34 @@ class RoleDetailViewController: UIViewController {
             return
         }
 
+        let valueOnlySignal = signal.flatmap { roleResult -> Role? in
+            do {
+                let role = try roleResult.extract()
+                return role
+            } catch {
+                return nil
+            }
+        }
+        
         // Update local copy of role whenever it changes
-        signal.map { [weak self] role in self?.role = role }
+        valueOnlySignal.map { [weak self] role in
+            self?.role = role
+        }
         
         // Make fields update whenever the pertinent properties change
-        let shortNameSignal = signal
+        let shortNameSignal = valueOnlySignal
             .map({
                 $0.shortName
             })
         name.takeValue(fromSignal: shortNameSignal)
         
-        let explanationSignal = signal
+        let explanationSignal = valueOnlySignal
             .map({
                 $0.explanation
             })
         explanation.takeValue(fromSignal: explanationSignal)
         
-        let isActiveSignal = signal
+        let isActiveSignal = valueOnlySignal
             .map({
                 $0.isActive
             })

@@ -378,19 +378,30 @@ extension Signal {
 
 // MARK: - Core Data Fetching
 
+public enum FetchError: ErrorType {
+    /// signals that an observed value has been deleted
+    case deleted
+}
+
 /// Instantiates a signal that executes `fetchRequest` in `context`, passing the fetched objects through `transform` and propagating the non-nil results on the signal.
 ///
 /// Expects 0 or 1 non-nil results for each fetch.
-public func itemFetchSignal<Value>(fetchRequest fetchRequest: NSFetchRequest, context: NSManagedObjectContext, transform: AnyObject -> Value?) -> Signal<Value> {
-    // CCC, 5/26/2016. We could probably make the transform here detect the 1-to-0 transition and do the result wrapping.
-    #error HERE is where you're working. 
-    let signal = FetchSignal<Value>(fetchRequest: fetchRequest, context: context) { (results: [AnyObject]) -> Value? in
+public func itemFetchSignal<Value>(fetchRequest fetchRequest: NSFetchRequest, context: NSManagedObjectContext, transform: AnyObject -> Value?) -> Signal<Result<Value, FetchError>> {
+    var hasSeenMatch = false
+    let signal = FetchSignal<Result<Value, FetchError>>(fetchRequest: fetchRequest, context: context) { (results: [AnyObject]) -> Result<Value, FetchError>? in
         let typedMatches = results.flatMap { transform($0) }
         assert(typedMatches.count <= 1)
         if let match = typedMatches.first {
-            return match
+            hasSeenMatch = true
+            return .value(match)
         }
-        return nil
+        
+        if hasSeenMatch {
+            // Match was here. Now it's gone. Must have been deleted.
+            return .error(.deleted)
+        }
+        
+        return nil // nil return tells signal to propagate nothing
     }
     return signal
 }

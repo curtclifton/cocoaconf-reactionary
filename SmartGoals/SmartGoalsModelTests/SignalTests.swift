@@ -44,7 +44,7 @@ class SignalTests: XCTestCase {
     
     func testOneShotSignal() {
         let intSignal = UpdatableSignal<Int>()
-        let oneShot = OneShotSignal(signal: intSignal)
+        let oneShot = intSignal.oneShotSignal()
         
         var firstNotificationCount = 0
         oneShot.map { _ in

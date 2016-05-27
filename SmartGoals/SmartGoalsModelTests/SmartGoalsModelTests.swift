@@ -73,8 +73,8 @@ class SmartGoalsModelTests: XCTestCase {
         var created = RefulfillableExpectation(expectationWithDescription("object created"))
         
         let createSignal1 = testModel!.valueSignalForNewInstanceOfType(Role.self)
-        createSignal1.map { role in
-            id = role.identifier
+        createSignal1.map { roleResult in
+            id = roleResult.unwrapped!.identifier
             created.fulfill()
         }
         
@@ -93,8 +93,8 @@ class SmartGoalsModelTests: XCTestCase {
         id = nil
         var created2 = RefulfillableExpectation(expectationWithDescription("object created"))
         let createSignal2 = testModel!.valueSignalForNewInstanceOfType(Role.self)
-        createSignal2.map { role in
-            id = role.identifier
+        createSignal2.map { roleResult in
+            id = roleResult.unwrapped!.identifier
             created2.fulfill()
         }
         
@@ -104,7 +104,7 @@ class SmartGoalsModelTests: XCTestCase {
         
         var signalled2 = RefulfillableExpectation(expectationWithDescription("second object signalled"))
         let signal2 = self.testModel!.valueSignalForIdentifier(id!)
-        signal2.map { (role: Role) -> Void in
+        signal2.map { (role: Result<Role, FetchError>) -> Void in
             // Should be signalled immediately due to existing value
             signalled2.fulfill()
         }
@@ -158,10 +158,10 @@ class SmartGoalsModelTests: XCTestCase {
         let gotInitialRole = expectationWithDescription("initial role created")
         
         var roleToUpdate: Role? = nil
-        signal.map { role in
+        signal.map { roleResult in
             if roleToUpdate == nil {
                 // first time through
-                roleToUpdate = role
+                roleToUpdate = roleResult.unwrapped!
                 gotInitialRole.fulfill()
             }
         }
@@ -172,9 +172,9 @@ class SmartGoalsModelTests: XCTestCase {
         let newShortName = "Updated"
         roleToUpdate!.shortName = newShortName
         testModel!.update(fromValue: roleToUpdate!)
-        signal.map { role in
+        signal.map { roleResult in
             // Expect to be signalled with the original value on initial subscription, then again with the updated value.
-            if role.shortName == newShortName {
+            if roleResult.unwrapped!.shortName == newShortName {
                 gotUpdatedRole.fulfill()
             }
         }
@@ -191,13 +191,13 @@ class SmartGoalsModelTests: XCTestCase {
         var role1: Role?
         var role2: Role?
         
-        signal1.map { role in
-            role1 = role
+        signal1.map { roleResult in
+            role1 = roleResult.unwrapped!
             gotInstanceOne.fulfill()
         }
         
-        signal2.map { role in
-            role2 = role
+        signal2.map { roleResult in
+            role2 = roleResult.unwrapped!
             gotInstanceTwo.fulfill()
         }
         
@@ -237,7 +237,8 @@ class SmartGoalsModelTests: XCTestCase {
         let gotOneRole = expectationWithDescription("one role")
         let gotNoRolesAgain = expectationWithDescription("no roles again")
         
-        let rolesSignal = QueueSpecificSignal(signal: testModel!.valuesSignalForType(Role.self), notificationQueue: NSOperationQueue.mainQueue())
+        let rolesSignal = testModel!.valuesSignalForType(Role.self).signal(onQueue: .mainQueue())
+
         rolesSignal.map { (roles: [Role]) -> Void in
             switch stage {
             case 0:
@@ -267,14 +268,14 @@ class SmartGoalsModelTests: XCTestCase {
     func testReferences() {
         let reviewID = testModel!.instantiateObjectOfType(Review.self)
         let goalSetSignal = testModel!.valueSignalForNewInstanceOfType(GoalSet.self)
-        let mainQueueGoalSetSignal = QueueSpecificSignal(signal: goalSetSignal, notificationQueue: NSOperationQueue.mainQueue())
+        let mainQueueGoalSetSignal = goalSetSignal.signal(onQueue: .mainQueue())
         
         var stage = 0
         let gotStageZero = expectationWithDescription("stage zero")
         let gotStageOne = expectationWithDescription("stage one")
         
-        mainQueueGoalSetSignal.map { (goalSet) -> Void in
-            var goalSet = goalSet
+        mainQueueGoalSetSignal.map { (goalSetResult) -> Void in
+            var goalSet = goalSetResult.unwrapped!
             switch stage {
             case 0:
                 stage += 1
