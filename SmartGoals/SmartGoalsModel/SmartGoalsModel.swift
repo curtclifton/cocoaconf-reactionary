@@ -209,7 +209,8 @@ extension ModelValue {
             do {
                 let fetchResult = try context.executeFetchRequest(fetchRequest)
                 guard let object = fetchResult.first as? ModelValueUpdatable else {
-                    fatalError("no existing object found for updating \(self)")
+                    // This shouldn't be fatal. With data races, the object could be gone from a simultaneous delete.
+                    return
                 }
                 object.updateFromValue(self)
             } catch {
