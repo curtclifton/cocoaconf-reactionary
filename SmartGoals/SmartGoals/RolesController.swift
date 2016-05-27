@@ -68,7 +68,6 @@ final class RolesController: NSObject, UITableViewDataSource {
         sharedModelVendor().map { sharedModel in
             let signal = sharedModel.valueSignalForIdentifier(roleToEdit.identifier)
             // CCC, 5/27/2016. Also need capture and map on signal to remove the detail view? Or return a signal for doing that? Really need to figure out routing strategy next, I guess.
-            #error HERE is where you're working. 
             detailViewController.configure(withSignal: signal) { role in
                 sharedModel.update(fromValue: role)
             }
