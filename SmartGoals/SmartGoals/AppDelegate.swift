@@ -22,13 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let vendor = sharedModelVendor()
         if !vendor.isPrimed {
             let isPrimedSignal = vendor.map { _ in true }
-            // -------------------------------------------------------------------------
-            // CCC, 5/27/2016. Move to Router:
-            application.beginIgnoringInteractionEvents()
-            SpinnerViewController.present(from: router.root, message: "Loading Data", signal: isPrimedSignal) {
-                application.endIgnoringInteractionEvents()
-            }
-            // -------------------------------------------------------------------------
+            router.blockInteraction(untilTrue: isPrimedSignal, message: NSLocalizedString("Loading Data", comment: "wait screen message"))
         }
         
         return true

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Reactionary
 import UIKit
 
 /// This class provides a common point of control to manage the display of master and detail views in the app.
@@ -26,6 +27,14 @@ class Router {
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
         splitViewController.delegate = self
+    }
+    
+    func blockInteraction(untilTrue signal: Signal<Bool>, message: String) {
+        let application = UIApplication.sharedApplication()
+        application.beginIgnoringInteractionEvents()
+        SpinnerViewController.present(from: root, message: message, signal: signal) {
+            application.endIgnoringInteractionEvents()
+        }
     }
 }
 
