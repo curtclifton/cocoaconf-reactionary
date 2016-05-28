@@ -31,7 +31,9 @@ final class RolesTableViewController: UITableViewController {
     // MARK: - UITableViewDelegate
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        // CCC, 4/24/2016. Do we want to use a Router to control detail views and whatnot?
+        // CCC, 5/27/2016. Just straight ask rolesController.showDetail(forRowAtIndexPath: indexPath)
+        // CCC, 5/27/2016. It should handle asking the Router to do this work:
+        #error HERE is where you're working. 
         if let splitViewController = self.splitViewController {
             let detailViewController = rolesController.detailView(forRowAtIndexPath: indexPath)
             // CCC, 5/1/2016. In landscape, we lose the navigation controller for the details when we do this:
