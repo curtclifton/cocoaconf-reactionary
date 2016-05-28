@@ -16,18 +16,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     var window: UIWindow?
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        let splitViewController = self.window!.rootViewController as! UISplitViewController
-        let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
-        navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
-        splitViewController.delegate = self
+        let router = Router.sharedInstance
+        router.configure(forWindow: self.window!)
         
         let vendor = sharedModelVendor()
         if !vendor.isPrimed {
             let isPrimedSignal = vendor.map { _ in true }
+            // -------------------------------------------------------------------------
+            // CCC, 5/27/2016. Move to Router:
             application.beginIgnoringInteractionEvents()
-            SpinnerViewController.present(from: splitViewController, message: "Loading Data", signal: isPrimedSignal) {
+            SpinnerViewController.present(from: router.root, message: "Loading Data", signal: isPrimedSignal) {
                 application.endIgnoringInteractionEvents()
             }
+            // -------------------------------------------------------------------------
         }
         
         return true
@@ -53,18 +54,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    }
-
-    // MARK: - Split view
-
-    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController:UIViewController, ontoPrimaryViewController primaryViewController:UIViewController) -> Bool {
-        guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
-        guard let topAsDetailController = secondaryAsNavController.topViewController as? EmptyDetailViewController else { return false }
-        if topAsDetailController.detailItem == nil {
-            // Return true to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
-            return true
-        }
-        return false
     }
 
 }

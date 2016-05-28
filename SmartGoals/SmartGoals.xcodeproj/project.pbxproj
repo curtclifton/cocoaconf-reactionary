@@ -49,6 +49,7 @@
 		4D63BE851C619FCF00FF19E4 /* TimeScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63BE841C619FCF00FF19E4 /* TimeScale.swift */; };
 		4D6834D21CF8A64800A61477 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6834D11CF8A64800A61477 /* Result.swift */; };
 		4D6834D31CF8ACF900A61477 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6834D11CF8A64800A61477 /* Result.swift */; };
+		4D6835131CF943DE00A61477 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6835121CF943DE00A61477 /* Router.swift */; };
 		4D6F33701C70250300B1B2B2 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4D6F336E1C70250300B1B2B2 /* Model.xcdatamodeld */; };
 		4D6F33711C70250300B1B2B2 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4D6F336E1C70250300B1B2B2 /* Model.xcdatamodeld */; };
 		4D6F33741C70345D00B1B2B2 /* SGMRole+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6F33721C70345D00B1B2B2 /* SGMRole+CoreDataProperties.swift */; };
@@ -177,6 +178,7 @@
 		4D63BE821C619EB800FF19E4 /* Goal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		4D63BE841C619FCF00FF19E4 /* TimeScale.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeScale.swift; sourceTree = "<group>"; };
 		4D6834D11CF8A64800A61477 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		4D6835121CF943DE00A61477 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		4D6F336F1C70250300B1B2B2 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		4D6F33721C70345D00B1B2B2 /* SGMRole+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SGMRole+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4D6F33731C70345D00B1B2B2 /* SGMRole.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SGMRole.swift; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 				4DED3F9D1CCDD29C00182A3F /* RolesController.swift */,
 				4D0E00171C58921700744A86 /* RolesTableViewController.swift */,
 				4D028BF51CD5B5C900BCE481 /* RoleDetailViewController.swift */,
+				4D6835121CF943DE00A61477 /* Router.swift */,
 				4DF152CE1CF6B028004D1FE1 /* SpinnerViewController.swift */,
 				4DED3F9B1CCDC73600182A3F /* Storyboard.swift */,
 				4D028BF01CD0654E00BCE481 /* Extensions */,
@@ -731,6 +734,7 @@
 				4D91E5011CD7113800B3346A /* UISwitchExtensions.swift in Sources */,
 				4DED3F9C1CCDC73600182A3F /* Storyboard.swift in Sources */,
 				4D91E4FF1CD7045A00B3346A /* UITextViewExtensions.swift in Sources */,
+				4D6835131CF943DE00A61477 /* Router.swift in Sources */,
 				4D0E00181C58921700744A86 /* RolesTableViewController.swift in Sources */,
 				4D0E00161C58921700744A86 /* AppDelegate.swift in Sources */,
 				4D028BF21CD0656800BCE481 /* ArrayExtensions.swift in Sources */,
