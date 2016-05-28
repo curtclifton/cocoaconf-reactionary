@@ -35,25 +35,28 @@ class SpinnerViewController: UIViewController {
         presenterCompositeSignal = composite
         
         composite.map { triple in
-            let (sharedModel, start, canEnd) = triple
-            switch (sharedModel, start, canEnd) {
-            case (.None, .Some, .None): // start spinner
+            let isDone = triple.0 ?? false
+            let canSpinStart = triple.1 ?? false
+            let hasSpunLongEnough = triple.2 ?? false
+            
+            switch (isDone, canSpinStart, hasSpunLongEnough) {
+            case (false, true, false): // start spinner
                 let spinnerViewController = MainStoryboard().instantiateViewController(.Spinner) as! SpinnerViewController
                 spinnerViewController.modalTransitionStyle = .CrossDissolve
                 spinnerViewController.modalPresentationStyle = .FullScreen
                 spinnerViewController.message = message
                 host.presentViewController(spinnerViewController, animated: true, completion: nil)
-            case (.Some, .Some, .None): // keep spinning, we started and haven't spun long enough yet
+            case (true, true, false): // keep spinning, we started and haven't spun long enough yet
                 break
-            case (.Some, .Some, .Some): // stop spinner
+            case (true, true, true): // stop spinner
                 host.dismissViewControllerAnimated(true, completion: {
                     completion()
                     presenterCompositeSignal = nil
                 })
-            case (.Some, .None, .None): // no need to spin, wait ended quickly
+            case (true, false, false): // no need to spin, wait ended quickly
                 completion()
                 presenterCompositeSignal = nil
-            case (.None, .Some, .Some): // still waiting, so nothing to do
+            case (false, true, true): // spinning and still waiting, so nothing to do yet
                 break
             default:
                 fatalError("Unhandled case: \(triple)")
