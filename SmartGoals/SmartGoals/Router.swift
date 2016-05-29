@@ -20,13 +20,20 @@ class Router {
         return mainWindow.rootViewController as! UISplitViewController // configuration error if not
     }
 
-    private var masterViews: [UIViewController] = []
+    private var masterViews: [UIViewController] = [] {
+        didSet {
+            print("set masterViews to “\(masterViews)”")
+            updateDisplay(oldMasterViews: oldValue)
+        }
+    }
+
     private var detailViews: [UIViewController] = [] {
         didSet {
             print("set detailViews to “\(detailViews)”")
-            // CCC, 5/29/2016. actual update what's showing based on detailViews and split view state?
+            updateDisplay(oldDetailViews: oldValue)
         }
     }
+
     private var hasNoRealDetails: Bool {
         if detailViews.isEmpty {
             return true
@@ -38,6 +45,8 @@ class Router {
         return isEmptyDetails
     }
     
+    // MARK: Internal API
+    
     func configure(forWindow window: UIWindow) {
         mainWindow = window
         
@@ -48,7 +57,6 @@ class Router {
         
         let detailNavigationController = root.viewControllers.last as! UINavigationController // configuration error if not
         let emptyDetailView = detailNavigationController.topViewController! // configuration error if not set
-        emptyDetailView.navigationItem.leftBarButtonItem = root.displayModeButtonItem()
         detailViews = [emptyDetailView]
         
         let masterNavigationController = root.viewControllers.first as! UINavigationController // configuration error if not
@@ -80,7 +88,6 @@ class Router {
     }
     
     func dismissDetail(viewController: UIViewController) {
-        // CCC, 5/28/2016. need a smarter implementation here, probably want to pop the nav controller stack and only present the placeholder if empty? or maybe keep our own array of the view controllers that we think should be on the nav stack
         guard let existingIndex = detailViews.indexOf(viewController) else {
             // not on stack, so nothing to do
             return
@@ -97,6 +104,51 @@ class Router {
         // CCC, 5/29/2016. can we use didSet on detailViews to do the work?
 //        root.showDetailViewController(emptyDetailViewController, sender: nil)
 //        detail.setViewControllers([emptyDetailViewController], animated: false)
+    }
+    
+    // MARK: Private API
+    
+    // CCC, 5/29/2016. rename parameters
+    // CCC, 5/29/2016. should this really just be a pair of functions? Do we need to call it to update both? Seems likely. Maybe a pair of update flags instead of arrays?
+    private func updateDisplay(oldMasterViews oldMasterViews: [UIViewController]? = nil, oldDetailViews: [UIViewController]? = nil) {
+        if root.collapsed {
+            // CCC, 5/29/2016. do the right thing
+        } else {
+            if oldMasterViews != nil {
+                let masterNavigationController = root.viewControllers.first as! UINavigationController
+                updateNavigationStack(controller: masterNavigationController, new: masterViews)
+            }
+            if oldDetailViews != nil {
+                let detailNavigationController = root.viewControllers.last as! UINavigationController
+                updateNavigationStack(controller: detailNavigationController, new: detailViews)
+                detailViews.first?.navigationItem.leftBarButtonItem = root.displayModeButtonItem()
+            }
+        }
+    }
+    
+    // CCC, 5/29/2016. Probably don't need oldViews?
+    private func updateNavigationStack(controller navigationController: UINavigationController, new newStack: [UIViewController]) {
+        let currentCount = navigationController.viewControllers.count
+        let newCount = newStack.count
+        let isJustASwap = currentCount == 1 && newCount == 1
+        navigationController.setViewControllers(newStack, animated: !isJustASwap)
+        // Find where the current and desired stacks diverge.
+//        let currentStack = navigationController.viewControllers
+        
+        
+        // CCC, 5/29/2016. UINavCont should do this:
+//        if newStack.startsWith(currentStack) {
+//            let controllersToAdd = newStack.suffixFrom(currentStack.count)
+//            for controller in controllersToAdd {
+//                let shouldAnimate = (controller == controllersToAdd.last)
+//                navigationController.pushViewController(controller, animated: shouldAnimate)
+//            }
+//        } else if currentStack.startsWith(newStack) {
+//            // CCC, 5/29/2016. dismiss first different view
+//        } else {
+//            // CCC, 5/29/2016. no common base, just swap?
+//            
+//        }
     }
 }
 
