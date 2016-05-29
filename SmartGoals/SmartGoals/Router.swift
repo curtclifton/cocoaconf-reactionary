@@ -24,10 +24,14 @@ class Router {
         return root.viewControllers.last as! UINavigationController // configuration error if not
     }
     
+    var detailViews: [UIViewController] = []
+    
     func configure(forWindow window: UIWindow) {
         mainWindow = window
         
-        detail.topViewController!.navigationItem.leftBarButtonItem = root.displayModeButtonItem() // configuration error if not set
+        let emptyDetailView = detail.topViewController! // configuration error if not set
+        detailViews = [emptyDetailView]
+        emptyDetailView.navigationItem.leftBarButtonItem = root.displayModeButtonItem()
         root.delegate = self
     }
     
@@ -39,19 +43,34 @@ class Router {
         }
     }
     
+    // -------------------------------------------------------------------------
+    // CCC, 5/28/2016. I'm starting to think that I should manage the full set of VCs on each virtual nav stack independently here, then override all of the UISplitViewControllerDelegate methods to just manage the damn thing myself.
+    // -------------------------------------------------------------------------
+    
     func showDetail(viewController: UIViewController) {
-        detail.setViewControllers([viewController], animated: false)
+        // CCC, 5/28/2016. Docs say this should push on nav controller:
+        detailViews.append(viewController)
+        root.showDetailViewController(viewController, sender: nil)
+//        detail.setViewControllers([viewController], animated: false)
     }
     
     func dismissDetail(viewController: UIViewController) {
         // CCC, 5/28/2016. need a smarter implementation here, probably want to pop the nav controller stack and only present the placeholder if empty? or maybe keep our own array of the view controllers that we think should be on the nav stack
         let emptyDetailViewController = MainStoryboard().instantiateViewController(.Empty)
-        detail.setViewControllers([emptyDetailViewController], animated: false)
+        detailViews = [emptyDetailViewController]
+        // CCC, 5/28/2016. Docs say this should push on nav controller:
+        root.showDetailViewController(emptyDetailViewController, sender: nil)
+//        detail.setViewControllers([emptyDetailViewController], animated: false)
     }
 }
 
 // MARK: - Split view
 extension Router: UISplitViewControllerDelegate {
+    @objc func splitViewController(splitViewController: UISplitViewController, showDetailViewController vc: UIViewController, sender: AnyObject?) -> Bool {
+        // CCC, 5/28/2016. shouldn't really need this override, but trying to figure out how docs are wrong
+        return false
+    }
+    
     @objc func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController:UIViewController, ontoPrimaryViewController primaryViewController:UIViewController) -> Bool {
         guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
         guard let topAsDetailController = secondaryAsNavController.topViewController as? EmptyDetailViewController else { return false }
@@ -60,5 +79,15 @@ extension Router: UISplitViewControllerDelegate {
             return true
         }
         return false
+    }
+
+    @objc func splitViewController(splitViewController: UISplitViewController, separateSecondaryViewControllerFromPrimaryViewController primaryViewController: UIViewController) -> UIViewController? {
+        // CCC, 5/28/2016. really?
+        if detailViews.isEmpty {
+            let emptyDetailViewController = MainStoryboard().instantiateViewController(.Empty)
+            return emptyDetailViewController
+        }
+        
+        return nil
     }
 }
