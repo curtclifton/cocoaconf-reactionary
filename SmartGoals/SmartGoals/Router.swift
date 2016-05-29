@@ -17,16 +17,18 @@ class Router {
     var mainWindow: UIWindow!
     
     var root: UISplitViewController {
-        return mainWindow.rootViewController as! UISplitViewController // configuration error to not have set
+        return mainWindow.rootViewController as! UISplitViewController // configuration error if not
+    }
+
+    var detail: UINavigationController {
+        return root.viewControllers.last as! UINavigationController // configuration error if not
     }
     
     func configure(forWindow window: UIWindow) {
         mainWindow = window
         
-        let splitViewController = mainWindow.rootViewController as! UISplitViewController
-        let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
-        navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
-        splitViewController.delegate = self
+        detail.topViewController!.navigationItem.leftBarButtonItem = root.displayModeButtonItem() // configuration error if not set
+        root.delegate = self
     }
     
     func blockInteraction(untilTrue signal: Signal<Bool>, message: String) {
@@ -38,14 +40,13 @@ class Router {
     }
     
     func showDetail(viewController: UIViewController) {
-        // CCC, 5/1/2016. In landscape, we lose the navigation controller for the details when we do this:
-        root.showDetailViewController(viewController, sender: nil)
+        detail.setViewControllers([viewController], animated: false)
     }
     
     func dismissDetail(viewController: UIViewController) {
-        // CCC, 5/28/2016. need a smarter implementation here, probably want to pop the nav controller stack and only present the placeholder if empty?
+        // CCC, 5/28/2016. need a smarter implementation here, probably want to pop the nav controller stack and only present the placeholder if empty? or maybe keep our own array of the view controllers that we think should be on the nav stack
         let emptyDetailViewController = MainStoryboard().instantiateViewController(.Empty)
-        root.showDetailViewController(emptyDetailViewController, sender: nil)
+        detail.setViewControllers([emptyDetailViewController], animated: false)
     }
 }
 

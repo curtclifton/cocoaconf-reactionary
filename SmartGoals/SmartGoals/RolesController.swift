@@ -71,18 +71,26 @@ final class RolesController: NSObject, UITableViewDataSource {
             let signal = sharedModel.valueSignalForIdentifier(roleToEdit.identifier)
             detailViewController.configure(withSignal: signal) { role in
                 sharedModel.update(fromValue: role)
-                signal.map { roleResult in
-                    if case .error(.deleted) = roleResult {
-                        // CCC, 5/28/2016. Ugh, should just make model vend on main queue and lose this:
-                        NSOperationQueue.mainQueue().addOperationWithBlock {
-                            Router.sharedRouter.dismissDetail(detailViewController)
-                        }
+            }
+            
+            signal.map { roleResult in
+                switch roleResult {
+                case .value:
+                    // CCC, 5/28/2016. Ugh, should just make model vend on main queue and lose this:
+                    NSOperationQueue.mainQueue().addOperationWithBlock {
+                        // got a value, so present
+                        Router.sharedRouter.showDetail(detailViewController)
+                    }
+                case .error(.deleted):
+                    // CCC, 5/28/2016. Ugh, should just make model vend on main queue and lose this:
+                    NSOperationQueue.mainQueue().addOperationWithBlock {
+                        Router.sharedRouter.dismissDetail(detailViewController)
                     }
                 }
             }
         }
+   
         
-        Router.sharedRouter.showDetail(detailViewController)
     }
 
     // MARK: - UITableViewDataSource
