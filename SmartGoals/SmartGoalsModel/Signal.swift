@@ -39,7 +39,7 @@ public class Signal<Value> {
     
     /// Calls `transform` for all events, pushing the result on the returned signal.
     public func map<OutValue>(transform: Value -> OutValue) -> Signal<OutValue> {
-        let outSignal = Signal<OutValue>()
+        let outSignal = MapOutputSignal<Value, OutValue>(observing: self)
         
         let observer: Value -> () = { newValue in
             let outValue = transform(newValue)
@@ -52,7 +52,7 @@ public class Signal<Value> {
     
     /// Calls `transform` for all events, pushing the non-nil results on the returned signal.
     public func flatmap<OutValue>(transform: Value -> OutValue?) -> Signal<OutValue> {
-        let outSignal = Signal<OutValue>()
+        let outSignal = MapOutputSignal<Value, OutValue>(observing: self)
         
         let observer: Value -> () = { newValue in
             if let outValue = transform(newValue) {
@@ -96,6 +96,20 @@ public class UpdatableSignal<Value>: Signal<Value> {
     }
 }
 
+protocol SourceAwareSignal {
+    associatedtype Value
+    var source: Signal<Value> { get }
+}
+
+final class MapOutputSignal<InValue, Value>: Signal<Value> {
+    weak var observed: Signal<InValue>?
+    
+    required init(observing observed: Signal<InValue>) {
+        self.observed = observed
+        super.init()
+    }
+}
+
 // MARK: - Reference Management
 
 /// A signal-like class that supports unsubscribing.
@@ -104,13 +118,15 @@ public class UpdatableSignal<Value>: Signal<Value> {
 public final class WeakProxySignal<Value> {
     public private(set) var currentValue: Value?
     private var wrappedTransforms: [WeakWrapper<WeakTransform<Value>>] = []
+    weak private var signal: Signal<Value>?
     
     private init(signal: Signal<Value>) {
-        // OK to capture self here. The underlying signal keeps us alive, but we don't keep a pointer to it.
+        // OK to capture self here. The underlying signal keeps us alive, but we don't keep a strong pointer to it.
         signal.map { value in
             self.currentValue = value
             self.notifyObservers(ofValue: value)
         }
+        self.signal = signal
     }
 
     /// Calls `transform` for all events, pushing the result on the returned signal.
@@ -198,16 +214,49 @@ private final class WeakWrapper<Wrapped: AnyObject> {
 
 // MARK: - Queues
 
+protocol QueueAwareSignal {
+    var queueForNotifications: NSOperationQueue? { get }
+}
+
+// Default implementation that walks source chain. QueueSpecificSignal has its own implementation that just returns the queue.
+extension QueueAwareSignal where Self: SourceAwareSignal {
+    var queueForNotifications: NSOperationQueue? {
+        let source = self.source
+        if let queueAwareSource = source as? QueueAwareSignal {
+            return queueAwareSource.queueForNotifications
+        }
+        return nil
+    }
+}
+
+extension MapOutputSignal: QueueAwareSignal {
+    var queueForNotifications: NSOperationQueue? {
+        if let queueAwareSource = observed as? QueueAwareSignal {
+            return queueAwareSource.queueForNotifications
+        }
+        return nil
+    }
+}
+
+extension WeakProxySignal: QueueAwareSignal {
+    var queueForNotifications: NSOperationQueue? {
+        if let queueAwareSource = signal as? QueueAwareSignal {
+            return queueAwareSource.queueForNotifications
+        }
+        return nil
+    }
+}
+
 /// A signal that notifies its observer on a specific queue.
 ///
 /// A `QueueSpecificSignal` retains its source signal so that clients need only retain the `QueueSpecificSignal` itself.
 public class QueueSpecificSignal<Value>: Signal<Value> {
-    private let sourceSignal: Signal<Value>
+    public let source: Signal<Value>
     private let queue: NSOperationQueue
     private var transform: TransformID? // must be an optional var so we can use `self` in definition
     
     private init(signal: Signal<Value>, notificationQueue: NSOperationQueue) {
-        self.sourceSignal = signal
+        self.source = signal
         self.queue = notificationQueue
         super.init()
         
@@ -228,14 +277,23 @@ public class QueueSpecificSignal<Value>: Signal<Value> {
 }
 
 extension Signal {
-    public func signal(onQueue queue: NSOperationQueue) -> QueueSpecificSignal<Value> {
-        if let queueSpecificSelf = self as? QueueSpecificSignal where queueSpecificSelf.queue === queue {
-            return queueSpecificSelf
+    public func signal(onQueue queue: NSOperationQueue) -> Signal<Value> {
+        if let queueAwareSelf = self as? QueueAwareSignal where queueAwareSelf.queueForNotifications === queue {
+            return self
         }
 
         let result = QueueSpecificSignal(signal: self, notificationQueue: queue)
         return result
     }
+}
+
+extension QueueSpecificSignal: QueueAwareSignal {
+    var queueForNotifications: NSOperationQueue? {
+        return queue
+    }
+}
+
+extension QueueSpecificSignal: SourceAwareSignal {
 }
 
 // MARK: - One Shots
@@ -244,11 +302,11 @@ extension Signal {
 ///
 /// A `OneShotSignal` retains its source signal so that clients need only retain the `OneShotSignal` itself.
 public final class OneShotSignal<Value>: Signal<Value> {
-    private let sourceSignal: Signal<Value>
+    public let source: Signal<Value>
     private var transform: TransformID? // must be an optional var so we can use `self` in definition
 
     private init(signal: Signal<Value>) {
-        self.sourceSignal = signal
+        self.source = signal
         super.init()
         
         transform = signal.weakProxy.addObserver { [weak self] value in
@@ -285,15 +343,19 @@ extension Signal {
     }
 }
 
+extension OneShotSignal: SourceAwareSignal, QueueAwareSignal {
+}
+
+
 // MARK: - Delays
 
 public final class DelayedSignal<Value>: Signal<Value> {
-    private let sourceSignal: Signal<Value>
+    public let source: Signal<Value>
     private let delayInNanoseconds: Int64
     private var transform: TransformID? // must be an optional var so we can use `self` in definition
     
     private init(signal: Signal<Value>, delay: NSTimeInterval) {
-        self.sourceSignal = signal
+        self.source = signal
         self.delayInNanoseconds = Int64(round(delay * 1_000_000_000))
         super.init()
         
@@ -313,6 +375,9 @@ extension Signal {
         let result = DelayedSignal(signal: self, delay: delay)
         return result
     }
+}
+
+extension DelayedSignal: SourceAwareSignal, QueueAwareSignal {
 }
 
 // MARK: - Combinators
