@@ -73,18 +73,25 @@ final class RolesController: NSObject, UITableViewDataSource {
                 sharedModel.update(fromValue: role)
             }
             
+            var isShowing = false
             signal.map { roleResult in
                 switch roleResult {
                 case .value:
                     // CCC, 5/28/2016. Ugh, should just make model vend on main queue and lose this:
                     NSOperationQueue.mainQueue().addOperationWithBlock {
                         // got a value, so present
-                        Router.sharedRouter.showDetail(detailViewController)
+                        if !isShowing {
+                            Router.sharedRouter.showDetail(detailViewController)
+                            isShowing = true
+                        }
                     }
                 case .error(.deleted):
                     // CCC, 5/28/2016. Ugh, should just make model vend on main queue and lose this:
                     NSOperationQueue.mainQueue().addOperationWithBlock {
-                        Router.sharedRouter.dismissDetail(detailViewController)
+                        if isShowing {
+                            Router.sharedRouter.dismissDetail(detailViewController)
+                            isShowing = false
+                        }
                     }
                 }
             }
