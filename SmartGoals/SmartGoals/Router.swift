@@ -14,25 +14,46 @@ import UIKit
 class Router {
     static var sharedRouter = Router()
     
-    var mainWindow: UIWindow!
+    private var mainWindow: UIWindow!
     
-    var root: UISplitViewController {
+    private var root: UISplitViewController {
         return mainWindow.rootViewController as! UISplitViewController // configuration error if not
     }
 
-    var detail: UINavigationController {
-        return root.viewControllers.last as! UINavigationController // configuration error if not
+    private var masterViews: [UIViewController] = []
+    private var detailViews: [UIViewController] = [] {
+        didSet {
+            print("set detailViews to “\(detailViews)”")
+            // CCC, 5/29/2016. actual update what's showing based on detailViews and split view state?
+        }
     }
-    
-    var detailViews: [UIViewController] = []
+    private var hasNoRealDetails: Bool {
+        if detailViews.isEmpty {
+            return true
+        }
+        if detailViews.count > 1 {
+            return false
+        }
+        let isEmptyDetails = (detailViews.first is EmptyDetailViewController)
+        return isEmptyDetails
+    }
     
     func configure(forWindow window: UIWindow) {
         mainWindow = window
         
-        let emptyDetailView = detail.topViewController! // configuration error if not set
-        detailViews = [emptyDetailView]
-        emptyDetailView.navigationItem.leftBarButtonItem = root.displayModeButtonItem()
         root.delegate = self
+        
+        // At launch, we expect the root split view controller to be expanded and to have a master and a detail navigation controller
+        assert(root.viewControllers.count == 2)
+        
+        let detailNavigationController = root.viewControllers.last as! UINavigationController // configuration error if not
+        let emptyDetailView = detailNavigationController.topViewController! // configuration error if not set
+        emptyDetailView.navigationItem.leftBarButtonItem = root.displayModeButtonItem()
+        detailViews = [emptyDetailView]
+        
+        let masterNavigationController = root.viewControllers.first as! UINavigationController // configuration error if not
+        let homeTabView = masterNavigationController.topViewController! // configuration error if not set
+        masterViews = [homeTabView]
     }
     
     func blockInteraction(untilTrue signal: Signal<Bool>, message: String) {
@@ -48,18 +69,33 @@ class Router {
     // -------------------------------------------------------------------------
     
     func showDetail(viewController: UIViewController) {
-        // CCC, 5/28/2016. Docs say this should push on nav controller:
-        detailViews.append(viewController)
-        root.showDetailViewController(viewController, sender: nil)
+        if hasNoRealDetails {
+            detailViews = [viewController]
+        } else {
+            detailViews.append(viewController)
+        }
+        // CCC, 5/29/2016. can we use didSet on detailViews to do the work?
+//        root.showDetailViewController(viewController, sender: nil)
 //        detail.setViewControllers([viewController], animated: false)
     }
     
     func dismissDetail(viewController: UIViewController) {
         // CCC, 5/28/2016. need a smarter implementation here, probably want to pop the nav controller stack and only present the placeholder if empty? or maybe keep our own array of the view controllers that we think should be on the nav stack
-        let emptyDetailViewController = MainStoryboard().instantiateViewController(.Empty)
-        detailViews = [emptyDetailViewController]
-        // CCC, 5/28/2016. Docs say this should push on nav controller:
-        root.showDetailViewController(emptyDetailViewController, sender: nil)
+        guard let existingIndex = detailViews.indexOf(viewController) else {
+            // not on stack, so nothing to do
+            return
+        }
+        
+        if existingIndex == 0 {
+            // popping only real view controller
+            let emptyDetailViewController = MainStoryboard().instantiateViewController(.Empty)
+            detailViews = [emptyDetailViewController]
+            return
+        }
+        
+        detailViews = Array(detailViews.prefixUpTo(existingIndex))
+        // CCC, 5/29/2016. can we use didSet on detailViews to do the work?
+//        root.showDetailViewController(emptyDetailViewController, sender: nil)
 //        detail.setViewControllers([emptyDetailViewController], animated: false)
     }
 }
