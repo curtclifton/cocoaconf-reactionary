@@ -203,12 +203,12 @@ private final class WeakWrapper<Wrapped: AnyObject> {
 /// A `QueueSpecificSignal` retains its source signal so that clients need only retain the `QueueSpecificSignal` itself.
 public class QueueSpecificSignal<Value>: Signal<Value> {
     private let sourceSignal: Signal<Value>
-    private let notificationQueue: NSOperationQueue
+    private let queue: NSOperationQueue
     private var transform: TransformID? // must be an optional var so we can use `self` in definition
     
     private init(signal: Signal<Value>, notificationQueue: NSOperationQueue) {
         self.sourceSignal = signal
-        self.notificationQueue = notificationQueue
+        self.queue = notificationQueue
         super.init()
         
         self.transform = signal.weakProxy.addObserver { [weak self] value in
@@ -219,7 +219,7 @@ public class QueueSpecificSignal<Value>: Signal<Value> {
     /// Overrides `notifyObservers(ofValue:)` to push notifications on `notificationQueue`.
     override private func notifyObservers(ofValue value: Value) {
         let observers = self.observers
-        notificationQueue.addOperationWithBlock { 
+        queue.addOperationWithBlock { 
             for observer in observers {
                 observer(value)
             }
@@ -229,6 +229,10 @@ public class QueueSpecificSignal<Value>: Signal<Value> {
 
 extension Signal {
     public func signal(onQueue queue: NSOperationQueue) -> QueueSpecificSignal<Value> {
+        if let queueSpecificSelf = self as? QueueSpecificSignal where queueSpecificSelf.queue === queue {
+            return queueSpecificSelf
+        }
+
         let result = QueueSpecificSignal(signal: self, notificationQueue: queue)
         return result
     }

@@ -29,8 +29,7 @@ final class RolesController: NSObject, UITableViewDataSource {
     override func awakeFromNib() {
         super.awakeFromNib()
         sharedModelVendor().map { sharedModel in
-            let backgroundSignal = sharedModel.valuesSignalForType(Role.self)
-            let rolesSignal = backgroundSignal.signal(onQueue: .mainQueue())
+            let rolesSignal = sharedModel.valuesSignalForType(Role.self)
             rolesSignal.map { (roles: [Role]) -> Void in
                 self.roles = roles
             }
@@ -77,21 +76,15 @@ final class RolesController: NSObject, UITableViewDataSource {
             signal.map { roleResult in
                 switch roleResult {
                 case .value:
-                    // CCC, 5/28/2016. Ugh, should just make model vend on main queue and lose this:
-                    NSOperationQueue.mainQueue().addOperationWithBlock {
-                        // got a value, so present
-                        if !isShowing {
-                            Router.sharedRouter.showDetail(detailViewController)
-                            isShowing = true
-                        }
+                    // got a value, so present
+                    if !isShowing {
+                        Router.sharedRouter.showDetail(detailViewController)
+                        isShowing = true
                     }
                 case .error(.deleted):
-                    // CCC, 5/28/2016. Ugh, should just make model vend on main queue and lose this:
-                    NSOperationQueue.mainQueue().addOperationWithBlock {
-                        if isShowing {
-                            Router.sharedRouter.dismissDetail(detailViewController)
-                            isShowing = false
-                        }
+                    if isShowing {
+                        Router.sharedRouter.dismissDetail(detailViewController)
+                        isShowing = false
                     }
                 }
             }

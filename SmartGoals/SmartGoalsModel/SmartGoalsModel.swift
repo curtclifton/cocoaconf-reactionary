@@ -45,12 +45,9 @@ public final class SmartGoalsModel {
         return identifier
     }
     
-    // -------------------------------------------------------------------------
-    // CCC, 5/28/2016. Make all the signals from the shared model deliver on main queue?
-    // CCC, 5/28/2016. Would need to audit uses to remove queue bouncing
-    // -------------------------------------------------------------------------
-    
     /// Instantiates an object corresponding to the given type and returns a value signal for it.
+    ///
+    /// Pushes new values whenever the underlying object is updated. Values are pushed on the main queue.
     public func valueSignalForNewInstanceOfType<Value: ModelValue>(type: Value.Type) -> Signal<Result<Value, FetchError>> {
         let identifier = instantiateObjectOfType(type)
         let result = valueSignalForIdentifier(identifier)
@@ -59,27 +56,29 @@ public final class SmartGoalsModel {
 
     /// Returns a signal vending new values for the item with the given identifier.
     ///
-    /// Pushes new values whenever the underlying object is updated.
+    /// Pushes new values whenever the underlying object is updated. Values are pushed on the main queue.
     public func valueSignalForIdentifier<Value: ModelValue>(identifier: Identifier<Value>) -> Signal<Result<Value, FetchError>> {
         let fetchRequest = Value.fetchRequest
         fetchRequest.predicate = identifier.predicate
         let newSignal = itemFetchSignal(fetchRequest: fetchRequest, context: self.readingManagedObjectContext) {
             return Value.init(fromObject: $0)
         }
-
-        return newSignal
+        
+        let mainQueueSignal = newSignal.signal(onQueue: .mainQueue())
+        return mainQueueSignal
     }
     
     /// Returns a signal vending all values for items of `type`.
     ///
-    /// Pushes all values whenever any one of them changes.
+    /// Pushes all values whenever any one of them changes. Values are pushed on the main queue.
     public func valuesSignalForType<Value: ModelValue>(type: Value.Type) -> Signal<[Value]> {
         let fetchRequest = type.fetchRequest
         let newSignal = arrayFetchSignal(fetchRequest: fetchRequest, context: self.readingManagedObjectContext) {
             return type.init(fromObject: $0)
         }
         
-        return newSignal
+        let mainQueueSignal = newSignal.signal(onQueue: .mainQueue())
+        return mainQueueSignal
     }
     
     /// Updates the corresponding model object based on `value`.
