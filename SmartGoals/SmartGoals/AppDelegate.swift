@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     var window: UIWindow?
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        let router = Router.sharedInstance
+        let router = Router.sharedRouter
         router.configure(forWindow: self.window!)
         
         let vendor = sharedModelVendor()

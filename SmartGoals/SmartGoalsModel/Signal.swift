@@ -236,7 +236,7 @@ extension Signal {
 
 // MARK: - One Shots
 
-/// A signal that notifies its observers exactly once.
+/// A signal that notifies its observers exactly once, releasing them after notifying.
 ///
 /// A `OneShotSignal` retains its source signal so that clients need only retain the `OneShotSignal` itself.
 public final class OneShotSignal<Value>: Signal<Value> {

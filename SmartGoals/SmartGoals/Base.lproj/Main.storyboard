@@ -188,7 +188,7 @@
         <!--Empty Detail View Controller-->
         <scene sceneID="yUG-lL-AsK">
             <objects>
-                <viewController id="JEX-9P-axG" customClass="EmptyDetailViewController" customModule="SmartGoals" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Empty" id="JEX-9P-axG" customClass="EmptyDetailViewController" customModule="SmartGoals" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SYR-Wa-9uf"/>
                         <viewControllerLayoutGuide type="bottom" id="GAO-Cl-Wes"/>
@@ -281,7 +281,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="JEX-9P-axG" kind="relationship" relationship="rootViewController" id="GKi-kA-LjT"/>
+                        <segue destination="JEX-9P-axG" kind="relationship" relationship="rootViewController" id="vU0-SH-nfi"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SLD-UC-DBI" userLabel="First Responder" sceneMemberID="firstResponder"/>

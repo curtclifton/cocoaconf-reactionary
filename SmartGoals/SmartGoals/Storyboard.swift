@@ -30,9 +30,10 @@ extension Storyboard {
 }
 
 enum MainViewControllers: String, ViewControllerType {
-    case Roles = "Roles"
+    case Empty = "Empty"
     case GoalSet = "GoalSet"
     case RoleDetail = "RoleDetail"
+    case Roles = "Roles"
     case Spinner = "Spinner"
 }
 

@@ -57,22 +57,32 @@ final class RolesController: NSObject, UITableViewDataSource {
             sharedModel.delete(value: roleToDelete)
         }
     }
-        
-    func detailView(forRowAtIndexPath indexPath: NSIndexPath) -> UIViewController {
+    
+    func showDetail(forRowAtIndexPath indexPath: NSIndexPath) {
         let row = indexPath.row
         guard let roleToEdit = roles[row, defaultValue: nil] else {
-            fatalError("unexpected index path: \(indexPath)")
+            // This might just be corrupted state in a table view. Log and ignore request.
+            NSLog("Cannot show detail view for unexpected index path: \(indexPath)")
+            return
         }
         
         let detailViewController = mainStoryboard.instantiateViewController(.RoleDetail) as! RoleDetailViewController
         sharedModelVendor().map { sharedModel in
             let signal = sharedModel.valueSignalForIdentifier(roleToEdit.identifier)
-            // CCC, 5/27/2016. Also need capture and map on signal to remove the detail view? Or return a signal for doing that? Really need to figure out routing strategy next, I guess.
             detailViewController.configure(withSignal: signal) { role in
                 sharedModel.update(fromValue: role)
+                signal.map { roleResult in
+                    if case .error(.deleted) = roleResult {
+                        // CCC, 5/28/2016. Ugh, should just make model vend on main queue and lose this:
+                        NSOperationQueue.mainQueue().addOperationWithBlock {
+                            Router.sharedRouter.dismissDetail(detailViewController)
+                        }
+                    }
+                }
             }
         }
-        return detailViewController
+        
+        Router.sharedRouter.showDetail(detailViewController)
     }
 
     // MARK: - UITableViewDataSource

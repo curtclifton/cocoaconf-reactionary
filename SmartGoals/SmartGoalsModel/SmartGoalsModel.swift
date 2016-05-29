@@ -45,6 +45,11 @@ public final class SmartGoalsModel {
         return identifier
     }
     
+    // -------------------------------------------------------------------------
+    // CCC, 5/28/2016. Make all the signals from the shared model deliver on main queue?
+    // CCC, 5/28/2016. Would need to audit uses to remove queue bouncing
+    // -------------------------------------------------------------------------
+    
     /// Instantiates an object corresponding to the given type and returns a value signal for it.
     public func valueSignalForNewInstanceOfType<Value: ModelValue>(type: Value.Type) -> Signal<Result<Value, FetchError>> {
         let identifier = instantiateObjectOfType(type)

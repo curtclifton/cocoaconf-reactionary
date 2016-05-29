@@ -12,12 +12,12 @@ import UIKit
 
 /// This class provides a common point of control to manage the display of master and detail views in the app.
 class Router {
-    static var sharedInstance = Router()
+    static var sharedRouter = Router()
     
     var mainWindow: UIWindow!
     
-    var root: UIViewController {
-        return mainWindow.rootViewController! // configuration error to not have set
+    var root: UISplitViewController {
+        return mainWindow.rootViewController as! UISplitViewController // configuration error to not have set
     }
     
     func configure(forWindow window: UIWindow) {
@@ -35,6 +35,17 @@ class Router {
         SpinnerViewController.present(from: root, message: message, signal: signal) {
             application.endIgnoringInteractionEvents()
         }
+    }
+    
+    func showDetail(viewController: UIViewController) {
+        // CCC, 5/1/2016. In landscape, we lose the navigation controller for the details when we do this:
+        root.showDetailViewController(viewController, sender: nil)
+    }
+    
+    func dismissDetail(viewController: UIViewController) {
+        // CCC, 5/28/2016. need a smarter implementation here, probably want to pop the nav controller stack and only present the placeholder if empty?
+        let emptyDetailViewController = MainStoryboard().instantiateViewController(.Empty)
+        root.showDetailViewController(emptyDetailViewController, sender: nil)
     }
 }
 
