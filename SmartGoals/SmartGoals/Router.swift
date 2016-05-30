@@ -11,7 +11,7 @@ import Reactionary
 import UIKit
 
 /// This class provides a common point of control to manage the display of master and detail views in the app.
-class Router {
+class Router: NSObject { // have to subclass NSObject so we can conform to UINavigationBarDelegate below
     static var sharedRouter = Router()
     
     private var mainWindow: UIWindow!
@@ -20,30 +20,30 @@ class Router {
         return mainWindow.rootViewController as! UISplitViewController // configuration error if not
     }
 
-    private var masterViews: [UIViewController] = [] {
+    private var masterControllers: [UIViewController] = [] {
         didSet {
-            print("set masterViews to “\(masterViews)”")
-            updateDisplay(oldMasterViews: oldValue)
+            print("set masterViews to “\(masterControllers)”") // CCC, 5/29/2016.
         }
     }
 
-    private var detailViews: [UIViewController] = [] {
+    private var detailControllers: [UIViewController] = [] {
         didSet {
-            print("set detailViews to “\(detailViews)”")
-            updateDisplay(oldDetailViews: oldValue)
+            print("set detailViews to “\(detailControllers)”") // CCC, 5/29/2016.
         }
     }
 
     private var hasNoRealDetails: Bool {
-        if detailViews.isEmpty {
+        if detailControllers.isEmpty {
             return true
         }
-        if detailViews.count > 1 {
+        if detailControllers.count > 1 {
             return false
         }
-        let isEmptyDetails = (detailViews.first is EmptyDetailViewController)
+        let isEmptyDetails = (detailControllers.first is EmptyDetailViewController)
         return isEmptyDetails
     }
+    
+    private var isConfigured = false
     
     // MARK: Internal API
     
@@ -57,11 +57,14 @@ class Router {
         
         let detailNavigationController = root.viewControllers.last as! UINavigationController // configuration error if not
         let emptyDetailView = detailNavigationController.topViewController! // configuration error if not set
-        detailViews = [emptyDetailView]
+        detailControllers = [emptyDetailView]
         
         let masterNavigationController = root.viewControllers.first as! UINavigationController // configuration error if not
         let homeTabView = masterNavigationController.topViewController! // configuration error if not set
-        masterViews = [homeTabView]
+        masterControllers = [homeTabView]
+        
+        isConfigured = true
+        update()
     }
     
     func blockInteraction(untilTrue signal: Signal<Bool>, message: String) {
@@ -72,110 +75,158 @@ class Router {
         }
     }
     
-    // -------------------------------------------------------------------------
-    // CCC, 5/28/2016. I'm starting to think that I should manage the full set of VCs on each virtual nav stack independently here, then override all of the UISplitViewControllerDelegate methods to just manage the damn thing myself.
-    // -------------------------------------------------------------------------
-    
-    func showDetail(viewController: UIViewController) {
-        if hasNoRealDetails {
-            detailViews = [viewController]
+    func showDetail(viewController: UIViewController, replacing: Bool = false) {
+        if hasNoRealDetails || replacing {
+            detailControllers = [viewController]
         } else {
-            detailViews.append(viewController)
+            detailControllers.append(viewController)
         }
-        // CCC, 5/29/2016. can we use didSet on detailViews to do the work?
-//        root.showDetailViewController(viewController, sender: nil)
-//        detail.setViewControllers([viewController], animated: false)
+        update()
     }
     
     func dismissDetail(viewController: UIViewController) {
-        guard let existingIndex = detailViews.indexOf(viewController) else {
+        guard let existingIndex = detailControllers.indexOf(viewController) else {
             // not on stack, so nothing to do
             return
         }
         
         if existingIndex == 0 {
-            // popping only real view controller
+            // popping the only real view controller, so add placeholder
             let emptyDetailViewController = MainStoryboard().instantiateViewController(.Empty)
-            detailViews = [emptyDetailViewController]
-            return
+            detailControllers = [emptyDetailViewController]
+        } else {
+            detailControllers = Array(detailControllers.prefixUpTo(existingIndex))
         }
-        
-        detailViews = Array(detailViews.prefixUpTo(existingIndex))
-        // CCC, 5/29/2016. can we use didSet on detailViews to do the work?
-//        root.showDetailViewController(emptyDetailViewController, sender: nil)
-//        detail.setViewControllers([emptyDetailViewController], animated: false)
+        update()
     }
     
     // MARK: Private API
     
-    // CCC, 5/29/2016. rename parameters
-    // CCC, 5/29/2016. should this really just be a pair of functions? Do we need to call it to update both? Seems likely. Maybe a pair of update flags instead of arrays?
-    private func updateDisplay(oldMasterViews oldMasterViews: [UIViewController]? = nil, oldDetailViews: [UIViewController]? = nil) {
-        if root.collapsed {
-            // CCC, 5/29/2016. do the right thing
+    private func update(asIfCollapsed asIfCollapsed: Bool? = nil, primary: UINavigationController? = nil, secondary: UINavigationController? = nil) {
+        guard isConfigured else {
+            // we should be called again after router is fully configured
+            return
+        }
+        
+        let isCollapsed: Bool
+        if let asIfCollapsed = asIfCollapsed {
+            isCollapsed = asIfCollapsed
         } else {
-            if oldMasterViews != nil {
-                let masterNavigationController = root.viewControllers.first as! UINavigationController
-                updateNavigationStack(controller: masterNavigationController, new: masterViews)
+            isCollapsed = root.collapsed
+        }
+        
+        let primaryNavigationController = primary ?? (root.viewControllers.first as! UINavigationController)  // misconfigured if not
+        
+        if isCollapsed {
+            let fullStack: [UIViewController]
+            if hasNoRealDetails {
+                fullStack = masterControllers
+            } else {
+                fullStack = masterControllers + detailControllers
+                detailControllers.first?.navigationItem.leftBarButtonItem = nil
+                detailControllers.first?.navigationItem.backBarButtonItem = nil
             }
-            if oldDetailViews != nil {
-                let detailNavigationController = root.viewControllers.last as! UINavigationController
-                updateNavigationStack(controller: detailNavigationController, new: detailViews)
-                detailViews.first?.navigationItem.leftBarButtonItem = root.displayModeButtonItem()
-            }
+            updateNavigationStack(controller: primaryNavigationController, new: fullStack)
+        } else {
+            updateNavigationStack(controller: primaryNavigationController, new: masterControllers)
+            
+            let detailNavigationController = secondary ?? (root.viewControllers.last as! UINavigationController) // misconfigured if not
+            updateNavigationStack(controller: detailNavigationController, new: detailControllers)
+            detailControllers.first?.navigationItem.leftBarButtonItem = root.displayModeButtonItem()
         }
     }
     
-    // CCC, 5/29/2016. Probably don't need oldViews?
     private func updateNavigationStack(controller navigationController: UINavigationController, new newStack: [UIViewController]) {
+        guard navigationController.viewControllers != newStack else {
+            // nothing to do
+            return
+        }
         let currentCount = navigationController.viewControllers.count
         let newCount = newStack.count
         let isJustASwap = currentCount == 1 && newCount == 1
         navigationController.setViewControllers(newStack, animated: !isJustASwap)
-        // Find where the current and desired stacks diverge.
-//        let currentStack = navigationController.viewControllers
         
-        
-        // CCC, 5/29/2016. UINavCont should do this:
-//        if newStack.startsWith(currentStack) {
-//            let controllersToAdd = newStack.suffixFrom(currentStack.count)
-//            for controller in controllersToAdd {
-//                let shouldAnimate = (controller == controllersToAdd.last)
-//                navigationController.pushViewController(controller, animated: shouldAnimate)
-//            }
-//        } else if currentStack.startsWith(newStack) {
-//            // CCC, 5/29/2016. dismiss first different view
-//        } else {
-//            // CCC, 5/29/2016. no common base, just swap?
-//            
-//        }
+        // If we're managing the stack, then we need to know when it changes
+        navigationController.delegate = self
     }
 }
 
 // MARK: - Split view
 extension Router: UISplitViewControllerDelegate {
+    // This method allows a client to update any bar button items etc.
+    @objc func splitViewController(svc: UISplitViewController, willChangeToDisplayMode displayMode: UISplitViewControllerDisplayMode) {
+        // CCC, 5/29/2016. anything to do?
+    }
+    
+    // Called by the gesture AND barButtonItem to determine what they will set the display mode to (and what the displayModeButtonItem's appearance will be.) Return UISplitViewControllerDisplayModeAutomatic to get the default behavior.
+    @objc func targetDisplayModeForActionInSplitViewController(svc: UISplitViewController) -> UISplitViewControllerDisplayMode {
+        // CCC, 5/29/2016. anything to do?
+        return .Automatic
+    }
+    
+    @objc func splitViewController(splitViewController: UISplitViewController, showViewController vc: UIViewController, sender: AnyObject?) -> Bool {
+        fatalError("use Router instance methods instead")
+    }
+    
     @objc func splitViewController(splitViewController: UISplitViewController, showDetailViewController vc: UIViewController, sender: AnyObject?) -> Bool {
-        // CCC, 5/28/2016. shouldn't really need this override, but trying to figure out how docs are wrong
-        return false
+        fatalError("use Router instance methods instead")
     }
     
     @objc func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController:UIViewController, ontoPrimaryViewController primaryViewController:UIViewController) -> Bool {
-        guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
-        guard let topAsDetailController = secondaryAsNavController.topViewController as? EmptyDetailViewController else { return false }
-        if topAsDetailController.detailItem == nil {
-            // Return true to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
-            return true
-        }
-        return false
+        // we always handle collapse to deal with our treatment of the detail nav stack
+        update(asIfCollapsed: true)
+        return true
     }
-
+    
     @objc func splitViewController(splitViewController: UISplitViewController, separateSecondaryViewControllerFromPrimaryViewController primaryViewController: UIViewController) -> UIViewController? {
-        // CCC, 5/28/2016. really?
-        if detailViews.isEmpty {
-            let emptyDetailViewController = MainStoryboard().instantiateViewController(.Empty)
-            return emptyDetailViewController
-        }
+        let primary = primaryViewController as! UINavigationController // misconfigured if not
+        let secondary = UINavigationController()
         
-        return nil
+        update(asIfCollapsed: false, primary: primary, secondary: secondary)
+        return secondary
+    }
+}
+
+// MARK: - Navigation Bar
+
+extension Router: UINavigationControllerDelegate {
+    
+    @objc func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
+        // When a nav controller pops (i.e., user went "back") we need to update our local state
+        if root.collapsed {
+            if root.viewControllers.count > 1 {
+                // not combined yet, ignore assuming that we're handling the transition to make navigation controller match our state
+                return
+            }
+            let combinedNavigationController = root.viewControllers.first as! UINavigationController // misconfigured if not
+            assert(combinedNavigationController === navigationController)
+            let currentStack = combinedNavigationController.viewControllers
+            
+            print("currentStack: \(currentStack)")
+            
+            let (masterSlice, detailSlice) = currentStack.split(atIndex: masterControllers.count)
+            masterControllers = Array(masterSlice)
+            if detailSlice.isEmpty {
+                let emptyDetailViewController = MainStoryboard().instantiateViewController(.Empty)
+                detailControllers = [emptyDetailViewController]
+            } else {
+                detailControllers = Array(detailSlice)
+            }
+        } else {
+            let masterNavigationController = root.viewControllers.first as! UINavigationController // misconfigured if not
+            let detailNavigationController = root.viewControllers.last as! UINavigationController // misconfigured if not
+            if masterNavigationController === detailNavigationController {
+                // not split yet, ignore assuming that we're handling the transition to make navigation controllers match state
+                return
+            }
+            
+            if navigationController === masterNavigationController {
+                let currentMasterStack = masterNavigationController.viewControllers
+                masterControllers = currentMasterStack
+            } else if navigationController === detailNavigationController {
+                let currentDetailStack = detailNavigationController.viewControllers
+                detailControllers = currentDetailStack
+            }
+        }
     }
 }

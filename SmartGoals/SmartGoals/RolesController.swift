@@ -78,7 +78,7 @@ final class RolesController: NSObject, UITableViewDataSource {
                 case .value:
                     // got a value, so present
                     if !isShowing {
-                        Router.sharedRouter.showDetail(detailViewController)
+                        Router.sharedRouter.showDetail(detailViewController, replacing: true)
                         isShowing = true
                     }
                 case .error(.deleted):

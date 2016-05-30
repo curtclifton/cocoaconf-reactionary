@@ -17,4 +17,11 @@ extension Array {
             return self[index]
         }
     }
+    
+    func split(atIndex index: Int) -> (ArraySlice<Element>, ArraySlice<Element>) {
+        let cappedIndex = min(index, count)
+        let first = self.prefixUpTo(cappedIndex)
+        let second = self.suffixFrom(cappedIndex)
+        return (first, second)
+    }
 }
