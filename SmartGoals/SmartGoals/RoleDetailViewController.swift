@@ -20,13 +20,23 @@ class RoleDetailViewController: UIViewController {
     }
     private var updater: ((Role) -> Void)?
     
+    /// Cover for role storage, used for local updates that should be fed back to the database.
     private var role: Role? {
-        didSet {
-            if let role = role where role != oldValue {
-                updater?(role)
+        set {
+            if _role != newValue {
+                _role = newValue
+                if let role = newValue {
+                    self.updater?(role)
+                }
             }
         }
+        get {
+            return _role
+        }
     }
+    
+    /// Underlying storage for role, used for setting values coming from database so we don't get into a cycle updating the database based on values from the database.
+    private var _role: Role?
     
     @IBOutlet var name: UITextField!
     @IBOutlet var explanation: UITextView! {
@@ -70,7 +80,7 @@ class RoleDetailViewController: UIViewController {
         
         // Update local copy of role whenever it changes
         valueOnlySignal.map { [weak self] role in
-            self?.role = role
+            self?._role = role
         }
         
         // Make fields update whenever the pertinent properties change
