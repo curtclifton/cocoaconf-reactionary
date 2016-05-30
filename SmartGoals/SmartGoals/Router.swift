@@ -20,18 +20,9 @@ class Router: NSObject { // have to subclass NSObject so we can conform to UINav
         return mainWindow.rootViewController as! UISplitViewController // configuration error if not
     }
 
-    private var masterControllers: [UIViewController] = [] {
-        didSet {
-            print("set masterViews to “\(masterControllers)”") // CCC, 5/29/2016.
-        }
-    }
-
-    private var detailControllers: [UIViewController] = [] {
-        didSet {
-            print("set detailViews to “\(detailControllers)”") // CCC, 5/29/2016.
-        }
-    }
-
+    private var masterControllers: [UIViewController] = []
+    private var detailControllers: [UIViewController] = []
+    
     private var hasNoRealDetails: Bool {
         if detailControllers.isEmpty {
             return true
@@ -153,17 +144,6 @@ class Router: NSObject { // have to subclass NSObject so we can conform to UINav
 
 // MARK: - Split view
 extension Router: UISplitViewControllerDelegate {
-    // This method allows a client to update any bar button items etc.
-    @objc func splitViewController(svc: UISplitViewController, willChangeToDisplayMode displayMode: UISplitViewControllerDisplayMode) {
-        // CCC, 5/29/2016. anything to do?
-    }
-    
-    // Called by the gesture AND barButtonItem to determine what they will set the display mode to (and what the displayModeButtonItem's appearance will be.) Return UISplitViewControllerDisplayModeAutomatic to get the default behavior.
-    @objc func targetDisplayModeForActionInSplitViewController(svc: UISplitViewController) -> UISplitViewControllerDisplayMode {
-        // CCC, 5/29/2016. anything to do?
-        return .Automatic
-    }
-    
     @objc func splitViewController(splitViewController: UISplitViewController, showViewController vc: UIViewController, sender: AnyObject?) -> Bool {
         fatalError("use Router instance methods instead")
     }
