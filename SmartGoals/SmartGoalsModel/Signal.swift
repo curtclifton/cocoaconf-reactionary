@@ -8,8 +8,6 @@
 
 import Foundation
 
-// CCC, 5/15/2016. Split out Signal subclasses. Make most functions internal, since we have our own module for these now.
-
 /// A mappable signal producing values of type `Value`.
 ///
 /// In general, clients must retain instances of `Signal` except as documented. The basic capture pattern is that a signal captures the blocks passed to `map` and `flatmap`. The new signal returned from an invocation of either mapping function is also retained by the original signal.

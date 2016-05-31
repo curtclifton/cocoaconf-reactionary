@@ -403,15 +403,15 @@
 			children = (
 				4D3F59021CDBA69B00A1869C /* Reactionary.h */,
 				4D3F593B1CDBADF100A1869C /* Reactionary.modulemap */,
-				4D6F33851C710EE900B1B2B2 /* Signal.swift */,
-				4D6835231CFD461800A61477 /* WeakProxySignal.swift */,
-				4D6835201CFD44CD00A61477 /* QueueSpecificSignal.swift */,
-				4D68351D1CFD442E00A61477 /* OneShotSignal.swift */,
-				4D68351A1CFD43D900A61477 /* DelayedSignal.swift */,
-				4D6835161CFD423800A61477 /* SignalCombinators.swift */,
-				4D6835141CFD40E000A61477 /* FetchSignal.swift */,
-				4D6834D11CF8A64800A61477 /* Result.swift */,
 				4D3F59041CDBA69B00A1869C /* Info.plist */,
+				4D68351A1CFD43D900A61477 /* DelayedSignal.swift */,
+				4D6835141CFD40E000A61477 /* FetchSignal.swift */,
+				4D68351D1CFD442E00A61477 /* OneShotSignal.swift */,
+				4D6835201CFD44CD00A61477 /* QueueSpecificSignal.swift */,
+				4D6834D11CF8A64800A61477 /* Result.swift */,
+				4D6F33851C710EE900B1B2B2 /* Signal.swift */,
+				4D6835161CFD423800A61477 /* SignalCombinators.swift */,
+				4D6835231CFD461800A61477 /* WeakProxySignal.swift */,
 			);
 			path = Reactionary;
 			sourceTree = "<group>";
