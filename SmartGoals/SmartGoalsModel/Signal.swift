@@ -161,7 +161,6 @@ public final class WeakProxySignal<Value> {
     }
     
     private func notifyObservers(ofValue value: Value) {
-        cleanTransforms()
         let observers = wrappedTransforms.flatMap { wrapper in wrapper.value?.observer }
         for observer in observers {
             observer(value)
@@ -169,8 +168,7 @@ public final class WeakProxySignal<Value> {
     }
     
     private func addObserver(observer: Value -> ()) -> WeakTransform<Value> {
-        cleanTransforms()
-        let result = WeakTransform(observer) // CCC, 5/25/2016. Use Jim's trick of putting a deinit on WeakTransform that triggers clean-up, probably can lose the manual clean-up then
+        let result = WeakTransform(weakProxy: self, observer: observer)
         let wrapped = WeakWrapper(result)
         wrappedTransforms.append(wrapped)
         if let existingValue = currentValue {
@@ -179,6 +177,7 @@ public final class WeakProxySignal<Value> {
         return result
     }
 
+    /// Called by `WeakTransform`'s `deinit`.
     private func cleanTransforms() {
         wrappedTransforms = wrappedTransforms.filter { wrapper in !wrapper.isEmptied }
     }
@@ -194,10 +193,16 @@ public class TransformID {
 ///
 /// This is a private subclass so we can hide the generic `Value`.
 private final class WeakTransform<Value>: TransformID {
+    weak var weakProxy: WeakProxySignal<Value>?
     let observer: (Value) -> Void
     
-    init(_ observer: (Value) -> Void) {
+    init(weakProxy: WeakProxySignal<Value>, observer: (Value) -> Void) {
+        self.weakProxy = weakProxy
         self.observer = observer
+    }
+    
+    deinit {
+        weakProxy?.cleanTransforms()
     }
 }
 
