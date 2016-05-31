@@ -56,6 +56,8 @@
 		4D6835191CFD430900A61477 /* FetchSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6835141CFD40E000A61477 /* FetchSignal.swift */; };
 		4D68351B1CFD43D900A61477 /* DelayedSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D68351A1CFD43D900A61477 /* DelayedSignal.swift */; };
 		4D68351C1CFD43D900A61477 /* DelayedSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D68351A1CFD43D900A61477 /* DelayedSignal.swift */; };
+		4D68351E1CFD442E00A61477 /* OneShotSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D68351D1CFD442E00A61477 /* OneShotSignal.swift */; };
+		4D68351F1CFD442E00A61477 /* OneShotSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D68351D1CFD442E00A61477 /* OneShotSignal.swift */; };
 		4D6F33701C70250300B1B2B2 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4D6F336E1C70250300B1B2B2 /* Model.xcdatamodeld */; };
 		4D6F33711C70250300B1B2B2 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4D6F336E1C70250300B1B2B2 /* Model.xcdatamodeld */; };
 		4D6F33741C70345D00B1B2B2 /* SGMRole+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6F33721C70345D00B1B2B2 /* SGMRole+CoreDataProperties.swift */; };
@@ -188,6 +190,7 @@
 		4D6835141CFD40E000A61477 /* FetchSignal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchSignal.swift; sourceTree = "<group>"; };
 		4D6835161CFD423800A61477 /* SignalCombinators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalCombinators.swift; sourceTree = "<group>"; };
 		4D68351A1CFD43D900A61477 /* DelayedSignal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayedSignal.swift; sourceTree = "<group>"; };
+		4D68351D1CFD442E00A61477 /* OneShotSignal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneShotSignal.swift; sourceTree = "<group>"; };
 		4D6F336F1C70250300B1B2B2 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		4D6F33721C70345D00B1B2B2 /* SGMRole+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SGMRole+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4D6F33731C70345D00B1B2B2 /* SGMRole.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SGMRole.swift; sourceTree = "<group>"; };
@@ -395,6 +398,7 @@
 				4D3F59021CDBA69B00A1869C /* Reactionary.h */,
 				4D3F593B1CDBADF100A1869C /* Reactionary.modulemap */,
 				4D6F33851C710EE900B1B2B2 /* Signal.swift */,
+				4D68351D1CFD442E00A61477 /* OneShotSignal.swift */,
 				4D68351A1CFD43D900A61477 /* DelayedSignal.swift */,
 				4D6835161CFD423800A61477 /* SignalCombinators.swift */,
 				4D6835141CFD40E000A61477 /* FetchSignal.swift */,
@@ -804,6 +808,7 @@
 			files = (
 				4D6834D21CF8A64800A61477 /* Result.swift in Sources */,
 				4D6835171CFD423800A61477 /* SignalCombinators.swift in Sources */,
+				4D68351E1CFD442E00A61477 /* OneShotSignal.swift in Sources */,
 				4D68351B1CFD43D900A61477 /* DelayedSignal.swift in Sources */,
 				4D6835151CFD40E000A61477 /* FetchSignal.swift in Sources */,
 				4D3F59281CDBA73300A1869C /* Signal.swift in Sources */,
@@ -825,6 +830,7 @@
 			files = (
 				4D6835191CFD430900A61477 /* FetchSignal.swift in Sources */,
 				4D6834D31CF8ACF900A61477 /* Result.swift in Sources */,
+				4D68351F1CFD442E00A61477 /* OneShotSignal.swift in Sources */,
 				4D68351C1CFD43D900A61477 /* DelayedSignal.swift in Sources */,
 				4D6835181CFD430900A61477 /* SignalCombinators.swift in Sources */,
 				4D3F593A1CDBAB0300A1869C /* Signal.swift in Sources */,

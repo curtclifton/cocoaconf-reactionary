@@ -26,7 +26,8 @@ public class Signal<Value> {
     /// - SeeAlso: `WeakProxySignal`
     public lazy var weakProxy: WeakProxySignal<Value> = WeakProxySignal<Value>(signal: self)
     
-    private var observers: [Value -> ()] = []
+    /// Internal for subclass access.
+    var observers: [Value -> ()] = []
     
     /// Pushes a new value on the signal.
     ///
@@ -65,13 +66,13 @@ public class Signal<Value> {
 
     //MARK: Subclass API
 
-    private func notifyObservers(ofValue value: Value) {
+    func notifyObservers(ofValue value: Value) {
         for observer in observers {
             observer(value)
         }
     }
     
-    private func addObserver(observer: Value -> ()) {
+    func addObserver(observer: Value -> ()) {
         observers.append(observer)
         if let existingValue = currentValue {
             observer(existingValue)
@@ -271,7 +272,7 @@ public class QueueSpecificSignal<Value>: Signal<Value> {
     }
     
     /// Overrides `notifyObservers(ofValue:)` to push notifications on `notificationQueue`.
-    override private func notifyObservers(ofValue value: Value) {
+    override func notifyObservers(ofValue value: Value) {
         let observers = self.observers
         queue.addOperationWithBlock { 
             for observer in observers {
@@ -300,55 +301,3 @@ extension QueueSpecificSignal: QueueAwareSignal {
 
 extension QueueSpecificSignal: SourceAwareSignal {
 }
-
-// MARK: - One Shots
-
-/// A signal that notifies its observers exactly once, releasing them after notifying.
-///
-/// A `OneShotSignal` retains its source signal so that clients need only retain the `OneShotSignal` itself.
-public final class OneShotSignal<Value>: Signal<Value> {
-    public let source: Signal<Value>
-    private var transform: TransformID? // must be an optional var so we can use `self` in definition
-
-    private init(signal: Signal<Value>) {
-        self.source = signal
-        super.init()
-        
-        transform = signal.weakProxy.addObserver { [weak self] value in
-            self?.update(toValue: value)
-        }
-    }
-    
-    /// Override to clear `observers` after notifying.
-    override private func notifyObservers(ofValue value: Value) {
-        for observer in observers {
-            observer(value)
-        }
-        observers = []
-    }
-    
-    /// Override to suppress caching of `observer` if we have a value with which to notify it already.
-    override private func addObserver(observer: Value -> ()) {
-        if let existingValue = currentValue {
-            observer(existingValue)
-        } else {
-            observers.append(observer)
-        }
-    }
-    
-    public var isPrimed: Bool {
-        return currentValue != nil
-    }
-}
-
-extension Signal {
-    public func oneShotSignal() -> OneShotSignal<Value> {
-        let result = OneShotSignal(signal: self)
-        return result
-    }
-}
-
-extension OneShotSignal: SourceAwareSignal, QueueAwareSignal {
-}
-
-
