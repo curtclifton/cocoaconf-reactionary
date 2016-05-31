@@ -16,11 +16,11 @@ extension UISwitch: ReactiveControl {
     
     var reactiveValue: Bool {
         get {
-            return self.on
+            return on
         }
         set {
-            if newValue != self.on {
-                self.on = newValue
+            if newValue != on {
+                on = newValue
             }
         }
     }
