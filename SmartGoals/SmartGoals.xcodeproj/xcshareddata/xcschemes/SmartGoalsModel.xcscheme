@@ -38,6 +38,16 @@
                ReferencedContainer = "container:SmartGoals.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4D3F59081CDBA69B00A1869C"
+               BuildableName = "ReactionaryTests.xctest"
+               BlueprintName = "ReactionaryTests"
+               ReferencedContainer = "container:SmartGoals.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
