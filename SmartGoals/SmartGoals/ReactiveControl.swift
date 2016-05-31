@@ -18,15 +18,26 @@ private var dynamicTargetKey: UInt8 = 0
 
 /// Protocol that can be adopted by `UIControl`s via extensions to make them take and vend reactive signals.
 protocol ReactiveControl: class {
-    // CCC, 5/1/2016. document all
+    /// The type of the vended by the signals for this control.
     associatedtype Value: Equatable
     
+    /// The control events that cause the `valueChangedSignal()` to fire.
     var monitoredControlEvents: UIControlEvents { get }
+    
+    /// Tells this control to update in response to values vended by the given signal.
     func takeValue(fromSignal signal: Signal<Value>)
+    
+    /// Returns a signal that will vend values in response to the changing state of the control.
     func valueChangedSignal() -> Signal<Value>
     
+    /// Cover property for the control's value.
+    ///
+    /// For example, for a `UISwitch` the getter and setter for this property would cover the switch's `on` property.
     var reactiveValue: Value { get set }
     
+    /// Redeclaration of the method from `UIControl`.
+    ///
+    /// `UIControl` subclasses conforming to `ReactiveControl` get this method for free by inheriting it. It's declared here so that types that don't subclass `UIControl` can also benefit from the default implementation of `valueChangedSignal()`.
     func addTarget(target: AnyObject?, action: Selector, forControlEvents controlEvents: UIControlEvents)
 }
 
