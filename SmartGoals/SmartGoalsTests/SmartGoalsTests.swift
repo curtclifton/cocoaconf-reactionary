@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import SmartGoals
+//@testable import SmartGoals
 
 class SmartGoalsTests: XCTestCase {
     func testExample() {
